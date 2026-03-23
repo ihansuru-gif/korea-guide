@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>韓国旅行ガイド</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5ede0;--surface:#fdf8f2;
+  --rose:#2c1e12;--rose2:#4a3020;--rose-light:#ede3d4;--rose-mid:#6a4a2a;
+  --text:#2c1e12;--muted:#2c1e12;--border:#ddd0be;
+  --r:14px;--tab-h:66px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;line-height:1.7;
+  padding-bottom:calc(var(--tab-h) + var(--safe-bottom));
+  -webkit-tap-highlight-color:transparent;
+}
+.ko{display:none}.ja{display:none}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:98;
+  background:rgba(253,248,244,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.25rem;
+}
+.logo{font-weight:700;font-size:1.08rem;color:#2c1e12;letter-spacing:.02em}
+.lang-toggle{display:flex;background:#ede3d4;border-radius:999px;padding:3px;gap:2px}
+.lang-btn{
+  border:none;background:transparent;padding:.26rem .8rem;border-radius:999px;
+  font-size:1rem;font-weight:700;letter-spacing:.08em;cursor:pointer;
+  font-family:inherit;color:#5a3820;transition:all .2s;
+}
+.lang-btn.active{background:#2c1e12;color:#f5ede0}
+
+/* SECTION */
+.section{display:none;animation:fi .18s ease both}
+.section.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* HOME */
+.home-hero{
+  background:linear-gradient(160deg,#fdf8f2 0%,var(--bg) 55%);
+  padding:2.2rem 1.25rem 1.4rem;text-align:center;border-bottom:1px solid var(--border);
+}
+.home-flag{font-size:2.8rem;margin-bottom:.5rem;line-height:1}
+.home-tag{
+  display:inline-block;background:#ede3d4;color:#2c1e12;
+  font-size:1.08rem;letter-spacing:.18em;font-weight:700;
+  padding:.28rem .9rem;border-radius:999px;margin-bottom:.75rem;
+}
+.home-title{font-size:clamp(1.7rem,5.5vw,2.3rem);font-weight:700;line-height:1.25;margin-bottom:.4rem}
+.home-title em{color:var(--rose);font-style:normal}
+.home-menu{padding:1.1rem 1.25rem;display:flex;flex-direction:column;gap:.65rem}
+.menu-card{
+  background:var(--surface);border:1px solid var(--border);border-left:3px solid #2c1e12;
+  border-radius:var(--r);padding:1rem 1.1rem;
+  display:flex;align-items:center;gap:.9rem;cursor:pointer;
+  transition:transform .18s,box-shadow .18s;
+  -webkit-user-select:none;user-select:none;
+}
+.menu-card:active{transform:scale(.98)}
+@media(hover:hover){.menu-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(200,64,90,.1)}}
+.menu-icon{font-size:1.7rem;flex-shrink:0;width:36px;text-align:center}
+.menu-title{font-size:1.02rem;font-weight:700;margin-bottom:.08rem}
+.menu-sub{font-size:1rem;color:var(--muted)}
+.menu-arrow{margin-left:auto;color:var(--rose-mid);font-size:1.1rem;flex-shrink:0}
+
+/* INNER HEADER */
+.inner-hd{
+  padding:1rem 1.25rem .5rem;border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,#fdf8f2,var(--bg));
+}
+.back-btn{
+  display:inline-flex;align-items:center;gap:.35rem;font-size:1rem;color:#5a3820;
+  cursor:pointer;border:none;background:none;font-family:inherit;margin-bottom:.4rem;padding:0;
+}
+.back-btn:active{opacity:.7}
+.inner-title{font-size:1.1rem;font-weight:700;margin-bottom:.12rem}
+.inner-sub{font-size:.87rem;color:var(--muted)}
+
+/* CHIPS */
+.chips{display:flex;gap:.4rem;padding:.8rem 1.25rem .35rem;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  border:1px solid var(--border);background:#fff;border-radius:999px;
+  padding:.26rem .8rem;font-size:.97rem;font-weight:700;cursor:pointer;
+  font-family:inherit;color:#5a3820;transition:all .18s;
+  white-space:nowrap;flex-shrink:0;-webkit-user-select:none;user-select:none;
+}
+.chip.active{background:var(--rose);border-color:var(--rose);color:#fff}
+
+/* SUBGROUP */
+.subgroup{
+  padding:.8rem 1.25rem .2rem;font-size:1.08rem;letter-spacing:.2em;
+  font-weight:700;color:#4a2808;text-transform:uppercase;
+}
+
+/* CARDS GRID */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;padding:.6rem 1.25rem 1.2rem}
+
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;cursor:pointer;
+  transition:transform .18s,box-shadow .18s;
+  -webkit-user-select:none;user-select:none;
+}
+.card:active{transform:scale(.97)}
+@media(hover:hover){.card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(200,64,90,.12)}}
+
+/* EMOJI THUMB */
+.card-thumb{
+  width:100%;aspect-ratio:4/3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.3rem;position:relative;
+}
+.t-italian{background:linear-gradient(145deg,#f5ede0,#e8d5c0)}
+.t-korean{background:linear-gradient(145deg,#f0e8e0,#ddd0c4)}
+.t-thai{background:linear-gradient(145deg,#f5eedc,#e8d8b8)}
+.t-cafe{background:linear-gradient(145deg,#ede8e0,#d8cfc4)}
+.t-bakery{background:linear-gradient(145deg,#f8f0dc,#e8d8a0)}
+.t-goter{background:linear-gradient(145deg,#e8f0e8,#c8dcc8)}
+
+.th-em{font-size:2.6rem;line-height:1;transition:transform .28s}
+.card:hover .th-em{transform:scale(1.12)}
+.th-lbl{font-size:.97rem;font-weight:700;color:rgba(60,30,20,.75);letter-spacing:.1em}
+
+.cbadge{
+  position:absolute;top:.4rem;left:.4rem;
+  font-size:.66rem;font-weight:700;padding:.14rem .48rem;border-radius:999px;
+  background:rgba(255,255,255,.92);
+}
+.cb-hot{color:#8a2c00}.cb-old{color:#2c4a6a}.cb-new{color:#1a5c2c}
+.cb-ribbon{color:#4a2c6a}.cb-sns{color:#6a2c4a}.cb-free{color:#1a5c2c}
+
+.card-body{padding:.7rem .8rem}
+.card-name{font-size:.97rem;font-weight:700;margin-bottom:.08rem;line-height:1.3}
+.card-addr{font-size:.74rem;color:var(--muted);margin-bottom:.25rem}
+.card-copy{font-size:.97rem;color:#3a2830;line-height:1.5;margin-bottom:.4rem;font-weight:400}
+
+/* MENU PILLS */
+.menu-pills{display:flex;flex-wrap:wrap;gap:.22rem;margin-bottom:.45rem}
+.mpill{
+  font-size:1rem;font-weight:700;padding:.16rem .48rem;border-radius:999px;
+  background:#ede3d4;color:#2c1e12;white-space:nowrap;
+}
+.mpill.cafe{background:#e8e0d8;color:#3a2c20}
+.mpill.bakery{background:#ede8d8;color:#4a3010}
+.mpill.goter{background:#e0e8d8;color:#1a3a1a}
+
+.card-ft{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:.4rem;border-top:1px solid var(--border);
+}
+.price{font-size:.97rem;font-weight:700;color:#4a2808}
+.btn-detail{
+  font-size:1rem;font-weight:700;padding:.2rem .6rem;border-radius:999px;
+  border:none;cursor:pointer;font-family:inherit;
+  background:#ede3d4;color:#2c1e12;
+  transition:opacity .18s;
+}
+.btn-detail:active{opacity:.75}
+
+/* BEAUTY LIST CARDS */
+.bcards{display:flex;flex-direction:column;gap:.6rem;padding:.6rem 1.25rem 1.2rem}
+.bcard{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+  transition:transform .18s;-webkit-user-select:none;user-select:none;
+}
+.bcard:active{transform:scale(.99)}
+.bcard.ft{border-color:var(--rose-mid)}
+.binner{display:flex;align-items:stretch}
+.bthumb{width:78px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.9rem}
+.bpink{background:linear-gradient(135deg,#f5ede0,#e8d4c4)}
+.bpurple{background:linear-gradient(135deg,#eee8e0,#d8cfc4)}
+.bgreen{background:linear-gradient(135deg,#e8f0e8,#c8dcc8)}
+.bbody{flex:1;padding:.75rem .9rem}
+.btop{display:flex;align-items:flex-start;justify-content:space-between;gap:.3rem;margin-bottom:.25rem}
+.bname{font-size:1rem;font-weight:700;line-height:1.3}
+.bdesc{font-size:1rem;color:var(--muted);line-height:1.55;margin-bottom:.5rem}
+.bft{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.3rem}
+.bprice{font-size:.97rem;font-weight:700;color:#4a2808}
+.blinks{display:flex;gap:.22rem}
+.blnk{
+  font-size:1rem;font-weight:700;padding:.18rem .56rem;border-radius:999px;
+  border:none;cursor:pointer;font-family:inherit;text-decoration:none;
+  display:inline-block;transition:opacity .18s;
+}
+.blnk.map{background:#ede3d4;color:#2c1e12}
+.blnk.ig{background:#e0d8cc;color:#2c1e12}
+.blnk.web{background:#e8e0d4;color:#2c1e12}
+.blnk:active{opacity:.7}
+
+/* POPUP BANNER */
+.popup-banner{
+  margin:.5rem 1.25rem;
+  background:linear-gradient(135deg,#fdf8f2,#ede3d4);
+  border:1px solid var(--border);border-radius:12px;
+  padding:.8rem 1rem;
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+}
+.ptext{font-size:.87rem;line-height:1.5}
+.ptext strong{color:#4a2808}
+.pbtn{
+  background:var(--rose);color:#fff;font-size:1.08rem;font-weight:700;
+  padding:.35rem .8rem;border-radius:999px;text-decoration:none;flex-shrink:0;
+}
+
+/* GOTER INFO BANNER */
+.goter-info{
+  margin:.5rem 1.25rem;
+  background:linear-gradient(135deg,#fdf8f0,#f5eedc);
+  border:1px solid #d4b88a;border-radius:12px;
+  padding:.8rem 1rem;font-size:.87rem;line-height:1.6;
+}
+.goter-info strong{color:#4a2808}
+
+/* MUST KNOW — 필수정보 */
+.must-wrap{padding:.75rem 1.25rem 1.5rem}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:1.4rem}
+.phc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.75rem .9rem}
+.phc.urg{border-color:#d4b8a0;background:#fdf5ee}
+.phi{font-size:1.2rem;margin-bottom:.12rem}
+.phn{font-size:.97rem;font-weight:700;margin-bottom:.06rem}
+.phnum{font-size:1.1rem;font-weight:700;color:#2c1e12;letter-spacing:.02em;line-height:1.2;margin-bottom:.1rem}
+.phdesc{font-size:1rem;color:var(--muted);line-height:1.4;margin-bottom:.4rem}
+.phcall{
+  display:inline-flex;align-items:center;gap:.2rem;
+  background:var(--rose);color:#fff;border-radius:999px;
+  padding:.28rem .65rem;font-size:.76rem;font-weight:700;text-decoration:none;
+}
+
+/* PHRASE SECTION */
+.phrase-title{font-size:1rem;font-weight:700;margin-bottom:.65rem}
+.plist{display:flex;flex-direction:column;gap:.55rem}
+.pc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem 1rem}
+.psit{font-size:.74rem;letter-spacing:.17em;font-weight:700;color:#4a2808;margin-bottom:.45rem}
+.prow{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.28rem}
+.pkr{font-size:1rem;font-weight:700;font-family:'Noto Sans KR',sans-serif;line-height:1.4;flex:1}
+.pright{flex:1;text-align:right}
+.pja{font-size:1rem;color:var(--muted);line-height:1.5}
+.pread{font-size:.74rem;color:var(--rose-mid);margin-top:.06rem}
+
+/* PAPAGO */
+.papago-banner{
+  margin:1.2rem 0 0;
+  background:linear-gradient(135deg,#f0ece4,#e8e0d4);
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:.9rem 1.1rem;
+  display:flex;align-items:center;justify-content:space-between;gap:.9rem;
+}
+.papago-text .pt-title{font-size:.97rem;font-weight:700;color:#1a3a6a;margin-bottom:.18rem}
+.papago-text .pt-sub{font-size:1rem;color:#2a4a7a;line-height:1.5}
+.papago-btn{
+  background:#2c6e3a;color:#fff;
+  font-size:1rem;font-weight:700;letter-spacing:.04em;
+  padding:.45rem 1rem;border-radius:999px;text-decoration:none;
+  flex-shrink:0;display:flex;align-items:center;gap:.28rem;transition:opacity .18s;
+}
+.papago-btn:active{opacity:.8}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .22s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--surface);border-radius:20px 20px 0 0;
+  width:100%;max-width:500px;
+  max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);
+  padding-bottom:var(--safe-bottom);
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+
+.modal-header{
+  padding:1rem 1.2rem .55rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:var(--surface);z-index:1;
+}
+.modal-thumb{
+  font-size:2.2rem;width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.modal-hinfo{flex:1;margin:0 .7rem}
+.modal-name{font-size:1.1rem;font-weight:700;margin-bottom:.08rem}
+.modal-addr{font-size:.97rem;color:var(--muted)}
+.modal-close{
+  border:none;background:#ede3d4;color:#2c1e12;
+  width:28px;height:28px;border-radius:50%;font-size:.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+.modal-body{padding:.9rem 1.2rem 1.4rem}
+.modal-section{margin-bottom:1.1rem}
+.modal-section-title{
+  font-size:1.08rem;letter-spacing:.2em;font-weight:700;color:#4a2808;margin-bottom:.5rem;
+}
+.modal-story{
+  font-size:.92rem;color:#3a2030;line-height:1.75;
+  padding:.75rem .9rem;background:#ede3d4;border-radius:10px;
+  margin-bottom:1rem;
+}
+
+.menu-list{display:flex;flex-direction:column;gap:.45rem}
+.menu-item{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:.55rem .75rem;background:var(--bg);border-radius:10px;gap:.5rem;
+}
+.menu-item-name{font-size:1.08rem;font-weight:700;margin-bottom:.06rem}
+.menu-item-desc{font-size:.97rem;color:var(--muted);line-height:1.4}
+.menu-item-price{font-size:1.08rem;font-weight:700;color:var(--rose);white-space:nowrap;margin-top:2px}
+
+/* MODAL ACTIONS */
+.modal-actions{display:flex;flex-direction:column;gap:.5rem;margin-top:1.1rem}
+.modal-ig{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+  color:#fff;border:none;border-radius:12px;padding:.85rem;
+  font-size:1.02rem;font-weight:700;letter-spacing:.04em;cursor:pointer;
+  font-family:inherit;text-decoration:none;
+  transition:opacity .18s;width:100%;
+}
+.modal-ig:active{opacity:.85}
+.modal-naver{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  background:#2c6e3a;
+  color:#fff;border:none;border-radius:12px;padding:.85rem;
+  font-size:1.02rem;font-weight:700;letter-spacing:.04em;cursor:pointer;
+  font-family:inherit;text-decoration:none;
+  transition:opacity .18s;width:100%;
+}
+.modal-naver:active{opacity:.85}
+.modal-naver.hidden{display:none}
+.modal-btns-row{display:flex;gap:.5rem}
+.modal-map{
+  flex:1;background:#2c1e12;color:#f5ede0;border:none;border-radius:999px;
+  padding:.65rem;font-size:.92rem;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;font-family:inherit;text-decoration:none;
+  display:flex;align-items:center;justify-content:center;gap:.35rem;
+  transition:opacity .18s;
+}
+.modal-map:active{opacity:.85}
+.modal-res{
+  flex:1;background:var(--surface);color:#2c1e12;
+  border:1.5px solid #2c1e12;border-radius:999px;padding:.65rem;
+  font-size:.92rem;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;font-family:inherit;text-decoration:none;
+  display:flex;align-items:center;justify-content:center;gap:.35rem;
+  transition:opacity .18s;
+}
+.modal-res:active{opacity:.8}
+.modal-res.hidden{display:none}
+
+/* TAB BAR */
+.tab-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:99;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(5,1fr);
+  height:var(--tab-h);padding-bottom:var(--safe-bottom);
+}
+.ti{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.16rem;cursor:pointer;border:none;background:transparent;
+  font-family:inherit;color:#6a5040;transition:color .15s;padding:.3rem 0;
+  -webkit-user-select:none;user-select:none;
+}
+.ti.active{color:#2c1e12}
+.tico{font-size:1.15rem;line-height:1}
+.tlbl{font-size:.76rem;font-weight:700;letter-spacing:.03em}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">🇰🇷 <span class="ja">韓国旅行ガイド</span><span class="ko">한국 여행 가이드</span></div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btnJa" onclick="setLang('ja')">日本語</button>
+    <button class="lang-btn" id="btnKo" onclick="setLang('ko')">한국어</button>
+  </div>
+</nav>
+
+<!-- ▶ HOME -->
+<div class="section active" id="sec-home">
+  <div class="home-hero">
+    <div class="home-flag">🇰🇷</div>
+    <h1 class="home-title">
+      <span class="ja"><em>韓国旅行</em>を<br>もっと楽しく</span>
+      <span class="ko"><em>한국 여행</em>을<br>더 즐겁게</span>
+    </h1>
+  </div>
+  <div class="home-menu">
+    <div class="menu-card" onclick="goTab('must')">
+      <span class="menu-icon">📋</span>
+      <div>
+        <div class="menu-title"><span class="ja">必須情報</span><span class="ko">필수 정보</span></div>
+        <div class="menu-sub"><span class="ja">緊急連絡・会話フレーズ・支払い</span><span class="ko">긴급 연락 · 회화 · 결제 안내</span></div>
+      </div>
+      <span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-card" onclick="goTab('hongdae')">
+      <span class="menu-icon">🍽️</span>
+      <div>
+        <div class="menu-title"><span class="ja">弘大グルメ</span><span class="ko">홍대 맛집</span></div>
+        <div class="menu-sub"><span class="ja">レストラン・カフェ</span><span class="ko">음식점 · 카페</span></div>
+      </div>
+      <span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-card" onclick="goTab('beauty')">
+      <span class="menu-icon">💄</span>
+      <div>
+        <div class="menu-title"><span class="ja">弘大ビューティー</span><span class="ko">홍대 뷰티</span></div>
+        <div class="menu-sub"><span class="ja">無料体験・K-コスメ・ポップアップ</span><span class="ko">무료 체험 · K-코스메 · 팝업</span></div>
+      </div>
+      <span class="menu-arrow">›</span>
+    </div>
+    <div class="menu-card" onclick="goTab('goter')">
+      <span class="menu-icon">🥐</span>
+      <div>
+        <div class="menu-title"><span class="ja">高速ターミナル パン屋</span><span class="ko">고속터미널 빵집</span></div>
+        <div class="menu-sub"><span class="ja">ソウルNo.1パン激戦区</span><span class="ko">서울 No.1 빵 격전지</span></div>
+      </div>
+      <span class="menu-arrow">›</span>
+    </div>
+  </div><!-- /home-menu -->
+  <div style="padding:.6rem 1.5rem 1rem;text-align:center">
+    <p style="font-size:.74rem;color:#8a7060;line-height:1.6">
+      ※ 現在、店舗画像は仮のアイコンを使用しています。各店舗の公式提供画像に順次差し替え予定です。
+    </p>
+  </div>
+</div><!-- /sec-home -->
+<div class="section" id="sec-must">
+  <div class="inner-hd">
+    <button class="back-btn" onclick="goTab('home')">← <span class="ja">ホームへ</span><span class="ko">홈으로</span></button>
+    <div class="inner-title"><span class="ja">📋 必須情報</span><span class="ko">📋 필수 정보</span></div>
+    <div class="inner-sub"><span class="ja">緊急連絡先・お役立ちフレーズ・支払い案内</span><span class="ko">긴급 연락처 · 회화 · 결제 안내</span></div>
+  </div>
+  <div class="must-wrap">
+
+    <!-- 긴급전화 -->
+    <div class="phones">
+      <div class="phc urg">
+        <div class="phi">🚨</div>
+        <div class="phn"><span class="ja">警察（緊急）</span><span class="ko">경찰</span></div>
+        <div class="phnum">112</div>
+        <div class="phdesc"><span class="ja">犯罪・緊急通報</span><span class="ko">범죄·긴급 신고</span></div>
+        <a href="tel:112" class="phcall">📞 <span class="ja">電話</span><span class="ko">전화</span></a>
+      </div>
+      <div class="phc urg">
+        <div class="phi">🚑</div>
+        <div class="phn"><span class="ja">救急・消防</span><span class="ko">구급·소방</span></div>
+        <div class="phnum">119</div>
+        <div class="phdesc"><span class="ja">救急・火事</span><span class="ko">응급·화재</span></div>
+        <a href="tel:119" class="phcall">📞 <span class="ja">電話</span><span class="ko">전화</span></a>
+      </div>
+      <div class="phc">
+        <div class="phi">🌏</div>
+        <div class="phn"><span class="ja">観光通訳 日本語</span><span class="ko">관광통역</span></div>
+        <div class="phnum">1330</div>
+        <div class="phdesc"><span class="ja">日本語対応 24時間</span><span class="ko">일본어 24시간</span></div>
+        <a href="tel:1330" class="phcall">📞 <span class="ja">電話</span><span class="ko">전화</span></a>
+      </div>
+      <div class="phc">
+        <div class="phi">🏥</div>
+        <div class="phn"><span class="ja">医療相談</span><span class="ko">의료 상담</span></div>
+        <div class="phnum">129</div>
+        <div class="phdesc"><span class="ja">保健福祉部</span><span class="ko">보건복지부</span></div>
+        <a href="tel:129" class="phcall">📞 <span class="ja">電話</span><span class="ko">전화</span></a>
+      </div>
+      <div class="phc">
+        <div class="phi">🇯🇵</div>
+        <div class="phn"><span class="ja">在韓日本大使館</span><span class="ko">주한 일본 대사관</span></div>
+        <div class="phnum" style="font-size:1rem">02-2170-5200</div>
+        <div class="phdesc"><span class="ja">パスポート紛失など</span><span class="ko">여권 분실 등</span></div>
+        <a href="tel:0221705200" class="phcall">📞 <span class="ja">電話</span><span class="ko">전화</span></a>
+      </div>
+      <div class="phc">
+        <div class="phi">🚕</div>
+        <div class="phn"><span class="ja">タクシー忘れ物</span><span class="ko">택시 분실물</span></div>
+        <div class="phnum" style="font-size:1rem">02-6226-5000</div>
+        <div class="phdesc"><span class="ja">忘れ物センター</span><span class="ko">분실물 센터</span></div>
+        <a href="tel:0262265000" class="phcall">📞 <span class="ja">電話</span><span class="ko">전화</span></a>
+      </div>
+    </div>
+
+    <!-- 회화 -->
+    <div class="phrase-title"><span class="ja">💬 旅行フレーズ帳</span><span class="ko">💬 여행 문구집</span></div>
+    <div class="plist">
+
+      <div class="pc">
+        <div class="psit"><span class="ja">🍽️ 食事・注文</span><span class="ko">🍽️ 식사·주문</span></div>
+        <div class="prow"><div class="pkr">이거 주세요.</div><div class="pright"><div class="pja"><span class="ja">これをください。</span></div><div class="pread">いごじゅせよ</div></div></div>
+        <div class="prow"><div class="pkr">덜 맵게 해주세요.</div><div class="pright"><div class="pja"><span class="ja">辛さ控えめで。</span></div><div class="pread">とるめぷげへじゅせよ</div></div></div>
+        <div class="prow"><div class="pkr">계산해 주세요.</div><div class="pright"><div class="pja"><span class="ja">お会計お願いします。</span></div><div class="pread">けさねじゅせよ</div></div></div>
+        <div class="prow"><div class="pkr">포장해 주세요.</div><div class="pright"><div class="pja"><span class="ja">お持ち帰りで。</span></div><div class="pread">ぽじゃんへじゅせよ</div></div></div>
+      </div>
+
+      <div class="pc">
+        <div class="psit"><span class="ja">💄 ビューティー</span><span class="ko">💄 뷰티</span></div>
+        <div class="prow"><div class="pkr">이 색으로 주세요.</div><div class="pright"><div class="pja"><span class="ja">この色でください。</span></div><div class="pread">いちょぐろじゅせよ</div></div></div>
+        <div class="prow"><div class="pkr">테스트해 봐도 돼요?</div><div class="pright"><div class="pja"><span class="ja">試してもいいですか？</span></div><div class="pread">てすとぅへばどてよ</div></div></div>
+        <div class="prow"><div class="pkr">면세 영수증 주세요.</div><div class="pright"><div class="pja"><span class="ja">免税レシートをください。</span></div><div class="pread">みょんせよんすじゅんじゅせよ</div></div></div>
+      </div>
+
+      <div class="pc">
+        <div class="psit"><span class="ja">🛍️ ショッピング</span><span class="ko">🛍️ 쇼핑</span></div>
+        <div class="prow"><div class="pkr">얼마예요?</div><div class="pright"><div class="pja"><span class="ja">いくらですか？</span></div><div class="pread">おるまえよ</div></div></div>
+        <div class="prow"><div class="pkr">카드 되나요?</div><div class="pright"><div class="pja"><span class="ja">カード使えますか？</span></div><div class="pread">かどぅてぃなよ</div></div></div>
+        <div class="prow"><div class="pkr">봉투 주세요.</div><div class="pright"><div class="pja"><span class="ja">袋をください。</span></div><div class="pread">ぼんとぅじゅせよ</div></div></div>
+      </div>
+
+      <div class="pc">
+        <div class="psit"><span class="ja">🚻 トイレ・道案内</span><span class="ko">🚻 화장실·길 안내</span></div>
+        <div class="prow"><div class="pkr">화장실 어디예요?</div><div class="pright"><div class="pja"><span class="ja">トイレはどこですか？</span></div><div class="pread">ふぁじゃんしるおどぃえよ</div></div></div>
+        <div class="prow"><div class="pkr">여기서 걸어서 얼마나요?</div><div class="pright"><div class="pja"><span class="ja">ここから歩いてどのくらい？</span></div><div class="pread">よぎそころそおるまなよ</div></div></div>
+      </div>
+
+      <div class="pc">
+        <div class="psit"><span class="ja">🚨 緊急・困ったとき</span><span class="ko">🚨 긴급·곤란할 때</span></div>
+        <div class="prow"><div class="pkr">도와주세요!</div><div class="pright"><div class="pja"><span class="ja">助けてください！</span></div><div class="pread">とわじゅせよ</div></div></div>
+        <div class="prow"><div class="pkr">지갑을 잃어버렸어요.</div><div class="pright"><div class="pja"><span class="ja">財布をなくしました。</span></div><div class="pread">ちがぶるいろぼりょっそよ</div></div></div>
+        <div class="prow"><div class="pkr">알레르기가 있어요.</div><div class="pright"><div class="pja"><span class="ja">アレルギーがあります。</span></div><div class="pread">あるれるぎがいっそよ</div></div></div>
+        <div class="prow"><div class="pkr">일본어 할 수 있는 분?</div><div class="pright"><div class="pja"><span class="ja">日本語できる方いますか？</span></div><div class="pread">いるぼぬはるすいんぬんぶん</div></div></div>
+      </div>
+
+      <div class="pc">
+        <div class="psit"><span class="ja">🚕 タクシー</span><span class="ko">🚕 택시</span></div>
+        <div class="prow"><div class="pkr">여기로 가주세요.</div><div class="pright"><div class="pja"><span class="ja">ここへ行ってください。</span></div><div class="pread">よぎろかじゅせよ</div></div></div>
+        <div class="prow"><div class="pkr">여기서 세워주세요.</div><div class="pright"><div class="pja"><span class="ja">ここで止めてください。</span></div><div class="pread">よぎそせうじゅせよ</div></div></div>
+        <div style="margin-top:.45rem;padding-top:.45rem;border-top:1px solid var(--border);font-size:1.08rem;color:#2c1e12">
+          <span class="ja">💡 カカオタクシーなら目的地を入力するだけでOK。言葉不要。</span>
+          <span class="ko">💡 카카오택시는 목적지 입력만으로 OK. 말 필요 없음.</span>
+        </div>
+      </div>
+
+    </div><!-- /plist -->
+
+    <div class="papago-banner">
+      <div class="papago-text">
+        <div class="pt-title"><span class="ja">🌐 もっと訳したいときは</span><span class="ko">🌐 더 번역이 필요할 때</span></div>
+        <div class="pt-sub"><span class="ja">パパゴで日本語↔韓国語をすぐ翻訳</span><span class="ko">파파고로 일본어↔한국어 바로 번역</span></div>
+      </div>
+      <a class="papago-btn" href="https://papago.naver.com" target="_blank">💬 <span class="ja">パパゴへ</span><span class="ko">파파고로</span></a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ▶ 홍대 -->
+<div class="section" id="sec-hongdae">
+  <div class="inner-hd">
+    <button class="back-btn" onclick="goTab('home')">← <span class="ja">ホームへ</span><span class="ko">홈으로</span></button>
+    <div class="inner-title"><span class="ja">🍽️ 弘大グルメ</span><span class="ko">🍽️ 홍대 맛집</span></div>
+    <div class="inner-sub"><span class="ja">レストラン・カフェ・ベーカリー 全30軒</span><span class="ko">음식점 · 카페 · 빵집 총 30곳</span></div>
+  </div>
+  <div class="chips" id="hchips">
+    <button class="chip active" onclick="hfilter('all',this)"><span class="ja">すべて</span><span class="ko">전체</span></button>
+    <button class="chip" onclick="hfilter('food',this)"><span class="ja">レストラン</span><span class="ko">음식점</span></button>
+    <button class="chip" onclick="hfilter('cafe',this)"><span class="ja">カフェ</span><span class="ko">카페</span></button>
+    <button class="chip" onclick="hfilter('bakery',this)"><span class="ja">ベーカリー</span><span class="ko">빵집</span></button>
+  </div>
+
+  <!-- 음식점 -->
+  <div class="subgroup hd-sub food-sub"><span class="ja">🍝 イタリアン & ブランチ</span><span class="ko">🍝 이탈리안 & 브런치</span></div>
+  <div class="cards" id="hcards-italian">
+    <div class="card" data-hcat="food" onclick="openModal('아날로그가든')">
+      <div class="card-thumb t-italian"><span class="th-em">🥑</span><span class="th-lbl"><span class="ja">ブランチ</span><span class="ko">브런치</span></span><span class="cbadge cb-ribbon"><span class="ja">ブルーリボン</span><span class="ko">블루리본</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">アナログガーデン</span><span class="ko">아날로그가든</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ブランチ</span><span class="ko">홍대 / 브런치</span></div>
+        <div class="card-copy"><span class="ja">アボカド&エッグが絶品。早朝から開く穴場ブランチ。</span><span class="ko">아보카도 에그 브런치. 이른 아침부터 여는 숨은 명소.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">エッグ＆アボカド</span><span class="ko">에그&아보카도</span></span><span class="mpill"><span class="ja">ファラフェルラップ</span><span class="ko">팔라펠 랩</span></span></div>
+        <div class="card-ft"><span class="price">₩15,000〜22,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('아날로그가든')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('윤씨밀방')">
+      <div class="card-thumb t-italian"><span class="th-em">🍖</span><span class="th-lbl"><span class="ja">ハンバーグ</span><span class="ko">함박스테이크</span></span><span class="cbadge cb-hot"><span class="ja">15年老舗</span><span class="ko">15년 전통</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ユンシミルバン</span><span class="ko">윤씨밀방</span></div>
+        <div class="card-addr"><span class="ja">弘大·上水 / 洋食</span><span class="ko">홍대·상수 / 양식</span></div>
+        <div class="card-copy"><span class="ja">白飯チャンピオン出演の15年老舗。女性に大人気のハンバーグ定食。</span><span class="ko">백종원 출연 15년 노포. 여성에게 인기 만점 함박스테이크.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">ハンバーグ定食</span><span class="ko">윤씨함박정식</span></span><span class="mpill"><span class="ja">トゥームバパスタ</span><span class="ko">투움바파스타</span></span></div>
+        <div class="card-ft"><span class="price">₩12,000〜18,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('윤씨밀방')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('스파카나폴리')">
+      <div class="card-thumb t-italian"><span class="th-em">🍕</span><span class="th-lbl"><span class="ja">ナポリピザ</span><span class="ko">나폴리피자</span></span><span class="cbadge cb-ribbon">World Top57</span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">スパッカナポリ</span><span class="ko">스파카나폴리</span></div>
+        <div class="card-addr"><span class="ja">合井 / ナポリピザ</span><span class="ko">합정 / 나폴리피자</span></div>
+        <div class="card-copy"><span class="ja">世界50ベストピザ57位。2015年ナポリ大会チャンピオン。</span><span class="ko">세계 50대 피자 57위. 2015 나폴리 대회 챔피언.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">マルゲリータブファラ</span><span class="ko">마르게리타 부팔라</span></span><span class="mpill"><span class="ja">マリナーラ</span><span class="ko">마리나라</span></span></div>
+        <div class="card-ft"><span class="price">₩18,000〜28,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('스파카나폴리')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('비스트로수퍼')">
+      <div class="card-thumb t-italian"><span class="th-em">🥗</span><span class="th-lbl"><span class="ja">ビストロ</span><span class="ko">비스트로</span></span><span class="cbadge cb-old"><span class="ja">安定感</span><span class="ko">안정</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ビストロ スパー</span><span class="ko">비스트로 수퍼</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ビストロ</span><span class="ko">홍대 / 비스트로</span></div>
+        <div class="card-copy"><span class="ja">落ち着いた照明の本格ビストロ。接待にも使える安定感。</span><span class="ko">조용한 조명의 본격 비스트로. 접대에 쓰기 좋은 안정감.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">パスタ</span><span class="ko">파스타</span></span><span class="mpill"><span class="ja">ステーキ</span><span class="ko">스테이크</span></span></div>
+        <div class="card-ft"><span class="price">₩16,000〜28,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('비스트로수퍼')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('테이블포포')">
+      <div class="card-thumb t-italian"><span class="th-em">🥩</span><span class="th-lbl"><span class="ja">ブランチ</span><span class="ko">브런치</span></span><span class="cbadge cb-hot"><span class="ja">感性</span><span class="ko">감성</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">テーブルフォーフォー</span><span class="ko">테이블포포</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ブランチ</span><span class="ko">홍대 / 브런치</span></div>
+        <div class="card-copy"><span class="ja">こだわり食材のブランチ。洗練されたインテリアで女子会向き。</span><span class="ko">식재료에 공들인 브런치. 세련된 인테리어로 여자 모임에 딱.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">ブランチプレート</span><span class="ko">브런치 플레이트</span></span><span class="mpill"><span class="ja">エッグベネディクト</span><span class="ko">에그베네딕트</span></span></div>
+        <div class="card-ft"><span class="price">₩15,000〜24,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('테이블포포')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subgroup hd-sub food-sub"><span class="ja">🍚 韓国料理（あっさり系）</span><span class="ko">🍚 한식 (정갈 / 자극 적음)</span></div>
+  <div class="cards" id="hcards-korean">
+    <div class="card" data-hcat="food" onclick="openModal('소이연남')">
+      <div class="card-thumb t-thai"><span class="th-em">🍜</span><span class="th-lbl"><span class="ja">ライスヌードル</span><span class="ko">쌀국수</span></span><span class="cbadge cb-hot"><span class="ja">延南ホットプレイス</span><span class="ko">연남핫플</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ソイ 延南</span><span class="ko">소이연남</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / タイ麺</span><span class="ko">연남동 / 태국 면</span></div>
+        <div class="card-copy"><span class="ja">本格タイ米麺。パクチー抜きも可。日本人にも食べやすい。</span><span class="ko">본격 태국 쌀국수. 고수 빼기 가능. 외국인 먹기 편한 맛.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">タイ風ライス麺</span><span class="ko">태국식 쌀국수</span></span><span class="mpill"><span class="ja">トムヤム麺</span><span class="ko">똠얌국수</span></span></div>
+        <div class="card-ft"><span class="price">₩11,000〜16,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('소이연남')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('합정옥')">
+      <div class="card-thumb t-korean"><span class="th-em">🍲</span><span class="th-lbl"><span class="ja">コムタン</span><span class="ko">곰탕</span></span><span class="cbadge cb-ribbon"><span class="ja">ミシュランビブ</span><span class="ko">미슐랭 빕</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ハプジョンオク</span><span class="ko">합정옥</span></div>
+        <div class="card-addr"><span class="ja">合井 / コムタン</span><span class="ko">합정 / 곰탕</span></div>
+        <div class="card-copy"><span class="ja">ミシュランビブグルマン連続選出。澄んだ牛骨スープが体に染みる。</span><span class="ko">미슐랭 빕구르망 연속 선정. 맑은 한우 사골 국물이 일품.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">ソウル牛骨スープ</span><span class="ko">양지곰탕</span></span><span class="mpill"><span class="ja">スユク</span><span class="ko">수육</span></span></div>
+        <div class="card-ft"><span class="price">₩12,000〜18,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('합정옥')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('도식화')">
+      <div class="card-thumb t-korean"><span class="th-em">🍱</span><span class="th-lbl"><span class="ja">丁寧な韓食</span><span class="ko">정갈 한식</span></span><span class="cbadge cb-hot"><span class="ja">外国人◎</span><span class="ko">외국인 OK</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ドシクファ</span><span class="ko">도식화</span></div>
+        <div class="card-addr"><span class="ja">弘大 / 韓国料理</span><span class="ko">홍대 / 한식</span></div>
+        <div class="card-copy"><span class="ja">丁寧なプレーティングの韓国定食。外国人観光客にも好評。</span><span class="ko">정갈한 플레이팅의 한식 정식. 외국인에게도 호평.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">韓食コース</span><span class="ko">한식 코스</span></span><span class="mpill"><span class="ja">伝統定食</span><span class="ko">전통 반상</span></span></div>
+        <div class="card-ft"><span class="price">₩13,000〜22,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('도식화')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('오모테')">
+      <div class="card-thumb t-korean"><span class="th-em">🥘</span><span class="th-lbl"><span class="ja">韓食フュージョン</span><span class="ko">한식퓨전</span></span><span class="cbadge cb-hot"><span class="ja">あっさり</span><span class="ko">담백</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">オモテ</span><span class="ko">오모테</span></div>
+        <div class="card-addr"><span class="ja">弘大 / 韓食フュージョン</span><span class="ko">홍대 / 한식퓨전</span></div>
+        <div class="card-copy"><span class="ja">和韓フュージョン感覚。あっさりした味付けで女性に人気。</span><span class="ko">한식 퓨전 스타일. 담백한 맛으로 여성에게 인기.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">フュージョン韓食</span><span class="ko">퓨전 한식</span></span><span class="mpill"><span class="ja">季節料理</span><span class="ko">계절 요리</span></span></div>
+        <div class="card-ft"><span class="price">₩14,000〜22,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('오모테')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="food" onclick="openModal('정육면체')">
+      <div class="card-thumb t-korean"><span class="th-em">🍝</span><span class="th-lbl"><span class="ja">中華麺</span><span class="ko">중식면</span></span><span class="cbadge cb-ribbon"><span class="ja">ミシュラン</span><span class="ko">미슐랭</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">チョンユクミョンチェ</span><span class="ko">정육면체</span></div>
+        <div class="card-addr"><span class="ja">弘大 / 中華麺</span><span class="ko">홍대 / 중식면</span></div>
+        <div class="card-copy"><span class="ja">ミシュランガイド掲載。こだわりのスープが光るタンタン麺の名店。</span><span class="ko">미슐랭 가이드 등재. 정성 들인 육수가 빛나는 탄탄면 명점.</span></div>
+        <div class="menu-pills"><span class="mpill"><span class="ja">ゴマ砕き混ぜ麺</span><span class="ko">깨부수면</span></span><span class="mpill"><span class="ja">牛肉紅湯麺</span><span class="ko">우육홍탕</span></span></div>
+        <div class="card-ft"><span class="price">₩12,000〜18,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('정육면체')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 카페 -->
+  <div class="subgroup hd-sub cafe-sub" style="display:none"><span class="ja">💬 雰囲気・対話向け</span><span class="ko">💬 분위기·대화용</span></div>
+  <div class="cards" id="hcards-cafe1">
+    <div class="card" data-hcat="cafe" onclick="openModal('앤트러사이트')">
+      <div class="card-thumb t-cafe"><span class="th-em">⚗️</span><span class="th-lbl"><span class="ja">スペシャルティ</span><span class="ko">스페셜티</span></span><span class="cbadge cb-ribbon"><span class="ja">ブルーリボン</span><span class="ko">블루리본</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">アンスラサイト ソギョ</span><span class="ko">앤트러사이트 서교</span></div>
+        <div class="card-addr"><span class="ja">서교동 / スペシャルティ</span><span class="ko">서교동 / 스페셜티</span></div>
+        <div class="card-copy"><span class="ja">旧工場をリノベ。ブルーリボン掲載の落ち着いたコーヒー空間。</span><span class="ko">구 공장 개조. 블루리본 수록 스페셜티 카페.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">シグネチャードリップ</span><span class="ko">시그니처 드립</span></span><span class="mpill cafe"><span class="ja">フラットホワイト</span><span class="ko">플랫화이트</span></span></div>
+        <div class="card-ft"><span class="price">₩6,000〜10,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('앤트러사이트')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('카페레이어드')">
+      <div class="card-thumb t-cafe"><span class="th-em">🎂</span><span class="th-lbl"><span class="ja">ケーキカフェ</span><span class="ko">케이크카페</span></span><span class="cbadge cb-hot"><span class="ja">外国人人気</span><span class="ko">외국인인기</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">カフェ レイヤード 延南</span><span class="ko">카페 레이어드 연남</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / ケーキカフェ</span><span class="ko">연남동 / 케이크카페</span></div>
+        <div class="card-copy"><span class="ja">ふわふわレイヤードケーキが有名。外国人観光客にも人気の映えカフェ。</span><span class="ko">폭신한 레이어드 케이크로 유명. 외국인에게 인기.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">レイヤードケーキ</span><span class="ko">레이어드 케이크</span></span><span class="mpill cafe"><span class="ja">クリームラテ</span><span class="ko">크림라테</span></span></div>
+        <div class="card-ft"><span class="price">₩7,000〜13,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('카페레이어드')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('어반플랜트')">
+      <div class="card-thumb t-cafe"><span class="th-em">🌱</span><span class="th-lbl"><span class="ja">プランツカフェ</span><span class="ko">플랜트카페</span></span><span class="cbadge cb-old"><span class="ja">静か</span><span class="ko">조용함</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">アーバンプラント 延南</span><span class="ko">어반플랜트 연남</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / プランツカフェ</span><span class="ko">연남동 / 플랜트카페</span></div>
+        <div class="card-copy"><span class="ja">植物に囲まれた静かな空間。座席ゆったりで会話しやすい。</span><span class="ko">식물로 둘러싼 조용한 공간. 좌석 여유롭고 대화하기 편함.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">アメリカーノ</span><span class="ko">아메리카노</span></span><span class="mpill cafe"><span class="ja">プランツウォーター</span><span class="ko">식물워터</span></span></div>
+        <div class="card-ft"><span class="price">₩6,500〜11,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('어반플랜트')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('커피랩')">
+      <div class="card-thumb t-cafe"><span class="th-em">☕</span><span class="th-lbl"><span class="ja">スペシャルティ</span><span class="ko">스페셜티</span></span><span class="cbadge cb-old"><span class="ja">静か</span><span class="ko">조용함</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">コーヒーラボ</span><span class="ko">커피랩</span></div>
+        <div class="card-addr"><span class="ja">弘大 / スペシャルティ</span><span class="ko">홍대 / 스페셜티</span></div>
+        <div class="card-copy"><span class="ja">コーヒーの質が高く静かな空間。話しながらゆっくりできる。</span><span class="ko">커피 퀄리티 높고 조용한 분위기. 대화하기 좋음.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">ハンドドリップ</span><span class="ko">핸드드립</span></span><span class="mpill cafe"><span class="ja">シングルオリジン</span><span class="ko">싱글오리진</span></span></div>
+        <div class="card-ft"><span class="price">₩6,000〜10,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('커피랩')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('카페콤마')">
+      <div class="card-thumb t-cafe"><span class="th-em">🪴</span><span class="th-lbl"><span class="ja">雰囲気カフェ</span><span class="ko">분위기카페</span></span><span class="cbadge cb-old"><span class="ja">安定感</span><span class="ko">안정</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">カフェ コンマ</span><span class="ko">카페 콤마</span></div>
+        <div class="card-addr"><span class="ja">弘大 / カフェ</span><span class="ko">홍대 / 카페</span></div>
+        <div class="card-copy"><span class="ja">温かいインテリアと居心地の良さ。長居できる穏やかな空間。</span><span class="ko">따뜻한 인테리어와 편안한 분위기. 오래 머물기 좋음.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">シグネチャーラテ</span><span class="ko">시그니처 라테</span></span><span class="mpill cafe"><span class="ja">ケーキ</span><span class="ko">케이크</span></span></div>
+        <div class="card-ft"><span class="price">₩6,000〜11,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('카페콤마')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subgroup hd-sub cafe-sub" style="display:none"><span class="ja">📸 インテリア・感性カフェ</span><span class="ko">📸 감성 / 인테리어 강한 곳</span></div>
+  <div class="cards" id="hcards-cafe2">
+    <div class="card" data-hcat="cafe" onclick="openModal('카페공명')">
+      <div class="card-thumb t-cafe"><span class="th-em">📚</span><span class="th-lbl"><span class="ja">ブックカフェ</span><span class="ko">북카페</span></span><span class="cbadge cb-ribbon"><span class="ja">ブルーリボン</span><span class="ko">블루리본</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">カフェ コンミョン</span><span class="ko">카페 공명</span></div>
+        <div class="card-addr"><span class="ja">弘大·延南 / ブックカフェ</span><span class="ko">홍대·연남 / 북카페</span></div>
+        <div class="card-copy"><span class="ja">ブルーリボン掲載。本棚に囲まれた独自の世界観が人気。</span><span class="ko">블루리본 수록. 책장으로 꾸민 독특한 세계관.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">コンミョンラテ</span><span class="ko">공명 라테</span></span><span class="mpill cafe"><span class="ja">スペシャルティ</span><span class="ko">스페셜티</span></span></div>
+        <div class="card-ft"><span class="price">₩6,500〜10,500</span><button class="btn-detail" onclick="event.stopPropagation();openModal('카페공명')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('프릳츠')">
+      <div class="card-thumb t-cafe"><span class="th-em">🎵</span><span class="th-lbl"><span class="ja">フリッツ</span><span class="ko">프릳츠</span></span><span class="cbadge cb-hot"><span class="ja">有名</span><span class="ko">유명</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">フリッツ</span><span class="ko">프릳츠</span></div>
+        <div class="card-addr"><span class="ja">弘大近 / スペシャルティ</span><span class="ko">홍대 근처 / 스페셜티</span></div>
+        <div class="card-copy"><span class="ja">빵과 커피に真剣な有名店。焼きたてパンが並ぶ朝の訪問がおすすめ。</span><span class="ko">빵과 커피에 진심인 유명 카페. 갓 구운 빵이 아침의 하이라이트.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">クロワッサン</span><span class="ko">크루아상</span></span><span class="mpill cafe"><span class="ja">ドリップコーヒー</span><span class="ko">드립커피</span></span></div>
+        <div class="card-ft"><span class="price">₩5,500〜12,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('프릳츠')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('테일러커피')">
+      <div class="card-thumb t-cafe"><span class="th-em">✂️</span><span class="th-lbl"><span class="ja">テイラーコーヒー</span><span class="ko">테일러커피</span></span><span class="cbadge cb-ribbon"><span class="ja">ブルーリボン</span><span class="ko">블루리본</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">テイラーコーヒー 延南</span><span class="ko">테일러커피 연남</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / スペシャルティ</span><span class="ko">연남동 / 스페셜티</span></div>
+        <div class="card-copy"><span class="ja">ブルーリボン連続掲載。2022年韓国バリスタ大会優勝者のカフェ。</span><span class="ko">블루리본 연속 수록. 2022 한국 바리스타 대회 우승자의 카페.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">シグネチャーブレンド</span><span class="ko">시그니처 블렌드</span></span><span class="mpill cafe"><span class="ja">フラットホワイト</span><span class="ko">플랫화이트</span></span></div>
+        <div class="card-ft"><span class="price">₩6,500〜11,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('테일러커피')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('연남살롱')">
+      <div class="card-thumb t-cafe"><span class="th-em">🧁</span><span class="th-lbl"><span class="ja">デザートカフェ</span><span class="ko">디저트카페</span></span><span class="cbadge cb-old"><span class="ja">ローカル名所</span><span class="ko">로컬명소</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">延南サロン</span><span class="ko">연남살롱</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / デザートカフェ</span><span class="ko">연남동 / 디저트카페</span></div>
+        <div class="card-copy"><span class="ja">季節ごとに変わる手作りデザート。地元に長く愛されるロングラン店。</span><span class="ko">계절마다 바뀌는 수제 디저트. 로컬이 오래 사랑하는 곳.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">シーズンケーキ</span><span class="ko">시즌 케이크</span></span><span class="mpill cafe"><span class="ja">クリームラテ</span><span class="ko">크림라테</span></span></div>
+        <div class="card-ft"><span class="price">₩7,000〜13,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('연남살롱')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="cafe" onclick="openModal('디저트39')">
+      <div class="card-thumb t-cafe"><span class="th-em">🍮</span><span class="th-lbl"><span class="ja">デザート</span><span class="ko">디저트</span></span><span class="cbadge cb-old"><span class="ja">定番</span><span class="ko">무난</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">デザート39</span><span class="ko">디저트39</span></div>
+        <div class="card-addr"><span class="ja">弘大 / デザートカフェ</span><span class="ko">홍대 / 디저트카페</span></div>
+        <div class="card-copy"><span class="ja">入りやすくて無難。初めての韓国カフェ体験にも最適。</span><span class="ko">무난하고 입장하기 편한 디저트카페. 처음 한국 카페에 딱.</span></div>
+        <div class="menu-pills"><span class="mpill cafe"><span class="ja">プレミアムデザート</span><span class="ko">프리미엄 디저트</span></span><span class="mpill cafe"><span class="ja">ラテ</span><span class="ko">라테</span></span></div>
+        <div class="card-ft"><span class="price">₩7,000〜12,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('디저트39')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 빵집 -->
+  <div class="subgroup hd-sub bakery-sub" style="display:none"><span class="ja">🥐 弘大·延南 ベーカリー</span><span class="ko">🥐 홍대·연남 빵집</span></div>
+  <div class="cards" id="hcards-bakery">
+    <div class="card" data-hcat="bakery" onclick="openModal('코코로카라')">
+      <div class="card-thumb t-bakery"><span class="th-em">🍮</span><span class="th-lbl"><span class="ja">ブレッドプディング</span><span class="ko">브레드푸딩</span></span><span class="cbadge cb-sns"><span class="ja">SNS話題</span><span class="ko">SNS화제</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ここから</span><span class="ko">코코로카라</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / ブレッドプディング</span><span class="ko">연남동 / 브레드푸딩</span></div>
+        <div class="card-copy"><span class="ja">SNSで話題のブレッドプディング専門店。季節限定フレーバー豊富。</span><span class="ko">SNS 화제 브레드푸딩 전문점. 시즌 한정 플레이버 다양.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">ブレッドプディング</span><span class="ko">브레드푸딩</span></span><span class="mpill bakery"><span class="ja">シーズン限定</span><span class="ko">시즌限定</span></span></div>
+        <div class="card-ft"><span class="price">₩6,000〜9,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('코코로카라')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('연남제빵소')">
+      <div class="card-thumb t-bakery"><span class="th-em">🍞</span><span class="th-lbl"><span class="ja">天然発酵</span><span class="ko">천연발효</span></span><span class="cbadge cb-old"><span class="ja">ローカル</span><span class="ko">로컬</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">延南製パン所</span><span class="ko">연남제빵소</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / 天然酵母</span><span class="ko">연남동 / 천연발효</span></div>
+        <div class="card-copy"><span class="ja">天然酵母パン専門店。地元客が通い続けるロングラン店。</span><span class="ko">천연발효빵 전문점. 로컬이 꾸준히 찾는 롱런 가게.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">サワードウ</span><span class="ko">사워도우</span></span><span class="mpill bakery"><span class="ja">カンパーニュ</span><span class="ko">캄파뉴</span></span></div>
+        <div class="card-ft"><span class="price">₩4,000〜9,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('연남제빵소')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('베어스덴')">
+      <div class="card-thumb t-bakery"><span class="th-em">🥖</span><span class="th-lbl"><span class="ja">ベーカリー</span><span class="ko">베이커리</span></span><span class="cbadge cb-hot"><span class="ja">人気</span><span class="ko">인기</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ベアーズデン ベーカリー</span><span class="ko">베어스덴 베이커리</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ベーカリー</span><span class="ko">홍대 / 베이커리</span></div>
+        <div class="card-copy"><span class="ja">質の高いパンとコーヒー。朝の来店がおすすめの人気店。</span><span class="ko">퀄리티 높은 빵과 커피. 아침 방문을 추천하는 인기 빵집.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">クロワッサン</span><span class="ko">크루아상</span></span><span class="mpill bakery"><span class="ja">食パン</span><span class="ko">식빵</span></span></div>
+        <div class="card-ft"><span class="price">₩4,500〜9,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('베어스덴')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('포프브레드')">
+      <div class="card-thumb t-bakery"><span class="th-em">🫓</span><span class="th-lbl"><span class="ja">感性ベーカリー</span><span class="ko">감성빵집</span></span><span class="cbadge cb-hot"><span class="ja">感性</span><span class="ko">감성</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ポップブレッド</span><span class="ko">포프브레드</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ベーカリー</span><span class="ko">홍대 / 베이커리</span></div>
+        <div class="card-copy"><span class="ja">センスある빵집。インテリアも素敵で写真映えする。</span><span class="ko">센스 있는 빵집. 인테리어도 예쁘고 사진도 잘 나옴.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">シグネチャーパン</span><span class="ko">시그니처 빵</span></span><span class="mpill bakery"><span class="ja">ガーリックブレッド</span><span class="ko">마늘빵</span></span></div>
+        <div class="card-ft"><span class="price">₩4,000〜8,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('포프브레드')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('뉴욕베이글')">
+      <div class="card-thumb t-bakery"><span class="th-em">🥯</span><span class="th-lbl"><span class="ja">ベーグル</span><span class="ko">베이글</span></span><span class="cbadge cb-hot"><span class="ja">人気</span><span class="ko">인기</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">NYベーグルアベニュー</span><span class="ko">뉴욕베이글애비뉴</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ベーグル</span><span class="ko">홍대 / 베이글</span></div>
+        <div class="card-copy"><span class="ja">NYスタイルのもっちりベーグル。フィリングの種類が豊富。</span><span class="ko">뉴욕 스타일 쫀쫀한 베이글. 필링 종류가 다양.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">あんバターベーグル</span><span class="ko">앙버터 베이글</span></span><span class="mpill bakery"><span class="ja">クリームチーズ</span><span class="ko">크림치즈</span></span></div>
+        <div class="card-ft"><span class="price">₩5,000〜8,500</span><button class="btn-detail" onclick="event.stopPropagation();openModal('뉴욕베이글')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('문식빵')">
+      <div class="card-thumb t-bakery"><span class="th-em">🍞</span><span class="th-lbl"><span class="ja">食パン専門</span><span class="ko">식빵전문</span></span><span class="cbadge cb-old"><span class="ja">ローカル</span><span class="ko">로컬</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ムンシクパン</span><span class="ko">문식빵</span></div>
+        <div class="card-addr"><span class="ja">延南洞 / 食パン専門</span><span class="ko">연남동 / 식빵 전문</span></div>
+        <div class="card-copy"><span class="ja">素材にこだわった食パン専門店。シンプルなのに美味しいが詰まっている。</span><span class="ko">정성스러운 식빵 전문점. 단순하지만 재료의 좋음이 빛남.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">生食パン</span><span class="ko">생식빵</span></span><span class="mpill bakery"><span class="ja">バター食パン</span><span class="ko">버터식빵</span></span></div>
+        <div class="card-ft"><span class="price">₩5,000〜12,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('문식빵')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('아오이토리')">
+      <div class="card-thumb t-bakery"><span class="th-em">🐦</span><span class="th-lbl"><span class="ja">ブルーリボン</span><span class="ko">블루리본</span></span><span class="cbadge cb-ribbon"><span class="ja">日本人向き</span><span class="ko">일본인 입맛</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">青い鳥</span><span class="ko">아오이토리</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ベーカリーカフェ</span><span class="ko">홍대 / 베이커리카페</span></div>
+        <div class="card-copy"><span class="ja">ブルーリボン掲載。塩気少なめで日本人の口に合いやすい青い鳥の名店。</span><span class="ko">블루리본 수록. 간 세지 않아 일본인 입맛에 잘 맞는 빵집.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">シオパン</span><span class="ko">시오빵</span></span><span class="mpill bakery"><span class="ja">クリームチーズベーグル</span><span class="ko">크림치즈베이글</span></span></div>
+        <div class="card-ft"><span class="price">₩4,500〜9,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('아오이토리')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('공릉빵공장')">
+      <div class="card-thumb t-bakery"><span class="th-em">🏭</span><span class="th-lbl"><span class="ja">パン工場</span><span class="ko">빵공장</span></span><span class="cbadge cb-old"><span class="ja">ローカル</span><span class="ko">로컬</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">コンヌン パン工場</span><span class="ko">공릉빵공장</span></div>
+        <div class="card-addr"><span class="ja">弘大近 / ベーカリー</span><span class="ko">홍대 근처 / 베이커리</span></div>
+        <div class="card-copy"><span class="ja">職人こだわりのパン工場。毎日焼きたてが並ぶロングラン店。</span><span class="ko">장인 기질의 빵 공장. 매일 갓 구운 빵이 진열되는 롱런 가게.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">焼きたて食パン</span><span class="ko">갓 구운 식빵</span></span><span class="mpill bakery"><span class="ja">あんパン</span><span class="ko">단팥빵</span></span></div>
+        <div class="card-ft"><span class="price">₩3,500〜7,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('공릉빵공장')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('비엔누아즈리리에')">
+      <div class="card-thumb t-bakery"><span class="th-em">🥐</span><span class="th-lbl"><span class="ja">ヴィエノワズリー</span><span class="ko">비에누와즈리</span></span><span class="cbadge cb-hot"><span class="ja">高級</span><span class="ko">고급</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ヴィエノワズリー リエ</span><span class="ko">비엔누아즈리 리에</span></div>
+        <div class="card-addr"><span class="ja">弘大 / ヴィエノワズリー</span><span class="ko">홍대 / 비엔누아즈리</span></div>
+        <div class="card-copy"><span class="ja">本格フランス式ヴィエノワズリー。美しいバター層のクロワッサンが評判。</span><span class="ko">본격 프랑스식 비엔누아즈리. 아름다운 버터 층 크루아상으로 유명.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">クロワッサン</span><span class="ko">크루아상</span></span><span class="mpill bakery"><span class="ja">パンオショコラ</span><span class="ko">뺑오쇼콜라</span></span></div>
+        <div class="card-ft"><span class="price">₩5,000〜10,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('비엔누아즈리리에')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" data-hcat="bakery" onclick="openModal('빵나무')">
+      <div class="card-thumb t-bakery"><span class="th-em">🌳</span><span class="th-lbl"><span class="ja">街のパン屋</span><span class="ko">동네빵집</span></span><span class="cbadge cb-old"><span class="ja">ローカル</span><span class="ko">로컬</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">パンの木</span><span class="ko">빵나무</span></div>
+        <div class="card-addr"><span class="ja">弘大 / 街のパン屋</span><span class="ko">홍대 / 동네 빵집</span></div>
+        <div class="card-copy"><span class="ja">地元で長く愛されるローカルベーカリー。素朴で懐かしい味わい。</span><span class="ko">로컬이 오래 사랑한 동네 빵집. 소박하고 정겨운 맛.</span></div>
+        <div class="menu-pills"><span class="mpill bakery"><span class="ja">そぼろパン</span><span class="ko">소보루</span></span><span class="mpill bakery"><span class="ja">クリームパン</span><span class="ko">크림빵</span></span></div>
+        <div class="card-ft"><span class="price">₩3,000〜6,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('빵나무')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ▶ 고터 -->
+<div class="section" id="sec-goter">
+  <div class="inner-hd">
+    <button class="back-btn" onclick="goTab('home')">← <span class="ja">ホームへ</span><span class="ko">홈으로</span></button>
+    <div class="inner-title"><span class="ja">🥐 高速ターミナル パン屋</span><span class="ko">🥐 고속터미널 빵집</span></div>
+    <div class="inner-sub"><span class="ja">ソウルNo.1パン激戦区 全10軒</span><span class="ko">서울 No.1 빵 격전지 총 10곳</span></div>
+  </div>
+  <div class="goter-info">
+    <strong>📍 <span class="ja">地下鉄3・7・9号線「高速ターミナル」直結</span><span class="ko">지하철 3·7·9호선 고속터미널역 직결</span></strong><br>
+    <span style="font-size:1rem;color:#4a3000">
+      <span class="ja">セントラルシティ・新世界江南スイートパークに集結。人気店は午前中に売り切れる場合あり。早めの来店がおすすめ。</span>
+      <span class="ko">센트럴시티·신세계강남 스위트파크에 집결. 인기 가게는 오전 중 품절될 수 있어요. 일찍 방문 추천.</span>
+    </span>
+  </div>
+  <div class="cards">
+    <div class="card" onclick="openModal('베통')">
+      <div class="card-thumb t-goter"><span class="th-em">🧂</span><span class="th-lbl"><span class="ja">塩パン</span><span class="ko">소금빵</span></span><span class="cbadge cb-hot"><span class="ja">ソウル1〜2位</span><span class="ko">서울 1~2위</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ベトン BETON</span><span class="ko">베통 BETON</span></div>
+        <div class="card-addr"><span class="ja">新世界江南 / 塩パン</span><span class="ko">신세계강남 / 소금빵</span></div>
+        <div class="card-copy"><span class="ja">ダイニングコード★4.7。ソウルのパン屋1〜2位。バターが溶け出す塩パンが代名詞。</span><span class="ko">다이닝코드 ★4.7. 서울 빵집 1~2위. 버터 녹아나는 소금빵이 대명사.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">塩パン</span><span class="ko">소금빵</span></span><span class="mpill goter"><span class="ja">クリームチーズあんパン</span><span class="ko">크림치즈 단팥빵</span></span></div>
+        <div class="card-ft"><span class="price">₩3,200〜5,500</span><button class="btn-detail" onclick="event.stopPropagation();openModal('베통')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('비파티세리')">
+      <div class="card-thumb t-goter"><span class="th-em">🥧</span><span class="th-lbl"><span class="ja">パティスリー</span><span class="ko">파티세리</span></span><span class="cbadge cb-ribbon"><span class="ja">SF3大ベーカリー</span><span class="ko">SF3대빵집</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ビ・パティスリー</span><span class="ko">비파티세리</span></div>
+        <div class="card-addr"><span class="ja">セントラルシティ / パティスリー</span><span class="ko">센트럴시티 / 파티세리</span></div>
+        <div class="card-copy"><span class="ja">SF3大ベーカリー。ジェームズ・ビアード賞受賞。クイニーアマンは要事前確認。</span><span class="ko">SF 3대 베이커리. 제임스 비어드 어워드 수상. 퀸아망은 사전 확인 필요.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">クイニーアマン</span><span class="ko">퀸아망</span></span><span class="mpill goter"><span class="ja">クロワッサン</span><span class="ko">크루아상</span></span></div>
+        <div class="card-ft"><span class="price">₩6,000〜12,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('비파티세리')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('장블랑제리')">
+      <div class="card-thumb t-goter"><span class="th-em">🥖</span><span class="th-lbl"><span class="ja">ブルーリボン</span><span class="ko">블루리본</span></span><span class="cbadge cb-ribbon"><span class="ja">ソウル3大パン屋</span><span class="ko">서울3대빵집</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ジャン ブーランジェリー</span><span class="ko">장블랑제리</span></div>
+        <div class="card-addr"><span class="ja">セントラルシティ / ブランジェリー</span><span class="ko">센트럴시티 / 블랑제리</span></div>
+        <div class="card-copy"><span class="ja">ブルーリボン連続掲載。ソウル三大パン屋と呼ばれるロングラン名店。</span><span class="ko">블루리본 연속 수록. 서울 3대 빵집으로 거론되는 롱런 명점.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">マンモスパン</span><span class="ko">맘모스빵</span></span><span class="mpill goter"><span class="ja">明太子バゲット</span><span class="ko">명란바게트</span></span></div>
+        <div class="card-ft"><span class="price">₩4,000〜9,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('장블랑제리')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('브레드05')">
+      <div class="card-thumb t-goter"><span class="th-em">🧈</span><span class="th-lbl"><span class="ja">あんバター元祖</span><span class="ko">앙버터원조</span></span><span class="cbadge cb-ribbon"><span class="ja">生活の達人</span><span class="ko">생활의 달인</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ブレッド05</span><span class="ko">브레드05</span></div>
+        <div class="card-addr"><span class="ja">高速ターミナル / ベーカリー</span><span class="ko">고속터미널 / 베이커리</span></div>
+        <div class="card-copy"><span class="ja">「生活の達人」出演。天然酵母5日低温熟成の元祖앙버터。</span><span class="ko">생활의 달인 출연. 천연발효종 5일 저온숙성 앙버터 원조.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">あんバター</span><span class="ko">앙버터</span></span><span class="mpill goter"><span class="ja">コソミ（バターロール）</span><span class="ko">고소미(버터롤)</span></span></div>
+        <div class="card-ft"><span class="price">₩4,000〜8,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('브레드05')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('화이트리에')">
+      <div class="card-thumb t-goter"><span class="th-em">🍞</span><span class="th-lbl"><span class="ja">プレミアム食パン</span><span class="ko">프리미엄식빵</span></span><span class="cbadge cb-hot"><span class="ja">食パンのエルメス</span><span class="ko">식빵의에르메스</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ホワイトリエ</span><span class="ko">화이트리에</span></div>
+        <div class="card-addr"><span class="ja">反浦 / プレミアム食パン</span><span class="ko">반포 / 프리미엄 식빵</span></div>
+        <div class="card-copy"><span class="ja">「食パン界のエルメス」。フランス産発酵バター使用。そのまま食べて美味しい食パン。</span><span class="ko">"식빵계의 에르메스". 프랑스산 발효버터 사용. 그냥 먹어도 맛있는 생식빵.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">生食パン ハーフ</span><span class="ko">생식빵 하프</span></span><span class="mpill goter"><span class="ja">フルール食パン</span><span class="ko">플뢰르 식빵</span></span></div>
+        <div class="card-ft"><span class="price">₩9,000〜18,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('화이트리에')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('롤링핀')">
+      <div class="card-thumb t-goter"><span class="th-em">🫙</span><span class="th-lbl"><span class="ja">プレミアム</span><span class="ko">프리미엄</span></span><span class="cbadge cb-old"><span class="ja">バター香り</span><span class="ko">버터향</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">ローリングピン</span><span class="ko">롤링핀</span></div>
+        <div class="card-addr"><span class="ja">高速ターミナル / ベーカリー</span><span class="ko">고속터미널 / 베이커리</span></div>
+        <div class="card-copy"><span class="ja">自家製発酵・製パンのプレミアム店。バター香り豊かなスコーンが人気。</span><span class="ko">직접 발효·제빵하는 프리미엄 베이커리. 버터향 가득한 스콘이 인기.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">クランベリースコーン</span><span class="ko">크랜베리 스콘</span></span><span class="mpill goter"><span class="ja">生クリーム食パン</span><span class="ko">생크림식빵</span></span></div>
+        <div class="card-ft"><span class="price">₩4,000〜9,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('롤링핀')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('보앤미')">
+      <div class="card-thumb t-goter"><span class="th-em">🇫🇷</span><span class="th-lbl"><span class="ja">パリブーランジェリー</span><span class="ko">파리블랑제리</span></span><span class="cbadge cb-hot"><span class="ja">オープン前行列</span><span class="ko">오픈런</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">BO&MIE</span><span class="ko">보앤미 BO&MIE</span></div>
+        <div class="card-addr"><span class="ja">新世界江南 スイートパーク / ブランジェリー</span><span class="ko">신세계강남 스위트파크 / 블랑제리</span></div>
+        <div class="card-copy"><span class="ja">パリ・ルーブル近くの人気ブーランジェリー韓国1号店。オープン5分で完売。</span><span class="ko">파리 루브르 근처 인기 블랑제리 한국 1호점. 오픈 5분 만에 품절.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">ヴィエノワーズ</span><span class="ko">비엔누아즈</span></span><span class="mpill goter"><span class="ja">クッキーショット</span><span class="ko">쿠키샷</span></span></div>
+        <div class="card-ft"><span class="price">₩4,500〜9,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('보앤미')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('아우어베이커리')">
+      <div class="card-thumb t-goter"><span class="th-em">🌿</span><span class="th-lbl"><span class="ja">K感性ベーカリー</span><span class="ko">K감성베이커리</span></span><span class="cbadge cb-sns"><span class="ja">SNS人気</span><span class="ko">SNS인기</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">アワーベーカリー</span><span class="ko">아우어베이커리</span></div>
+        <div class="card-addr"><span class="ja">新世界江南 スイートパーク / ベーカリー</span><span class="ko">신세계강남 스위트파크 / 베이커리</span></div>
+        <div class="card-copy"><span class="ja">쑥・黒ごま・インジョルミなど韓国食材をクリームパンに。K-감성の代表格。</span><span class="ko">쑥·흑임자·인절미 등 한국 재료를 크림빵에 접목한 K-감성 베이커리.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">ヨモギインジョルミクリームパン</span><span class="ko">쑥인절미크림빵</span></span><span class="mpill goter"><span class="ja">黒ごまクリームパン</span><span class="ko">흑임자크림빵</span></span></div>
+        <div class="card-ft"><span class="price">₩4,500〜7,500</span><button class="btn-detail" onclick="event.stopPropagation();openModal('아우어베이커리')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('밀레앙')">
+      <div class="card-thumb t-goter"><span class="th-em">🥮</span><span class="th-lbl"><span class="ja">パリフラン</span><span class="ko">파리플랑</span></span><span class="cbadge cb-ribbon"><span class="ja">TV出演話題</span><span class="ko">유퀴즈 출연</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">Mille&Un</span><span class="ko">밀레앙 Mille&Un</span></div>
+        <div class="card-addr"><span class="ja">新世界江南 スイートパーク / パティスリー</span><span class="ko">신세계강남 스위트파크 / 파티세리</span></div>
+        <div class="card-copy"><span class="ja">パリ・フラン大会1位シェフの作品。유퀴즈 出演で話題沸騰。プランが名物。</span><span class="ko">파리 플랑 대회 1위 셰프 작품. 유퀴즈 출연으로 화제. 플랑이 시그니처.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">フラン（フランス式パイ）</span><span class="ko">플랑(프랑스 파이)</span></span><span class="mpill goter"><span class="ja">クロワッサン</span><span class="ko">크루아상</span></span></div>
+        <div class="card-ft"><span class="price">₩5,500〜10,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('밀레앙')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+    <div class="card" onclick="openModal('르솔레이')">
+      <div class="card-thumb t-goter"><span class="th-em">🌻</span><span class="th-lbl"><span class="ja">マドレーヌ</span><span class="ko">마들렌</span></span><span class="cbadge cb-sns"><span class="ja">JENNIE来店</span><span class="ko">제니 방문</span></span></div>
+      <div class="card-body">
+        <div class="card-name"><span class="ja">Le Soleil</span><span class="ko">르솔레이 Le Soleil</span></div>
+        <div class="card-addr"><span class="ja">新世界江南 スイートパーク / マドレーヌ</span><span class="ko">신세계강남 스위트파크 / 마들렌</span></div>
+        <div class="card-copy"><span class="ja">BLACKPINKジェニー来店で話題。国産素材のオリジナルマドレーヌが豊富。</span><span class="ko">블랙핑크 제니 방문으로 화제. 국산 재료 오리지널 마들렌 종류 다양.</span></div>
+        <div class="menu-pills"><span class="mpill goter"><span class="ja">グリーナリー</span><span class="ko">그리너리</span></span><span class="mpill goter"><span class="ja">ウド落花生</span><span class="ko">우도땅콩</span></span></div>
+        <div class="card-ft"><span class="price">₩3,500〜8,000</span><button class="btn-detail" onclick="event.stopPropagation();openModal('르솔레이')"><span class="ja">詳細</span><span class="ko">상세</span></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ▶ 뷰티 -->
+<div class="section" id="sec-beauty">
+  <div class="inner-hd">
+    <button class="back-btn" onclick="goTab('home')">← <span class="ja">ホームへ</span><span class="ko">홈으로</span></button>
+    <div class="inner-title"><span class="ja">💄 弘大ビューティー</span><span class="ko">💄 홍대 뷰티</span></div>
+    <div class="inner-sub"><span class="ja">無料体験・K-コスメ・ポップアップ 全9スポット</span><span class="ko">무료 체험 · K-코스메 · 팝업 총 9스팟</span></div>
+  </div>
+  <div class="popup-banner">
+    <div class="ptext">
+      <strong><span class="ja">🎪 今週のポップアップをチェック</span><span class="ko">🎪 이번 주 팝업 확인</span></strong><br>
+      <span style="font-size:.97rem"><span class="ja">弘大周辺の最新ポップアップをリアルタイムで確認</span><span class="ko">홍대 주변 최신 팝업 실시간 확인</span></span>
+    </div>
+    <a class="pbtn" href="https://popga.co.kr" target="_blank"><span class="ja">今すぐ</span><span class="ko">바로 보기</span></a>
+  </div>
+  <div class="bcards">
+    <div class="bcard ft">
+      <div class="binner">
+        <div class="bthumb bgreen">🏛️</div>
+        <div class="bbody">
+          <div class="btop">
+            <div class="bname">뷰티플레이 홍대</div>
+            <span class="cbadge cb-free" style="position:static;font-size:.55rem;padding:.14rem .48rem">무료</span>
+          </div>
+          <div class="bdesc">
+            <span class="ja">保健福祉部運営の<strong>完全無料</strong>ビューティー体験。AIパーソナルカラー診断・肌診断・メイクアップが無料。事前予約でフルメイクも。日本語インスタ @beautyplay_jp あり。月〜土10:00〜19:00。</span>
+            <span class="ko">보건복지부 운영 <strong>완전 무료</strong> 뷰티 체험. AI 퍼스널컬러·피부진단·메이크업 무료. 사전예약 시 풀메이크업도. 월~토 10:00~19:00.</span>
+          </div>
+          <div class="bft">
+            <span class="bprice"><span class="ja">完全無料</span><span class="ko">완전 무료</span></span>
+            <div class="blinks">
+              <a class="blnk map" href="https://map.naver.com/p/search/뷰티플레이%20홍대" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a>
+              <a class="blnk ig" href="https://www.instagram.com/beautyplay_jp/" target="_blank">Instagram</a>
+              <a class="blnk web" href="https://beautyplay.kr" target="_blank"><span class="ja">予約</span><span class="ko">예약</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bpurple">🎨</div><div class="bbody">
+      <div class="btop"><div class="bname"><span class="ja">パーソナルカラー診断</span><span class="ko">퍼스널컬러 진단</span></div></div>
+      <div class="bdesc"><span class="ja">BLACKPINKジスが受けて話題。外国人が月1000人訪れる人気スポット。</span><span class="ko">블랙핑크 지수가 받아 화제. 외국인 월 1000명 방문.</span></div>
+      <div class="bft"><span class="bprice">₩30,000〜80,000</span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/퍼스널컬러%20진단%20홍대" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bpink">💗</div><div class="bbody">
+      <div class="btop"><div class="bname">3CE 스타일난다</div></div>
+      <div class="bdesc"><span class="ja">30代女子のK-ビューティーアイコン。ピンクプールカフェでショッピング＋インスタ映えを一度に。</span><span class="ko">30대 여성의 K-뷰티 아이콘. 핑크풀 카페에서 쇼핑+인스타 감성을 한 번에.</span></div>
+      <div class="bft"><span class="bprice"><span class="ja">購入価格による</span><span class="ko">구매가 기준</span></span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/스타일난다%20홍대" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bpink">📸</div><div class="bbody">
+      <div class="btop"><div class="bname">인생네컷</div></div>
+      <div class="bdesc"><span class="ja">韓国版プリクラ。K-コスメブランドとのコラボ限定フレームが期間限定登場。街中に複数店舗。</span><span class="ko">한국판 인생사진. K-코스메 콜라보 한정 프레임 기간 한정. 곳곳에 매장.</span></div>
+      <div class="bft"><span class="bprice">₩8,000〜</span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/인생네컷%20홍대" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bgreen">🛍️</div><div class="bbody">
+      <div class="btop"><div class="bname">올리브영 홍대본점</div></div>
+      <div class="bdesc"><span class="ja">国内最大級。外国人免税購入対応。K-ビューティーをまとめ買いするならここ一択。</span><span class="ko">국내 최대급. 외국인 면세 구매 가능. K-뷰티 한 번에 쇼핑.</span></div>
+      <div class="bft"><span class="bprice"><span class="ja">免税OK</span><span class="ko">면세 가능</span></span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/올리브영%20홍대본점" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bgreen">🌿</div><div class="bbody">
+      <div class="btop"><div class="bname">이니스프리 홍대</div></div>
+      <div class="bdesc"><span class="ja">済州島ナチュラルコスメ。グリーンティーラインが日本人に特に人気。</span><span class="ko">제주도 자연주의 코스메. 그린티 라인이 일본인에게 특히 인기.</span></div>
+      <div class="bft"><span class="bprice"><span class="ja">購入価格による</span><span class="ko">구매가 기준</span></span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/이니스프리%20홍대" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bpink">🎀</div><div class="bbody">
+      <div class="btop"><div class="bname">에뛰드 홍대</div></div>
+      <div class="bdesc"><span class="ja">コスパ最強リップ・アイシャドウ。日本未発売カラーが多数。</span><span class="ko">가성비 최강 립·아이섀도. 일본 미발매 컬러 다수.</span></div>
+      <div class="bft"><span class="bprice">₩5,000〜20,000</span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/에뛰드%20홍대" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bpurple">🎵</div><div class="bbody">
+      <div class="btop"><div class="bname">케이팝스퀘어 홍대</div></div>
+      <div class="bdesc"><span class="ja">国内唯一K-POP特化専門ショップ。推しグッズ・フォトカードが集結。</span><span class="ko">국내 유일 K-POP 전문 특화 매장. 굿즈·포토카드 집결.</span></div>
+      <div class="bft"><span class="bprice"><span class="ja">購入価格による</span><span class="ko">구매가 기준</span></span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/케이팝스퀘어%20홍대" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+
+    <div class="bcard"><div class="binner"><div class="bthumb bpurple">💿</div><div class="bbody">
+      <div class="btop"><div class="bname">합정 앨범거리</div></div>
+      <div class="bdesc"><span class="ja">メガボックス合井近く。レアフォトカード・限定グッズが集まるファンの聖地。</span><span class="ko">메가박스 합정 근처. 희귀 포토카드·한정 굿즈 집결 팬 성지.</span></div>
+      <div class="bft"><span class="bprice"><span class="ja">購入価格による</span><span class="ko">구매가 기준</span></span><div class="blinks"><a class="blnk map" href="https://map.naver.com/p/search/합정%20앨범거리" target="_blank"><span class="ja">地図</span><span class="ko">지도</span></a></div></div>
+    </div></div></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-thumb t-italian" id="modal-thumb">🍽️</div>
+      <div class="modal-hinfo">
+        <div class="modal-name" id="modal-name"></div>
+        <div class="modal-addr" id="modal-addr"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal(null)">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-story" id="modal-story"></div>
+      <div class="modal-section">
+        <div class="modal-section-title"><span class="ja">🍽️ メニュー & 価格</span><span class="ko">🍽️ 메뉴 & 가격</span></div>
+        <div class="menu-list" id="modal-menus"></div>
+      </div>
+      <div class="modal-actions">
+        <a class="modal-ig hidden" id="modal-ig-btn" href="#" target="_blank">
+          📸 <span class="ja">Instagramで雰囲気を見る</span><span class="ko">인스타그램에서 분위기 보기</span>
+        </a>
+        <a class="modal-naver hidden" id="modal-naver-btn" href="#" target="_blank">
+          🔍 <span class="ja">NAVERプレイスで詳細を見る</span><span class="ko">네이버 플레이스에서 상세 보기</span>
+        </a>
+        <div class="modal-btns-row">
+          <a class="modal-map" id="modal-map-btn" href="#" target="_blank">📍 <span class="ja">NAVERマップで開く</span><span class="ko">네이버 지도로 열기</span></a>
+          <a class="modal-res hidden" id="modal-res-btn" href="#" target="_blank">📅 <span class="ja">予約</span><span class="ko">예약</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="ti active" id="tab-home" onclick="goTab('home')"><span class="tico">🏠</span><span class="tlbl"><span class="ja">ホーム</span><span class="ko">홈</span></span></button>
+  <button class="ti" id="tab-must" onclick="goTab('must')"><span class="tico">📋</span><span class="tlbl"><span class="ja">必須情報</span><span class="ko">필수정보</span></span></button>
+  <button class="ti" id="tab-hongdae" onclick="goTab('hongdae')"><span class="tico">🍽️</span><span class="tlbl"><span class="ja">弘大</span><span class="ko">홍대</span></span></button>
+  <button class="ti" id="tab-goter" onclick="goTab('goter')"><span class="tico">🥐</span><span class="tlbl"><span class="ja">高速TB</span><span class="ko">고터</span></span></button>
+  <button class="ti" id="tab-beauty" onclick="goTab('beauty')"><span class="tico">💄</span><span class="tlbl"><span class="ja">美容</span><span class="ko">뷰티</span></span></button>
+</div>
+
+<script>
+const LANG = {current:'ja'};
+
+const KATAKANA = {"아날로그가든": "アナログガーデン", "윤씨밀방": "ユンシミルバン", "스파카나폴리": "スパッカナポリ", "비스트로 수퍼": "ビストロ スパー", "테이블포포": "テーブルフォーフォー", "소이연남": "ソイ 延南", "합정옥": "ハプジョンオク", "도식화": "ドシクファ", "오모테": "オモテ", "정육면체": "チョンユクミョンチェ", "앤트러사이트": "アンスラサイト", "카페레이어드": "カフェ レイヤード", "어반플랜트": "アーバンプラント", "커피랩": "コーヒーラボ", "카페콤마": "カフェ コンマ", "카페공명": "カフェ コンミョン", "프릳츠": "フリッツ", "테일러커피": "テイラーコーヒー", "연남살롱": "延南サロン", "디저트39": "デザート39", "코코로카라": "ここから", "연남제빵소": "延南製パン所", "베어스덴": "ベアーズデン", "포프브레드": "ポップブレッド", "뉴욕베이글": "NYベーグルアベニュー", "문식빵": "ムンシクパン", "아오이토리": "青い鳥", "공릉빵공장": "コンヌン パン工場", "비엔누아즈리리에": "ヴィエノワズリー リエ", "빵나무": "パンの木", "베통": "ベトン BETON", "비파티세리": "ビ・パティスリー", "장블랑제리": "ジャン ブーランジェリー", "브레드05": "ブレッド05", "화이트리에": "ホワイトリエ", "롤링핀": "ローリングピン", "보앤미": "BO&MIE", "아우어베이커리": "アワーベーカリー", "밀레앙": "Mille&Un", "르솔레이": "Le Soleil"};
+const STORES = {
+  '아날로그가든':{emoji:'🥑',bg:'t-italian',
+    story:{ja:'ホリスティックな食材を使ったオーストラリアスタイルのブランチ。病みつきになるアボカドエッグとファラフェルラップが名物。朝8時から営業するため、遅めのチェックアウト後の朝食にも最適。',ko:'호주 스타일 홀리스틱 브런치. 아보카도 에그와 팔라펠 랩이 명물. 아침 8시부터 영업해 늦은 체크아웃 후 아침 식사로도 딱.'},
+    menus:[
+      {name:'에그 앤 아보카도',nameJa:'エッグ＆アボカド',desc:'수란과 신선한 아보카도',descJa:'ポーチドエッグと新鮮なアボカド',price:'₩18,000'},
+      {name:'팔라펠 랩',nameJa:'ファラフェルラップ',desc:'병아리콩 튀김 랩',descJa:'ひよこ豆コロッケのラップ',price:'₩19,000'},
+      {name:'가든 스페셜',nameJa:'ガーデンスペシャル',desc:'건강한 한 접시 브런치',descJa:'ヘルシーなワンプレートブランチ',price:'₩20,000'},
+    ],
+    ig:'https://www.instagram.com/analog_garden/',
+    naver:null,
+    map:'https://map.naver.com/p/search/아날로그가든%20홍대',res:null},
+
+  '윤씨밀방':{emoji:'🍖',bg:'t-italian',
+    story:{ja:'2009年オープン、15年続く홍대の伝説的な洋食堂。毎日手作りのオリーブパンと、ふっくらしたハンバーグ定食が看板。ソースたっぷりのきのこクリームパスタも女性に大人気。食前のトッポッキは無限リフィル可。',ko:'2009년 오픈, 15년 이어온 홍대 전설의 양식당. 매일 직접 만든 올리브빵과 촉촉한 함박스테이크 정식이 간판 메뉴. 버섯 크림 파스타도 여성에게 대인기. 식전 떡볶이 무한리필 가능.'},
+    menus:[
+      {name:'윤씨함박스테이크정식',nameJa:'ハンバーグ定食',desc:'촉촉한 함박+올리브빵+반찬',descJa:'しっとりハンバーグ+オリーブパン+副菜',price:'₩14,000'},
+      {name:'머쉬룸 투움바파스타',nameJa:'マッシュルームトゥームバパスタ',desc:'크리미한 버섯 크림 파스타',descJa:'クリーミーなきのこクリームパスタ',price:'₩13,000'},
+      {name:'날치알크림파스타',nameJa:'とびっこクリームパスタ',desc:'감칠맛 나는 크림 파스타',descJa:'旨味あふれるクリームパスタ',price:'₩13,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/윤씨밀방+상수',
+    map:'https://map.naver.com/p/search/윤씨밀방%20홍대',res:null},
+
+  '스파카나폴리':{emoji:'🍕',bg:'t-italian',
+    story:{ja:'2015年ナポリ大会チャンピオンシェフが焼く本格ナポリピザ。世界50ベストピザ57位に選出され、ガンベロロッソ4年連続掲載という実力派。薪窯で焼いた生地は外はカリッと中はもちもち。あっさりした味付けで誰でも食べやすい。',ko:'2015 나폴리 대회 챔피언 셰프가 굽는 본격 나폴리 피자. 세계 50대 피자 57위, 감베로로쏘 4년 연속 수록. 장작 화덕에 구운 도우는 겉은 바삭 속은 쫀쫀. 담백한 맛으로 누구나 먹기 편함.'},
+    menus:[
+      {name:'마르게리타 부팔라',nameJa:'マルゲリータブファラ',desc:'부팔라 모짜렐라+토마토',descJa:'水牛モッツァレラ+トマト',price:'₩24,000'},
+      {name:'마리나라',nameJa:'マリナーラ',desc:'토마토+마늘+오레가노 담백함',descJa:'トマト+ニンニク+オレガノのあっさり',price:'₩18,000'},
+      {name:'루꼴라 프로슈토',nameJa:'ルーコラプロシュート',desc:'생햄과 루꼴라의 조합',descJa:'生ハムとルーコラのコンビ',price:'₩28,000'},
+    ],
+    ig:'https://www.instagram.com/spaccanapoliseoul/',
+    naver:null,
+    map:'https://map.naver.com/p/search/스파카나폴리%20합정',res:null},
+
+  '비스트로수퍼':{emoji:'🥗',bg:'t-italian',
+    story:{ja:'落ち着いた照明と大人の空間が魅力の本格ビストロ。パスタからステーキまで安定したクオリティで、接待にも使いやすい。騒がしくないので会話に集中できる。',ko:'조용한 조명과 어른스러운 공간이 매력인 본격 비스트로. 파스타부터 스테이크까지 안정적인 퀄리티. 시끄럽지 않아 대화에 집중할 수 있음.'},
+    menus:[
+      {name:'트러플 크림 파스타',nameJa:'トリュフクリームパスタ',desc:'향긋한 트러플 크림',descJa:'香り豊かなトリュフクリーム',price:'₩22,000'},
+      {name:'수비드 스테이크',nameJa:'スービドステーキ',desc:'저온 조리 부드러운 스테이크',descJa:'低温調理の柔らかステーキ',price:'₩28,000'},
+      {name:'브런치 플레이트',nameJa:'ブランチプレート',desc:'에그+빵+샐러드 세트',descJa:'エッグ+パン+サラダセット',price:'₩18,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/비스트로수퍼+홍대',
+    map:'https://map.naver.com/p/search/비스트로수퍼%20홍대',res:null},
+
+  '테이블포포':{emoji:'🥩',bg:'t-italian',
+    story:{ja:'食材の産地にこだわったブランチスタイルのレストラン。洗練されたインテリアと細やかなサービスが光る。女子会やデートにぴったりの雰囲気。',ko:'식재료 산지에 공들인 브런치 스타일 레스토랑. 세련된 인테리어와 섬세한 서비스가 빛남. 여자 모임이나 데이트에 딱 맞는 분위기.'},
+    menus:[
+      {name:'브런치 플레이트',nameJa:'ブランチプレート',desc:'신선한 식재료 한 접시',descJa:'新鮮食材のワンプレート',price:'₩18,000'},
+      {name:'에그 베네딕트',nameJa:'エッグベネディクト',desc:'홀란데이즈소스+수란',descJa:'オランデーズソース+ポーチドエッグ',price:'₩17,000'},
+      {name:'포포 샐러드',nameJa:'ポポサラダ',desc:'시즌 채소 + 허브 드레싱',descJa:'季節野菜+ハーブドレッシング',price:'₩14,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/테이블포포+홍대',
+    map:'https://map.naver.com/p/search/테이블포포%20홍대',res:null},
+
+  '소이연남':{emoji:'🍜',bg:'t-thai',
+    story:{ja:'タイの魂を連南洞の路地に宿した本格タイ麺専門店。パクチー抜きのオーダーも可能で日本人にも安心。濃厚なトムヤムスープは一口飲めばタイの空気が漂う。春巻きフライのソイポピアとセットで注文がおすすめ。',ko:'태국의 소울을 연남동 골목에 담은 본격 태국 면 전문점. 고수 빼기 주문 가능. 진한 똠얌 수프는 한 모금에 태국 공기가 물씬. 쏨땀과 소이뽀삐아와 세트로 주문 추천.'},
+    menus:[
+      {name:'태국식 쌀국수',nameJa:'タイ風ライスヌードル',desc:'갈릭소스 베이스 담백한 국수',descJa:'ガーリックベースあっさり麺',price:'₩13,000'},
+      {name:'똠얌 쌀국수',nameJa:'トムヤムライスヌードル',desc:'새콤매콤한 똠얌 수프',descJa:'酸っぱ辛いトムヤムスープ',price:'₩14,000'},
+      {name:'소이뽀삐아',nameJa:'ソイポピア',desc:'바삭한 춘권 튀김',descJa:'サクサク揚げ春巻き',price:'₩9,000'},
+    ],
+    ig:'https://www.instagram.com/soi_yeonnam/',
+    naver:null,
+    map:'https://map.naver.com/p/search/소이연남',res:null},
+
+  '합정옥':{emoji:'🍲',bg:'t-korean',
+    story:{ja:'ミシュランビブグルマンに連続選出された澄んだ牛骨スープの名店。한우(韓国牛)の骨だけを長時間煮込んだスープは、旨味が凝縮されながらも後味がすっきり。韓国料理が初めての方にも最もおすすめできる一品。',ko:'미슐랭 빕구르망 연속 선정. 한우 사골만을 오랫동안 끓인 맑은 국물은 진하면서도 뒷맛이 깔끔. 한식이 처음인 분께도 가장 추천할 수 있는 메뉴.'},
+    menus:[
+      {name:'양지곰탕',nameJa:'ソウル牛骨スープ(양지)',desc:'한우 양지+사골 육수',descJa:'韓国牛バラ+骨スープ',price:'₩14,000'},
+      {name:'수육',nameJa:'スユク(茹で豚)',desc:'부드러운 삶은 고기 모듬',descJa:'柔らかく茹でた肉盛り合わせ',price:'₩25,000'},
+      {name:'꼬리곰탕',nameJa:'テール骨スープ',desc:'진한 소 꼬리 육수',descJa:'濃厚な牛テールスープ',price:'₩16,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/합정옥+합정',
+    map:'https://map.naver.com/p/search/합정옥',res:null},
+
+  '도식화':{emoji:'🍱',bg:'t-korean',
+    story:{ja:'伝統韓国料理を現代的なプレーティングで提供する洗練された食堂。外国人観光客からも高評価を得ており、写真映えする盛り付けが魅力。全体的に塩気控えめで日本人の口に合いやすい。',ko:'전통 한식을 현대적 플레이팅으로 제공하는 세련된 식당. 외국인 관광객에게도 높은 평가. 비주얼이 예쁜 플레이팅이 매력. 전체적으로 간이 적당해 일본인 입맛에 맞음.'},
+    menus:[
+      {name:'한식 코스',nameJa:'韓食コース',desc:'제철 재료 정식 코스',descJa:'旬の食材を使った定食コース',price:'₩22,000'},
+      {name:'전통 반상',nameJa:'伝統定食',desc:'반찬 가득 정갈한 상차림',descJa:'副菜たっぷりの丁寧な定食',price:'₩18,000'},
+      {name:'오늘의 국',nameJa:'本日のスープ',desc:'계절 재료로 끓인 국',descJa:'季節食材で炊いたスープ',price:'₩3,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/도식화+홍대',
+    map:'https://map.naver.com/p/search/도식화%20홍대',res:null},
+
+  '오모테':{emoji:'🥘',bg:'t-korean',
+    story:{ja:'韓日フュージョンの感覚で仕上げたあっさり系韓食レストラン。余分な油や刺激を省いた上品な味付けが特徴で、胃に優しく食べやすい。女性グループの利用が多い人気店。',ko:'한일 퓨전 감각으로 완성한 담백한 한식 레스토랑. 여분의 기름과 자극을 줄인 품격 있는 맛이 특징. 위에 부담 없이 먹기 편함. 여성 그룹 이용이 많은 인기 가게.'},
+    menus:[
+      {name:'퓨전 한식 코스',nameJa:'フュージョン韓食コース',desc:'담백하게 재해석한 한식',descJa:'あっさり再解釈した韓食',price:'₩20,000'},
+      {name:'계절 메뉴',nameJa:'季節メニュー',desc:'제철 식재료 요리',descJa:'旬の食材を使った料理',price:'₩15,000'},
+      {name:'두부 조림',nameJa:'豆腐の煮物',desc:'담백하고 부드러운 두부 요리',descJa:'あっさり柔らかな豆腐料理',price:'₩12,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/오모테+홍대',
+    map:'https://map.naver.com/p/search/오모테%20홍대',res:null},
+
+  '정육면체':{emoji:'🍝',bg:'t-korean',
+    story:{ja:'ミシュランガイドに掲載された実力派中華麺専門店。深煎りゴマとビャンビャン麺を合わせた「깨부수면」は、ひと口食べると忘れられない複雑な旨味。牛骨スープベースの清湯も絶品。',ko:'미슐랭 가이드 등재 실력파 중식 면 전문점. 깊게 볶은 참깨와 비빔면을 합친 "깨부수면"은 한 입 먹으면 잊을 수 없는 복잡한 감칠맛. 우육 청탕도 절품.'},
+    menus:[
+      {name:'깨부수면',nameJa:'ゴマ砕き混ぜ麺',desc:'진한 참깨 즈마장 비빔면',descJa:'濃厚ごまジャージャン混ぜ麺',price:'₩14,000'},
+      {name:'우육면 홍탕',nameJa:'牛肉麺 紅湯',desc:'매콤한 우육 국물 면',descJa:'辛口牛肉スープ麺',price:'₩15,000'},
+      {name:'우육면 백탕',nameJa:'牛肉麺 白湯',desc:'담백한 우육 국물 면',descJa:'あっさり牛肉スープ麺',price:'₩15,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/정육면체+홍대',
+    map:'https://map.naver.com/p/search/정육면체%20홍대',res:null},
+
+  // 카페
+  '앤트러사이트':{emoji:'⚗️',bg:'t-cafe',
+    story:{ja:'かつての工場をリノベーションした独特の空間。ブルーリボン掲載のスペシャルティコーヒー専門店で、コーヒーへの真剣な姿勢が伝わってくる。落ち着いた照明と広い空間でゆっくり会話できる。',ko:'과거 공장을 개조한 독특한 공간. 블루리본 수록 스페셜티 커피 전문점으로 커피에 대한 진심이 느껴짐. 조용한 조명과 넓은 공간에서 천천히 대화 가능.'},
+    menus:[
+      {name:'시그니처 드립',nameJa:'シグネチャードリップ',desc:'당일 원두 핸드드립',descJa:'当日豆のハンドドリップ',price:'₩7,500'},
+      {name:'플랫화이트',nameJa:'フラットホワイト',desc:'에스프레소+스팀밀크',descJa:'エスプレッソ+スチームミルク',price:'₩7,000'},
+      {name:'아이스 아메리카노',nameJa:'アイスアメリカーノ',desc:'깔끔한 스페셜티 아이스',descJa:'クリアなスペシャルティアイス',price:'₩6,000'},
+    ],
+    ig:'https://www.instagram.com/anthracite_coffee_roasters/',
+    naver:null,
+    map:'https://map.naver.com/p/search/앤트러사이트%20서교',res:null},
+
+  '카페레이어드':{emoji:'🎂',bg:'t-cafe',
+    story:{ja:'연남동の人気ケーキカフェ。季節ごとに変わるレイヤードケーキはふわっとした食感と美しい断面が魅力で、外国人観광客にも大人気のスポット。甘さ控えめで食べやすい。',ko:'연남동 인기 케이크카페. 계절마다 바뀌는 레이어드 케이크는 폭신한 식감과 아름다운 단면이 매력. 외국인 관광객에게도 대인기. 달지 않고 먹기 편함.'},
+    menus:[
+      {name:'레이어드 케이크',nameJa:'レイヤードケーキ',desc:'폭신한 시즌 케이크',descJa:'ふわふわ季節ケーキ',price:'₩9,500'},
+      {name:'크림 라테',nameJa:'クリームラテ',desc:'부드러운 크림 올린 라테',descJa:'なめらかクリームのせラテ',price:'₩7,500'},
+      {name:'아이스 아메리카노',nameJa:'アイスアメリカーノ',desc:'',descJa:'',price:'₩6,500'},
+    ],
+    ig:'https://www.instagram.com/cafe_layered/',
+    naver:null,
+    map:'https://map.naver.com/p/search/카페레이어드%20연남',res:null},
+
+  '어반플랜트':{emoji:'🌱',bg:'t-cafe',
+    story:{ja:'緑あふれる植物に囲まれた癒しのカフェ。座席間のスペースが広く会話しやすい。落ち着きのある空間で長居できるのが魅力。연남동散歩のひと休みに最適。',ko:'초록 식물로 둘러싸인 힐링 카페. 좌석 간격이 넓고 대화하기 편함. 안정감 있는 공간에서 오래 머물 수 있음. 연남동 산책 중 쉬어가기 딱.'},
+    menus:[
+      {name:'아메리카노',nameJa:'アメリカーノ',desc:'진한 스페셜티 커피',descJa:'濃いスペシャルティコーヒー',price:'₩6,000'},
+      {name:'식물워터',nameJa:'プランツウォーター',desc:'보타니컬 인퓨즈드 워터',descJa:'ボタニカルインフューズドウォーター',price:'₩5,500'},
+      {name:'시즌 에이드',nameJa:'シーズンエイド',desc:'계절 과일 에이드',descJa:'季節フルーツエイド',price:'₩7,500'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/어반플랜트+연남동',
+    map:'https://map.naver.com/p/search/어반플랜트%20연남',res:null},
+
+  '커피랩':{emoji:'☕',bg:'t-cafe',
+    story:{ja:'コーヒーの品質に妥協しない静かなスペシャルティカフェ。シングルオリジン豆の個性を引き出した丁寧なドリップが評判。騒がしくないため、ゆっくり話しながら過ごすのにぴったり。',ko:'커피 퀄리티에 타협 없는 조용한 스페셜티 카페. 싱글 오리진 원두의 개성을 살린 정성스러운 드립이 평판. 조용해서 천천히 이야기 나누기에 딱.'},
+    menus:[
+      {name:'핸드드립',nameJa:'ハンドドリップ',desc:'오늘의 싱글오리진',descJa:'本日のシングルオリジン',price:'₩8,000'},
+      {name:'에스프레소',nameJa:'エスプレッソ',desc:'진한 에스프레소',descJa:'濃厚エスプレッソ',price:'₩5,000'},
+      {name:'카페라테',nameJa:'カフェラテ',desc:'부드러운 밀크커피',descJa:'なめらかミルクコーヒー',price:'₩7,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/커피랩+홍대',
+    map:'https://map.naver.com/p/search/커피랩%20홍대',res:null},
+
+  '카페콤마':{emoji:'🪴',bg:'t-cafe',
+    story:{ja:'温かみのある木材と柔らかな照明が印象的な居心地のいいカフェ。長居しやすい雰囲気が地元客に支持されている。甘いデザートとコーヒーのペアリングが楽しめる。',ko:'따뜻한 나무와 부드러운 조명이 인상적인 편안한 카페. 오래 머물기 좋은 분위기로 로컬 손님에게 지지받음. 달콤한 디저트와 커피 페어링을 즐길 수 있음.'},
+    menus:[
+      {name:'시그니처 라테',nameJa:'シグネチャーラテ',desc:'카페 고유 블렌드 라테',descJa:'カフェ独自ブレンドラテ',price:'₩7,000'},
+      {name:'케이크',nameJa:'ケーキ',desc:'당일 제조 수제 케이크',descJa:'当日手作りケーキ',price:'₩8,500'},
+      {name:'아이스 아메리카노',nameJa:'アイスアメリカーノ',desc:'',descJa:'',price:'₩6,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/카페콤마+홍대',
+    map:'https://map.naver.com/p/search/카페콤마%20홍대',res:null},
+
+  '카페공명':{emoji:'📚',bg:'t-cafe',
+    story:{ja:'ブルーリボン掲載。天井まで届く本棚と古書に囲まれた唯一無二の空間。홍대・연남・합정と複数店舗を展開。まるで知識人のサロンに迷い込んだような雰囲気が旅の思い出になる。',ko:'블루리본 수록. 천장까지 닿는 책장과 고서로 둘러싸인 유일무이한 공간. 홍대·연남·합정 등 복수 매장 운영. 지식인 살롱에 들어온 듯한 분위기가 여행의 추억이 됨.'},
+    menus:[
+      {name:'공명 라테',nameJa:'コンミョンラテ',desc:'카페 시그니처 라테',descJa:'カフェシグネチャーラテ',price:'₩7,500'},
+      {name:'핸드드립',nameJa:'ハンドドリップ',desc:'스페셜티 원두 드립',descJa:'スペシャルティ豆ドリップ',price:'₩8,000'},
+      {name:'티라미수',nameJa:'ティラミス',desc:'진한 크림 티라미수',descJa:'濃厚クリームティラミス',price:'₩8,500'},
+    ],
+    ig:'https://www.instagram.com/cafegm_/',
+    naver:null,
+    map:'https://map.naver.com/p/search/카페공명%20홍대',res:null},
+
+  '프릳츠':{emoji:'🎵',bg:'t-cafe',
+    story:{ja:'빵と커피に真剣な有名スペシャルティカフェ。귀여いフォカを抱いた밀봉(アザラシ)のロゴが目印。直火ロースターが一押しのブレンドを焼き上げ、毎朝焼きたてのクロワッサンが並ぶ。朝の訪問が特におすすめ。',ko:'빵과 커피에 진심인 유명 스페셜티 카페. 귀여운 아기물범 로고가 트레이드마크. 직화 로스터가 내놓는 블렌드와 매일 아침 갓 구운 크루아상. 아침 방문이 특히 추천.'},
+    menus:[
+      {name:'크루아상',nameJa:'クロワッサン',desc:'매일 아침 갓 구운 버터 크루아상',descJa:'毎朝焼きたてバタークロワッサン',price:'₩5,500'},
+      {name:'프릳츠 블렌드 드립',nameJa:'フリッツブレンドドリップ',desc:'시그니처 직화 로스팅 블렌드',descJa:'シグネチャー直火ロースティングブレンド',price:'₩7,000'},
+      {name:'플랫화이트',nameJa:'フラットホワイト',desc:'에스프레소+스팀밀크',descJa:'エスプレッソ+スチームミルク',price:'₩6,500'},
+    ],
+    ig:'https://www.instagram.com/fritzcoffeecompany/',
+    naver:null,
+    map:'https://map.naver.com/p/search/프릳츠%20홍대',res:null},
+
+  '테일러커피':{emoji:'✂️',bg:'t-cafe',
+    story:{ja:'2022年韓国バリスタ大会優勝者が運営するスペシャルティカフェ。ブルーリボン連続掲載。豆の個性を最大限に引き出す技術と、理論に基づいたサービスが光る。コーヒー好きなら必訪。',ko:'2022년 한국 바리스타 대회 우승자가 운영하는 스페셜티 카페. 블루리본 연속 수록. 원두의 개성을 최대한 끌어내는 기술과 이론에 근거한 서비스가 빛남. 커피 좋아한다면 필방.'},
+    menus:[
+      {name:'시그니처 블렌드',nameJa:'シグネチャーブレンド',desc:'대회 수상 블렌드 레시피',descJa:'受賞ブレンドレシピ',price:'₩7,500'},
+      {name:'플랫화이트',nameJa:'フラットホワイト',desc:'정밀한 비율의 밀크커피',descJa:'精密な比率のミルクコーヒー',price:'₩7,000'},
+      {name:'핸드드립',nameJa:'ハンドドリップ',desc:'오늘의 싱글오리진',descJa:'本日のシングルオリジン',price:'₩8,000'},
+    ],
+    ig:'https://www.instagram.com/tailor_coffee/',
+    naver:null,
+    map:'https://map.naver.com/p/search/테일러커피%20연남',res:null},
+
+  '연남살롱':{emoji:'🧁',bg:'t-cafe',
+    story:{ja:'連南洞で長く地元に愛されてきたデザートカフェ。季節ごとに変わる手作りデザートは、旬の食材を丁寧に使った正直な美味しさ。観光地化されていないローカル感が魅力。',ko:'연남동에서 오래 로컬에게 사랑받아온 디저트카페. 계절마다 바뀌는 수제 디저트는 제철 재료를 정성껏 담은 정직한 맛. 관광지화 안 된 로컬 감성이 매력.'},
+    menus:[
+      {name:'시즌 케이크',nameJa:'シーズンケーキ',desc:'제철 재료 수제 케이크',descJa:'旬の食材を使った手作りケーキ',price:'₩9,000'},
+      {name:'크림 라테',nameJa:'クリームラテ',desc:'달콤한 크림 토핑 라테',descJa:'甘いクリームのせラテ',price:'₩7,000'},
+      {name:'마들렌',nameJa:'マドレーヌ',desc:'당일 구운 버터 마들렌',descJa:'当日焼きバターマドレーヌ',price:'₩4,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/연남살롱+연남동',
+    map:'https://map.naver.com/p/search/연남살롱',res:null},
+
+  '디저트39':{emoji:'🍮',bg:'t-cafe',
+    story:{ja:'デパートクオリティのデザートをカフェ感覚で楽しめるチェーン。入りやすく、注文しやすく、韓国カフェ初体験の方にも安心。甘さのバランスがよく万人受けする。',ko:'백화점 수준의 디저트를 카페 감각으로 즐길 수 있는 체인. 입장하기 편하고 주문하기 편해 한국 카페 첫 경험에도 안심. 달기의 밸런스가 좋아 누구에게나 맞음.'},
+    menus:[
+      {name:'프리미엄 케이크',nameJa:'プレミアムケーキ',desc:'백화점급 수제 케이크',descJa:'デパートクオリティの手作りケーキ',price:'₩9,500'},
+      {name:'타르트',nameJa:'タルト',desc:'바삭한 크러스트 타르트',descJa:'サクサクのタルト',price:'₩8,000'},
+      {name:'아이스 라테',nameJa:'アイスラテ',desc:'',descJa:'',price:'₩6,500'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/디저트39+홍대',
+    map:'https://map.naver.com/p/search/디저트39%20홍대',res:null},
+
+  // 홍대 빵집
+  '코코로카라':{emoji:'🍮',bg:'t-bakery',
+    story:{ja:'日本語で「心から」を意味する店名通り、材料にこだわったブレッドプディング専門店。SNSで爆発的に話題になり、季節ごとに異なるフレーバーがリピーターを集めている。連南洞散歩のお供に最適。',ko:'일본어로 "마음에서"를 의미하는 이름처럼 재료에 공들인 브레드푸딩 전문점. SNS에서 폭발적으로 화제가 되어 계절마다 다른 플레이버가 단골을 끌어들임. 연남동 산책의 동반자로 최적.'},
+    menus:[
+      {name:'오리지널 브레드푸딩',nameJa:'オリジナルブレッドプディング',desc:'촉촉한 기본 브레드푸딩',descJa:'しっとり基本ブレッドプディング',price:'₩7,500'},
+      {name:'시즌 한정 플레이버',nameJa:'シーズン限定フレーバー',desc:'계절 재료 한정 메뉴',descJa:'季節食材の期間限定',price:'₩8,500'},
+      {name:'드링크 세트',nameJa:'ドリンクセット',desc:'음료와 세트 할인',descJa:'ドリンクとセット割引',price:'₩12,000'},
+    ],
+    ig:'https://www.instagram.com/_kokorokara_/',
+    naver:null,
+    map:'https://map.naver.com/p/search/코코로카라%20연남',res:null},
+
+  '연남제빵소':{emoji:'🍞',bg:'t-bakery',
+    story:{ja:'天然酵母を使ったパンだけを丁寧に焼く連南洞のロングラン専門店。地元住민が毎週通うほどの信頼感があり、余計な添加物を一切使わないシンプルな旨さが魅力。',ko:'천연발효종만으로 빵을 정성껏 굽는 연남동 롱런 전문점. 동네 주민이 매주 찾을 만큼 신뢰받는 가게. 여분의 첨가물 없는 단순한 맛이 매력.'},
+    menus:[
+      {name:'사워도우',nameJa:'サワードウ',desc:'저온 장기발효 사워도우',descJa:'低温長期発酵サワードウ',price:'₩8,000'},
+      {name:'캄파뉴',nameJa:'カンパーニュ',desc:'통밀 천연발효빵',descJa:'全粒粉天然酵母パン',price:'₩7,500'},
+      {name:'올리브 포카치아',nameJa:'オリーブフォカッチャ',desc:'올리브 올린 이탈리안 빵',descJa:'オリーブのせイタリアンパン',price:'₩5,500'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/연남제빵소+연남동',
+    map:'https://map.naver.com/p/search/연남제빵소',res:null},
+
+  '베어스덴':{emoji:'🥖',bg:'t-bakery',
+    story:{ja:'パンとコーヒーどちらも妥協しない弘大の人気ベーカリーカフェ。朝早くから焼きたてのパンが並び、開店直後の来店がおすすめ。地元の常連客と観光客が共存する居心地の良い空間。',ko:'빵과 커피 둘 다 타협 없는 홍대 인기 베이커리카페. 아침 일찍부터 갓 구운 빵이 진열되어 오픈 직후 방문 추천. 로컬 단골과 관광객이 공존하는 편안한 공간.'},
+    menus:[
+      {name:'크루아상',nameJa:'クロワッサン',desc:'매일 아침 갓 구운 크루아상',descJa:'毎朝焼きたてクロワッサン',price:'₩5,500'},
+      {name:'식빵',nameJa:'食パン',desc:'부드러운 버터 식빵',descJa:'柔らかバター食パン',price:'₩7,000'},
+      {name:'아이스 라테',nameJa:'アイスラテ',desc:'',descJa:'',price:'₩6,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/베어스덴베이커리+홍대',
+    map:'https://map.naver.com/p/search/베어스덴베이커리%20홍대',res:null},
+
+  '포프브레드':{emoji:'🫓',bg:'t-bakery',
+    story:{ja:'センスある店構えと洗練されたインテリアが特徴のベーカリー。パンのクオリティはもちろん、空間自体が一つのアート作品のような雰囲気で写真映えする。',ko:'센스 있는 외관과 세련된 인테리어가 특징인 베이커리. 빵 퀄리티는 물론, 공간 자체가 하나의 아트 작품 같은 분위기로 사진도 잘 나옴.'},
+    menus:[
+      {name:'시그니처 빵',nameJa:'シグネチャーパン',desc:'매일 바뀌는 시그니처',descJa:'毎日変わるシグネチャー',price:'₩5,500'},
+      {name:'마늘빵',nameJa:'ガーリックブレッド',desc:'바삭한 마늘 버터빵',descJa:'サクサクガーリックバターパン',price:'₩4,500'},
+      {name:'크루아상',nameJa:'クロワッサン',desc:'버터 크루아상',descJa:'バタークロワッサン',price:'₩5,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/포프브레드+홍대',
+    map:'https://map.naver.com/p/search/포프브레드%20홍대',res:null},
+
+  '뉴욕베이글':{emoji:'🥯',bg:'t-bakery',
+    story:{ja:'NYスタイルのもっちりとしたベーグル専門店。フィリングの種類が豊富で、あんバター・クリームチーズなど定番から季節限定まで揃う。弘大の朝食スポットとして人気。',ko:'뉴욕 스타일의 쫀쫀한 베이글 전문점. 필링 종류가 다양해 앙버터·크림치즈 등 정番부터 시즌 한정까지. 홍대 아침 식사 스팟으로 인기.'},
+    menus:[
+      {name:'앙버터 베이글',nameJa:'あんバターベーグル',desc:'팥 앙금+버터 조합',descJa:'あんこ+バターの組み合わせ',price:'₩6,500'},
+      {name:'크림치즈 베이글',nameJa:'クリームチーズベーグル',desc:'홈메이드 크림치즈',descJa:'自家製クリームチーズ',price:'₩6,000'},
+      {name:'플레인 베이글',nameJa:'プレーンベーグル',desc:'쫀쫀한 기본 베이글',descJa:'もっちり基本ベーグル',price:'₩4,500'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/뉴욕베이글애비뉴+홍대',
+    map:'https://map.naver.com/p/search/뉴욕베이글애비뉴%20홍대',res:null},
+
+  '문식빵':{emoji:'🍞',bg:'t-bakery',
+    story:{ja:'一日一種類、食パンだけを焼く潔いパン専門店。カナダ産小麦とフランス産発酵バターにこだわり、そのまま食べるだけで完結する美味しさを追求している。',ko:'하루에 한 종류, 식빵만 굽는 깔끔한 빵 전문점. 캐나다산 밀가루와 프랑스산 발효버터에 공들여 그냥 먹어도 완결되는 맛을 추구.'},
+    menus:[
+      {name:'생식빵 (하프)',nameJa:'生食パン（ハーフ）',desc:'당일 구운 촉촉한 생식빵',descJa:'当日焼きしっとり生食パン',price:'₩6,500'},
+      {name:'생식빵 (풀)',nameJa:'生食パン（フル）',desc:'한 개 풀 사이즈',descJa:'1本フルサイズ',price:'₩12,000'},
+      {name:'버터식빵',nameJa:'バター食パン',desc:'버터 듬뿍 식빵',descJa:'バターたっぷり食パン',price:'₩7,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/문식빵+연남동',
+    map:'https://map.naver.com/p/search/문식빵%20연남',res:null},
+
+  '아오이토리':{emoji:'🐦',bg:'t-bakery',
+    story:{ja:'「青い鳥」という名の通り、幸せを運ぶパン屋。ブルーリボン掲載で、塩気控えめの優しい味付けが日本人の口に特によく合う。シオパンや柔らかなクリームチーズベーグルが人気。',ko:'"파란 새"라는 이름처럼 행복을 나르는 빵집. 블루리본 수록, 간 세지 않은 부드러운 맛이 일본인 입맛에 특히 잘 맞음. 시오빵과 부드러운 크림치즈 베이글이 인기.'},
+    menus:[
+      {name:'시오빵 (소금빵)',nameJa:'シオパン（塩パン）',desc:'버터 녹아나는 소금빵',descJa:'バター溶け出す塩パン',price:'₩4,500'},
+      {name:'크림치즈 베이글',nameJa:'クリームチーズベーグル',desc:'부드러운 크림치즈',descJa:'柔らかクリームチーズ',price:'₩5,500'},
+      {name:'버터 크루아상',nameJa:'バタークロワッサン',desc:'겹겹이 쌓인 버터 결',descJa:'層が重なるバター',price:'₩5,000'},
+    ],
+    ig:'https://www.instagram.com/bakerycafeaoitori/',
+    naver:null,
+    map:'https://map.naver.com/p/search/아오이토리%20홍대',res:null},
+
+  '공릉빵공장':{emoji:'🏭',bg:'t-bakery',
+    story:{ja:'パン職人の魂がこもった弘大近くのロングラン工場型ベーカリー。毎日早朝から焼きたてのパンが工場直送で並ぶ。余計なデコレーションなしのパン本来の旨さが魅力。',ko:'빵장인의 혼이 담긴 홍대 근처 롱런 공장형 베이커리. 매일 이른 아침부터 갓 구운 빵이 공장 직송으로 진열. 여분의 데코 없는 빵 본연의 맛이 매력.'},
+    menus:[
+      {name:'갓 구운 식빵',nameJa:'焼きたて食パン',desc:'매일 아침 공장 직송',descJa:'毎朝工場直送',price:'₩4,500'},
+      {name:'단팥빵',nameJa:'あんパン',desc:'팥 앙금 가득 단팥빵',descJa:'あんこたっぷりあんパン',price:'₩3,500'},
+      {name:'크림빵',nameJa:'クリームパン',desc:'촉촉한 커스터드 크림',descJa:'しっとりカスタードクリーム',price:'₩3,500'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/공릉빵공장+홍대',
+    map:'https://map.naver.com/p/search/공릉빵공장',res:null},
+
+  '비엔누아즈리리에':{emoji:'🥐',bg:'t-bakery',
+    story:{ja:'本格フランス式ヴィエノワズリーに特化した弘大の実力派ベーカリー。バターを贅沢に使った何層ものクロワッサンは、食べた瞬間にパリの焼きたてを思わせる本物の味わい。',ko:'본격 프랑스식 비엔누아즈리에 특화한 홍대 실력파 베이커리. 버터를 아낌없이 쓴 수십 겹 크루아상은 먹는 순간 파리의 갓 구운 것을 떠올리게 하는 진짜 맛.'},
+    menus:[
+      {name:'버터 크루아상',nameJa:'バタークロワッサン',desc:'겹겹이 아름다운 버터 결',descJa:'層が美しいバタークロワッサン',price:'₩6,000'},
+      {name:'뺑오쇼콜라',nameJa:'パンオショコラ',desc:'다크 초콜릿 가득',descJa:'ダークチョコたっぷり',price:'₩6,500'},
+      {name:'아망드 크루아상',nameJa:'アーモンドクロワッサン',desc:'아몬드 크림 크루아상',descJa:'アーモンドクリームクロワッサン',price:'₩7,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/비엔누아즈리리에+홍대',
+    map:'https://map.naver.com/p/search/비엔누아즈리리에%20홍대',res:null},
+
+  '빵나무':{emoji:'🌳',bg:'t-bakery',
+    story:{ja:'弘大で長く愛されてきた昔ながらの街のパン屋。懐かしい味と親しみやすい価格が魅力で、地元の方が日常的に訪れる。観光地化されていないありのままのローカル感がある。',ko:'홍대에서 오래 사랑받아온 옛날 동네 빵집. 정겨운 맛과 친근한 가격이 매력. 동네 주민이 일상적으로 찾는 가게. 관광지화 안 된 그대로의 로컬 감성.'},
+    menus:[
+      {name:'소보루빵',nameJa:'ソボロパン',desc:'바삭한 소보루 토핑',descJa:'サクサクそぼろトッピング',price:'₩3,000'},
+      {name:'크림빵',nameJa:'クリームパン',desc:'달콤한 커스터드 크림',descJa:'甘いカスタードクリーム',price:'₩3,000'},
+      {name:'단팥빵',nameJa:'あんパン',desc:'진한 팥 앙금',descJa:'濃いあんこ',price:'₩3,000'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/빵나무+홍대',
+    map:'https://map.naver.com/p/search/빵나무%20홍대',res:null},
+
+  // 고터 빵집
+  '베통':{emoji:'🧂',bg:'t-goter',
+    story:{ja:'ダイニングコード★4.7~4.8、ソウルのパン屋トップ1〜2位を誇る塩パンの代名詞。バターが溶け出す瞬間の感動は唯一無二。午前中に売り切れる商品も多いため、早めの来店を。',ko:'다이닝코드 ★4.7~4.8, 서울 빵집 1~2위를 자랑하는 소금빵의 대명사. 버터가 녹아나는 순간의 감동은 유일무이. 오전에 품절되는 것도 많으니 일찍 방문을.'},
+    menus:[
+      {name:'소금빵',nameJa:'塩パン',desc:'버터가 녹아나는 시그니처',descJa:'バターが溶け出すシグネチャー',price:'₩3,200'},
+      {name:'크림치즈 단팥빵',nameJa:'クリームチーズあんパン',desc:'크림치즈+팥 앙금 조합',descJa:'クリームチーズ+あんこの組み合わせ',price:'₩4,500'},
+      {name:'버터 크루아상',nameJa:'バタークロワッサン',desc:'겹겹이 버터 결 크루아상',descJa:'層が重なるバタークロワッサン',price:'₩4,800'},
+    ],
+    ig:'https://www.instagram.com/beton.kr/',
+    naver:null,
+    map:'https://map.naver.com/p/search/베통%20고속터미널',res:null},
+
+  '비파티세리':{emoji:'🥧',bg:'t-goter',
+    story:{ja:'サンフランシスコ三大ベーカリーとして名を馳せ、ジェームズ・ビアード賞を受賞した本格パティスリー。クイニーアマンは要事前確認。美しいケーキとタルトはプレゼント用にも最適。',ko:'샌프란시스코 3대 베이커리로 명성을 날리고 제임스 비어드 어워드를 수상한 본격 파티세리. 퀸아망은 사전 확인 필요. 아름다운 케이크와 타르트는 선물용으로도 최적.'},
+    menus:[
+      {name:'퀸아망 클래식',nameJa:'クイニーアマン クラシック',desc:'제임스 비어드 수상 시그니처',descJa:'ジェームズ・ビアード賞受賞シグネチャー',price:'₩8,500'},
+      {name:'시즌 타르트',nameJa:'シーズンタルト',desc:'제철 과일 타르트',descJa:'旬のフルーツタルト',price:'₩7,500'},
+      {name:'크루아상',nameJa:'クロワッサン',desc:'정통 버터 크루아상',descJa:'正統バタークロワッサン',price:'₩6,500'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/비파티세리+센트럴시티',
+    map:'https://map.naver.com/p/search/비파티세리%20센트럴시티',res:null},
+
+  '장블랑제리':{emoji:'🥖',bg:'t-goter',
+    story:{ja:'ブルーリボン連続掲載で「ソウル三大パン屋」と称される伝説のブーランジェリー。맘모스빵（クリーム入り大型あんパン）はソウル土産の定番になるほどの人気。開店前から行列ができる。',ko:'블루리본 연속 수록으로 "서울 3대 빵집"이라 불리는 전설의 블랑제리. 맘모스빵은 서울 선물 정番이 될 만큼의 인기. 오픈 전부터 줄이 생김.'},
+    menus:[
+      {name:'맘모스빵',nameJa:'マンモスパン',desc:'크림 가득 대형 단팥빵',descJa:'クリームたっぷり大型あんパン',price:'₩4,500'},
+      {name:'명란 바게트',nameJa:'明太子バゲット',desc:'명란+버터 바게트',descJa:'明太子+バターバゲット',price:'₩5,500'},
+      {name:'소금 바게트',nameJa:'塩バゲット',desc:'천연발효 소금 바게트',descJa:'天然発酵塩バゲット',price:'₩4,000'},
+    ],
+    ig:'https://www.instagram.com/jeanboulangerie_kr/',
+    naver:null,
+    map:'https://map.naver.com/p/search/장블랑제리%20고속터미널',res:null},
+
+  '브레드05':{emoji:'🧈',bg:'t-goter',
+    story:{ja:'TV「生活の達人」に出演した元祖앙버터（あんバター）の名店。天然酵母で5日間저온발효させた生地は、バターとあんこの旨味を最大限に引き出す。ソルソグミ（バターロール）もロングセラー。',ko:'TV 생활의 달인 출연 앙버터 원조 명점. 천연발효종 5일 저온숙성 도우가 버터와 팥 앙금의 맛을 최대로 끌어냄. 고소미(버터롤)도 롱셀러.'},
+    menus:[
+      {name:'앙버터',nameJa:'あんバター',desc:'천연발효 도우+팥 앙금+버터',descJa:'天然発酵生地+あんこ+バター',price:'₩5,500'},
+      {name:'고소미',nameJa:'コソミ（バターロール）',desc:'짭짤한 소금 버터롤',descJa:'塩気あるバターロール',price:'₩4,000'},
+      {name:'마늘 바게트',nameJa:'ガーリックバゲット',desc:'바삭한 마늘 버터 바게트',descJa:'サクサクガーリックバターバゲット',price:'₩4,500'},
+    ],
+    ig:null,
+    naver:'https://map.naver.com/p/search/브레드05+고속터미널',
+    map:'https://map.naver.com/p/search/브레드05%20고속터미널',res:null},
+
+  '화이트리에':{emoji:'🍞',bg:'t-goter',
+    story:{ja:'「食パン界のエルメス」と呼ばれるプレミアム生食パン専門店。フランス産発酵バターとカナダ産小麦を使い、切りたてをそのまま食べるだけで完結する美味しさ。プレーンで食べるのが最もおすすめ。',ko:'"식빵계의 에르메스"라 불리는 프리미엄 생식빵 전문점. 프랑스산 발효버터와 캐나다산 밀가루 사용. 잘라서 그냥 먹어도 완결되는 맛. 플레인으로 먹는 게 가장 추천.'},
+    menus:[
+      {name:'생식빵 하프',nameJa:'生食パン ハーフ',desc:'촉촉한 프리미엄 생식빵',descJa:'しっとりプレミアム生食パン',price:'₩9,000'},
+      {name:'플뢰르 식빵',nameJa:'フルール食パン',desc:'32겹 한정 수량',descJa:'32層限定数量',price:'₩18,000'},
+      {name:'버터식빵',nameJa:'バター食パン',desc:'발효버터 식빵',descJa:'発酵バター食パン',price:'₩10,000'},
+    ],
+    ig:'https://www.instagram.com/whitelier_official/',
+    naver:null,
+    map:'https://map.naver.com/p/search/화이트리에%20반포',res:null},
+
+  '롤링핀':{emoji:'🫙',bg:'t-goter',
+    story:{ja:'直接発酵・製パンする姿勢を大切にするプレミアムベーカリーチェーン。バター香り豊かなスコーンと生クリーム食パンが特に人気。素材の良さが際立つシンプルな焼き菓子が揃う。',ko:'직접 발효·제빵하는 자세를 소중히 하는 프리미엄 베이커리 체인. 버터향 가득한 스콘과 생크림식빵이 특히 인기. 재료의 좋음이 돋보이는 단순한 구움과자.'},
+    menus:[
+      {name:'크랜베리 스콘',nameJa:'クランベリースコーン',desc:'바삭하고 촉촉한 스콘',descJa:'サクサクしっとりスコーン',price:'₩4,500'},
+      {name:'버터 프레첼',nameJa:'バタープレッツェル',desc:'소금+버터 프레첼',descJa:'塩+バタープレッツェル',price:'₩4,000'},
+      {name:'생크림 식빵',nameJa:'生クリーム食パン',desc:'진한 생크림 식빵',descJa:'濃厚生クリーム食パン',price:'₩8,000'},
+    ],
+    ig:'https://www.instagram.com/bakery.cafe_rollingpin/',
+    naver:null,
+    map:'https://map.naver.com/p/search/롤링핀%20고속터미널',res:null},
+
+  '보앤미':{emoji:'🇫🇷',bg:'t-goter',
+    story:{ja:'パリのルーブル近くの人気ブーランジェリーBO&MIEの韓国1号店。2017年パリ創業以来、マレ地区を中心に6店舗を展開する실제 파리지앵に愛される店。100%手作りの비엔누아즈は開店5分で完売になることも。',ko:'파리 루브르 근처 인기 블랑제리 보앤미 한국 1호점. 2017년 파리 창업 이래 마레지구를 중심으로 6매장 운영하는 진짜 파리지앵이 사랑하는 가게. 100% 수제 비엔누아즈는 오픈 5분 만에 품절되기도.'},
+    menus:[
+      {name:'비엔누아즈 플레인',nameJa:'ヴィエノワーズ プレーン',desc:'프랑스 발효버터 비엔누아즈',descJa:'フランス発酵バターヴィエノワーズ',price:'₩5,500'},
+      {name:'쿠키샷',nameJa:'クッキーショット',desc:'바삭한 쿠키컵+크림',descJa:'サクサクのクッキーカップ+クリーム',price:'₩6,000'},
+      {name:'크루아상',nameJa:'クロワッサン',desc:'프랑스산 밀가루 크루아상',descJa:'フランス産小麦粉クロワッサン',price:'₩4,500'},
+    ],
+    ig:'https://www.instagram.com/boetmie_gangnam.official/',
+    naver:null,
+    map:'https://map.naver.com/p/search/보앤미%20신세계강남',res:null},
+
+  '아우어베이커리':{emoji:'🌿',bg:'t-goter',
+    story:{ja:'K-ビューティーのようにK-ベーカリーを体現するSNSでも大人気の韓国感性ベーカリー。쑥（ヨモギ）・흑임자（黒ごま）・인절미（韓国もち）など伝統食材をクリームパンに融合させた独自の世界観。',ko:'K-뷰티처럼 K-베이커리를 구현하는 SNS에서도 대인기인 한국 감성 베이커리. 쑥·흑임자·인절미 등 전통 식재료를 크림빵에 융합한 독자적 세계관.'},
+    menus:[
+      {name:'쑥인절미크림빵',nameJa:'ヨモギインジョルミクリームパン',desc:'쑥크림+인절미 토핑',descJa:'ヨモギクリーム+インジョルミトッピング',price:'₩5,500'},
+      {name:'흑임자크림빵',nameJa:'黒ごまクリームパン',desc:'고소한 흑임자 크림',descJa:'香ばしい黒ごまクリーム',price:'₩5,500'},
+      {name:'더티초코',nameJa:'ダーティーチョコ',desc:'진한 초코 크림빵',descJa:'濃厚チョコクリームパン',price:'₩5,000'},
+    ],
+    ig:'https://www.instagram.com/ourbakerycafe/',
+    naver:null,
+    map:'https://map.naver.com/p/search/아우어베이커리%20신세계강남',res:null},
+
+  '밀레앙':{emoji:'🥮',bg:'t-goter',
+    story:{ja:'パリ在住の韓国人シェフ서용상が운営するパリのフラン大会1位ベーカリー。TV「유퀴즈」出演で一躍話題に。パリのフラン（커스터드クリームパイ）は日本では出会えない本格派の逸品。',ko:'파리 거주 한국인 셰프 서용상이 운영하는 파리 플랑 대회 1위 베이커리. TV 유퀴즈 출연으로 일약 화제. 파리의 플랑(커스터드 크림 파이)은 일본에서는 만날 수 없는 본격파의 일품.'},
+    menus:[
+      {name:'플랑 클래식',nameJa:'フラン クラシック',desc:'파리 대회 1위 커스터드 파이',descJa:'パリ大会1位カスタードパイ',price:'₩7,000'},
+      {name:'초코 플랑',nameJa:'チョコフラン',desc:'진한 초코 커스터드 파이',descJa:'濃厚チョコカスタードパイ',price:'₩7,500'},
+      {name:'크루아상',nameJa:'クロワッサン',desc:'파리 스타일 크루아상',descJa:'パリスタイルクロワッサン',price:'₩6,500'},
+    ],
+    ig:'https://www.instagram.com/mille_et_1_kr/',
+    naver:null,
+    map:'https://map.naver.com/p/search/밀레앙%20신세계강남',res:null},
+
+  '르솔레이':{emoji:'🌻',bg:'t-goter',
+    story:{ja:'BLACKPINKジェニーの来店で話題になった마들렌（マドレーヌ）専門店。国産素材にこだわり、그리너리（緑）・우도땅콩（チェジュピーナッツ）など独創的な名前のフレーバーが揃う。ギフト用のボックスも美しい。',ko:'블랙핑크 제니 방문으로 화제가 된 마들렌 전문점. 국산 재료에 공들여 그리너리·우도땅콩 등 독창적인 이름의 플레이버. 선물용 박스도 아름다움.'},
+    menus:[
+      {name:'그리너리',nameJa:'グリーナリー',desc:'바질+말차 마들렌',descJa:'バジル+抹茶マドレーヌ',price:'₩4,000'},
+      {name:'우도땅콩',nameJa:'ウド落花生',desc:'제주 우도 땅콩 마들렌',descJa:'チェジュ宇都ピーナッツマドレーヌ',price:'₩4,000'},
+      {name:'클래식',nameJa:'クラシック',desc:'버터 기본 마들렌',descJa:'バター基本マドレーヌ',price:'₩3,500'},
+    ],
+    ig:'https://www.instagram.com/lesoleil_official/',
+    naver:null,
+    map:'https://map.naver.com/p/search/르솔레이%20신세계강남',res:null},
+};
+
+const SECS = {
+  home:'sec-home', must:'sec-must',
+  hongdae:'sec-hongdae', goter:'sec-goter', beauty:'sec-beauty'
+};
+
+function goTab(id){
+  Object.values(SECS).forEach(s=>{const e=document.getElementById(s);if(e)e.classList.remove('active')});
+  const s=document.getElementById(SECS[id]);if(s)s.classList.add('active');
+  document.querySelectorAll('.ti').forEach(t=>t.classList.remove('active'));
+  const t=document.getElementById('tab-'+id);if(t)t.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function setLang(lang){
+  LANG.current=lang;
+  document.getElementById('btnJa').classList.toggle('active',lang==='ja');
+  document.getElementById('btnKo').classList.toggle('active',lang==='ko');
+  document.querySelectorAll('.ja').forEach(el=>{
+    el.style.display=lang==='ja'?(['SPAN','A','EM','STRONG','BUTTON','DIV'].includes(el.tagName)?'inline':'block'):'none';
+  });
+  document.querySelectorAll('.ko').forEach(el=>{
+    el.style.display=lang==='ko'?(['SPAN','A','EM','STRONG','BUTTON','DIV'].includes(el.tagName)?'inline':'block'):'none';
+  });
+  // 모달이 열려있으면 내용 업데이트
+  const overlay = document.getElementById('modal-overlay');
+  if(overlay.classList.contains('open')){
+    const key = overlay.dataset.currentKey;
+    if(key) openModal(key);
+  }
+}
+
+function hfilter(cat, el){
+  const foodSubs = document.querySelectorAll('.food-sub');
+  const cafeSubs = document.querySelectorAll('.cafe-sub');
+  const bakerySubs = document.querySelectorAll('.bakery-sub');
+  const foodCards = ['hcards-italian','hcards-korean'];
+  const cafeCards = ['hcards-cafe1','hcards-cafe2'];
+  const bakeryCards = ['hcards-bakery'];
+
+  const showSets = (ids, subs, show) => {
+    ids.forEach(id=>{const e=document.getElementById(id);if(e)e.style.display=show?'grid':'none'});
+    subs.forEach(e=>{e.style.display=show?'block':'none'});
+  };
+
+  if(cat==='all'){
+    showSets(foodCards, foodSubs, true);
+    showSets(cafeCards, cafeSubs, true);
+    showSets(bakeryCards, bakerySubs, true);
+  } else if(cat==='food'){
+    showSets(foodCards, foodSubs, true);
+    showSets(cafeCards, cafeSubs, false);
+    showSets(bakeryCards, bakerySubs, false);
+  } else if(cat==='cafe'){
+    showSets(foodCards, foodSubs, false);
+    showSets(cafeCards, cafeSubs, true);
+    showSets(bakeryCards, bakerySubs, false);
+  } else if(cat==='bakery'){
+    showSets(foodCards, foodSubs, false);
+    showSets(cafeCards, cafeSubs, false);
+    showSets(bakeryCards, bakerySubs, true);
+  }
+  document.querySelectorAll('#hchips .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function openModal(key){
+  const s = STORES[key];
+  if(!s) return;
+  const lang = LANG.current;
+
+  const thumb = document.getElementById('modal-thumb');
+  thumb.textContent = s.emoji;
+  thumb.className = 'modal-thumb ' + s.bg;
+
+  const kana = KATAKANA[key] || '';
+  document.getElementById('modal-name').innerHTML = LANG.current === 'ja' && kana ? kana : key;
+  document.getElementById('modal-addr').textContent = '';
+
+  const story = document.getElementById('modal-story');
+  story.textContent = lang==='ja' ? s.story.ja : s.story.ko;
+
+  const mlist = document.getElementById('modal-menus');
+  mlist.innerHTML = s.menus.map(m=>`
+    <div class="menu-item">
+      <div>
+        <div class="menu-item-name">${lang==='ja'?m.nameJa:m.name}</div>
+        <div class="menu-item-desc">${lang==='ja'?m.descJa:m.desc}</div>
+      </div>
+      <div class="menu-item-price">${m.price}</div>
+    </div>`).join('');
+
+  const igBtn = document.getElementById('modal-ig-btn');
+  const naverBtn = document.getElementById('modal-naver-btn');
+
+  if(s.ig){
+    igBtn.href = s.ig;
+    igBtn.classList.remove('hidden');
+    naverBtn.classList.add('hidden');
+  } else if(s.naver){
+    naverBtn.href = s.naver;
+    naverBtn.classList.remove('hidden');
+    igBtn.classList.add('hidden');
+  } else {
+    igBtn.classList.add('hidden');
+    naverBtn.classList.add('hidden');
+  }
+
+  document.getElementById('modal-map-btn').href = s.map;
+
+  const resBtn = document.getElementById('modal-res-btn');
+  if(s.res){ resBtn.href=s.res; resBtn.classList.remove('hidden'); }
+  else { resBtn.classList.add('hidden'); }
+
+  const overlay = document.getElementById('modal-overlay');
+  overlay.dataset.currentKey = key;
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(e){
+  if(e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// 초기화
+setLang('ja');
+goTab('home');
+</script>
+</body>
+</html>
