@@ -7,6 +7,11 @@ const repoPanel = document.querySelector("#repoPanel");
 const repoCount = document.querySelector("#repoCount");
 const repoList = document.querySelector("#repoList");
 const repoOpenAll = document.querySelector("#repoOpenAll");
+const repoToken = document.querySelector("#repoToken");
+const repoUploadInput = document.querySelector("#repoUploadInput");
+const repoPickFiles = document.querySelector("#repoPickFiles");
+const repoUploadButton = document.querySelector("#repoUploadButton");
+const repoUploadStatus = document.querySelector("#repoUploadStatus");
 const openMessage = document.querySelector("#openMessage");
 const emptyState = document.querySelector("#emptyState");
 const readerPanel = document.querySelector("#readerPanel");
@@ -36,6 +41,11 @@ const state = {
 
 const draftKey = "md-pocket-reader-draft";
 const themeKey = "md-pocket-reader-theme";
+const repoTokenKey = "md-pocket-reader-github-token";
+const repoOwner = "ihansuru-gif";
+const repoName = "korea-guide";
+const repoBranch = "main";
+const repoLibraryBase = "mobile-md-reader/library";
 
 function escapeHtml(value) {
   return value
@@ -147,6 +157,140 @@ function setStatus(text) {
 
 function setOpenMessage(text) {
   if (openMessage) openMessage.textContent = text;
+}
+
+function setRepoUploadStatus(text) {
+  repoUploadStatus.textContent = text;
+}
+
+function cleanRepoFileName(name) {
+  return name
+    .replace(/\\/g, "/")
+    .split("/")
+    .pop()
+    .replace(/[^\w.\-가-힣 ]+/g, "_")
+    .trim() || "document.md";
+}
+
+function toBase64Utf8(text) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = "";
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+  return btoa(binary);
+}
+
+function githubHeaders() {
+  const token = repoToken.value.trim();
+  if (!token) throw new Error("Paste a GitHub token first.");
+  localStorage.setItem(repoTokenKey, token);
+  return {
+    "Accept": "application/vnd.github+json",
+    "Authorization": `Bearer ${token}`,
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+}
+
+function githubContentsUrl(path) {
+  return `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}`;
+}
+
+async function getGithubFile(path, headers) {
+  const response = await fetch(`${githubContentsUrl(path)}?ref=${repoBranch}`, { headers });
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`GitHub read failed: ${response.status}`);
+  return response.json();
+}
+
+async function putGithubFile(path, content, message, headers, sha = null) {
+  const body = {
+    message,
+    content: toBase64Utf8(content),
+    branch: repoBranch,
+  };
+  if (sha) body.sha = sha;
+
+  const response = await fetch(githubContentsUrl(path), {
+    method: "PUT",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`GitHub upload failed: ${response.status} ${errorText}`);
+  }
+  return response.json();
+}
+
+async function readRepoIndex(headers) {
+  const indexPath = `${repoLibraryBase}/index.json`;
+  const existing = await getGithubFile(indexPath, headers);
+  if (!existing?.content) return { sha: null, data: { files: [] } };
+
+  const json = new TextDecoder().decode(Uint8Array.from(atob(existing.content.replace(/\s/g, "")), (char) => char.charCodeAt(0)));
+  try {
+    const data = JSON.parse(json);
+    return { sha: existing.sha, data: { files: Array.isArray(data.files) ? data.files : [] } };
+  } catch {
+    return { sha: existing.sha, data: { files: [] } };
+  }
+}
+
+async function uploadFilesToRepo(fileLikeList) {
+  const files = Array.from(fileLikeList || []).filter(isReadableTextFile);
+  if (!files.length) {
+    setRepoUploadStatus("Choose .md or .txt files first.");
+    return;
+  }
+
+  repoUploadButton.disabled = true;
+  try {
+    const headers = githubHeaders();
+    const indexState = await readRepoIndex(headers);
+    const entries = [...indexState.data.files];
+
+    for (const file of files) {
+      const fileName = cleanRepoFileName(file.name);
+      const repoPath = `uploads/${fileName}`;
+      const fullPath = `${repoLibraryBase}/${repoPath}`;
+      const text = await readFileAsText(file);
+      const existing = await getGithubFile(fullPath, headers);
+      await putGithubFile(
+        fullPath,
+        text,
+        existing ? `Update reader file ${fileName}` : `Add reader file ${fileName}`,
+        headers,
+        existing?.sha || null,
+      );
+
+      const oldIndex = entries.findIndex((item) => item.path === repoPath);
+      const entry = { name: fileName, path: repoPath };
+      if (oldIndex >= 0) entries[oldIndex] = entry;
+      else entries.push(entry);
+      setRepoUploadStatus(`Uploaded ${fileName}`);
+    }
+
+    const nextIndex = `${JSON.stringify({ files: entries }, null, 2)}\n`;
+    await putGithubFile(
+      `${repoLibraryBase}/index.json`,
+      nextIndex,
+      "Update reader library",
+      headers,
+      indexState.sha,
+    );
+
+    setRepoUploadStatus(`Uploaded ${files.length} file${files.length === 1 ? "" : "s"}. Wait a few seconds, then tap Repo.`);
+    await loadRepoLibrary();
+  } catch (error) {
+    setRepoUploadStatus(error.message);
+  } finally {
+    repoUploadButton.disabled = false;
+  }
 }
 
 function repoFileUrl(item) {
@@ -467,11 +611,17 @@ function applyTheme() {
 fileInput.addEventListener("change", (event) => loadFiles(event.target.files));
 openFileButton.addEventListener("click", openFiles);
 saveButton.addEventListener("click", saveFile);
+repoToken.value = localStorage.getItem(repoTokenKey) || "";
 repoToggle.addEventListener("click", () => {
   repoPanel.hidden = !repoPanel.hidden;
   if (!repoPanel.hidden) loadRepoLibrary();
 });
 repoOpenAll.addEventListener("click", loadAllRepoFiles);
+repoPickFiles.addEventListener("click", () => {
+  repoUploadInput.value = "";
+  repoUploadInput.click();
+});
+repoUploadButton.addEventListener("click", () => uploadFilesToRepo(repoUploadInput.files));
 
 editor.addEventListener("input", () => {
   const item = currentFile();

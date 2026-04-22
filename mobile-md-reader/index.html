@@ -29,6 +29,13 @@
           </div>
           <button id="repoOpenAll" class="solid-button" type="button" hidden>Open all</button>
         </div>
+        <div class="repo-uploader">
+          <input id="repoToken" type="password" autocomplete="off" placeholder="GitHub token for upload">
+          <input id="repoUploadInput" class="file-input" type="file" multiple>
+          <button id="repoPickFiles" class="ghost-button" type="button">Choose</button>
+          <button id="repoUploadButton" class="solid-button" type="button">Upload</button>
+        </div>
+        <p id="repoUploadStatus" class="hint" role="status"></p>
         <div id="repoList" class="repo-list"></div>
       </section>
 

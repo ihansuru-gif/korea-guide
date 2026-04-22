@@ -216,6 +216,23 @@ h1 {
   gap: 8px;
 }
 
+.repo-uploader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.repo-uploader input[type="password"] {
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+}
+
 .repo-item {
   min-height: 48px;
   display: flex;
@@ -563,8 +580,13 @@ h1 {
 
   .segmented,
   .search-box,
-  .size-control {
+  .size-control,
+  .repo-uploader {
     width: 100%;
+  }
+
+  .repo-uploader {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .size-control input {
