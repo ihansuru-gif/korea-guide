@@ -2,6 +2,11 @@ const fileInput = document.querySelector("#fileInput");
 const openFileButton = document.querySelector("#openFileButton");
 const saveButton = document.querySelector("#saveButton");
 const themeToggle = document.querySelector("#themeToggle");
+const repoToggle = document.querySelector("#repoToggle");
+const repoPanel = document.querySelector("#repoPanel");
+const repoCount = document.querySelector("#repoCount");
+const repoList = document.querySelector("#repoList");
+const repoOpenAll = document.querySelector("#repoOpenAll");
 const openMessage = document.querySelector("#openMessage");
 const emptyState = document.querySelector("#emptyState");
 const readerPanel = document.querySelector("#readerPanel");
@@ -26,6 +31,7 @@ const state = {
   mode: localStorage.getItem("md-reader-mode") || "preview",
   search: "",
   dirty: false,
+  repoFiles: [],
 };
 
 const draftKey = "md-pocket-reader-draft";
@@ -141,6 +147,100 @@ function setStatus(text) {
 
 function setOpenMessage(text) {
   if (openMessage) openMessage.textContent = text;
+}
+
+function repoFileUrl(item) {
+  if (item.url) return item.url;
+  return new URL(item.path, new URL("./library/", window.location.href)).href;
+}
+
+function repoFileName(item) {
+  return item.name || item.title || String(item.path || "repo-file.md").split("/").pop();
+}
+
+async function loadRepoLibrary() {
+  try {
+    const response = await fetch(`./library/index.json?ts=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error("No repo library");
+    const data = await response.json();
+    state.repoFiles = Array.isArray(data.files) ? data.files.filter((item) => item.path || item.url) : [];
+  } catch {
+    state.repoFiles = [];
+  }
+  renderRepoLibrary();
+}
+
+function renderRepoLibrary() {
+  repoCount.textContent = `${state.repoFiles.length} file${state.repoFiles.length === 1 ? "" : "s"}`;
+  repoOpenAll.hidden = state.repoFiles.length === 0;
+  repoList.innerHTML = "";
+
+  if (!state.repoFiles.length) {
+    repoList.innerHTML = '<p class="hint">No repo files yet. Add files under library/ and list them in library/index.json.</p>';
+    return;
+  }
+
+  state.repoFiles.forEach((item, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "repo-item";
+    button.innerHTML = `
+      <strong>${escapeHtml(repoFileName(item))}</strong>
+      <span>${escapeHtml(item.path || item.url)}</span>
+    `;
+    button.addEventListener("click", () => loadRepoFile(index));
+    repoList.appendChild(button);
+  });
+}
+
+async function fetchRepoText(item) {
+  const response = await fetch(`${repoFileUrl(item)}?ts=${Date.now()}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Could not load ${repoFileName(item)}`);
+  return response.text();
+}
+
+async function loadRepoFile(index) {
+  const item = state.repoFiles[index];
+  if (!item) return;
+
+  try {
+    state.files = [{
+      name: repoFileName(item),
+      content: await fetchRepoText(item),
+      handle: null,
+      type: "text/markdown",
+    }];
+    selectFile(0);
+    setStatus("Loaded from repo");
+  } catch (error) {
+    repoCount.textContent = error.message;
+  }
+}
+
+async function loadAllRepoFiles() {
+  const loaded = [];
+  for (const item of state.repoFiles) {
+    try {
+      loaded.push({
+        name: repoFileName(item),
+        content: await fetchRepoText(item),
+        handle: null,
+        type: "text/markdown",
+      });
+    } catch {
+      // Skip missing files so one bad entry does not block the whole shelf.
+    }
+  }
+
+  if (!loaded.length) {
+    repoCount.textContent = "No repo files could be loaded";
+    return;
+  }
+
+  state.files = loaded;
+  selectFile(0);
+  if (loaded.length > 1) setMode("all");
+  setStatus("Loaded repo files");
 }
 
 function updatePreview() {
@@ -367,6 +467,11 @@ function applyTheme() {
 fileInput.addEventListener("change", (event) => loadFiles(event.target.files));
 openFileButton.addEventListener("click", openFiles);
 saveButton.addEventListener("click", saveFile);
+repoToggle.addEventListener("click", () => {
+  repoPanel.hidden = !repoPanel.hidden;
+  if (!repoPanel.hidden) loadRepoLibrary();
+});
+repoOpenAll.addEventListener("click", loadAllRepoFiles);
 
 editor.addEventListener("input", () => {
   const item = currentFile();
@@ -418,3 +523,4 @@ window.addEventListener("beforeunload", (event) => {
 applyTheme();
 setMode(state.mode);
 restoreDraft();
+loadRepoLibrary();

@@ -14,10 +14,24 @@
         <p class="eyebrow">Markdown / TXT</p>
         <h1>MD Pocket Reader</h1>
       </div>
-      <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">T</button>
+      <div class="top-actions">
+        <button id="repoToggle" class="ghost-button" type="button">Repo</button>
+        <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">T</button>
+      </div>
     </header>
 
     <main class="workspace">
+      <section id="repoPanel" class="repo-panel" hidden>
+        <div class="repo-head">
+          <div>
+            <strong>Repo library</strong>
+            <span id="repoCount">Checking...</span>
+          </div>
+          <button id="repoOpenAll" class="solid-button" type="button" hidden>Open all</button>
+        </div>
+        <div id="repoList" class="repo-list"></div>
+      </section>
+
       <section id="emptyState" class="empty-state">
         <div class="drop-zone" id="dropZone">
           <input id="fileInput" class="file-input" type="file" multiple>

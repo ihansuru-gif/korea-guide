@@ -74,6 +74,12 @@ label {
   backdrop-filter: blur(18px);
 }
 
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .eyebrow {
   margin: 0 0 4px;
   color: var(--accent);
@@ -174,6 +180,62 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.repo-panel {
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.repo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.repo-head div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.repo-head span,
+.repo-item span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.repo-list {
+  display: grid;
+  gap: 8px;
+}
+
+.repo-item {
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+}
+
+.repo-item strong,
+.repo-item span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .file-strip,
