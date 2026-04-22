@@ -2,6 +2,7 @@ const fileInput = document.querySelector("#fileInput");
 const openFileButton = document.querySelector("#openFileButton");
 const saveButton = document.querySelector("#saveButton");
 const themeToggle = document.querySelector("#themeToggle");
+const openMessage = document.querySelector("#openMessage");
 const emptyState = document.querySelector("#emptyState");
 const readerPanel = document.querySelector("#readerPanel");
 const dropZone = document.querySelector("#dropZone");
@@ -138,6 +139,10 @@ function setStatus(text) {
   saveStatus.textContent = text;
 }
 
+function setOpenMessage(text) {
+  if (openMessage) openMessage.textContent = text;
+}
+
 function updatePreview() {
   preview.innerHTML = renderMarkdown(editor.value, state.search);
   updateAllPreview();
@@ -252,65 +257,55 @@ function isReadableTextFile(file) {
 }
 
 async function loadFiles(fileLikeList) {
-  const files = Array.from(fileLikeList).filter(isReadableTextFile);
-  if (!files.length) return;
+  const pickedFiles = Array.from(fileLikeList || []);
+  const files = pickedFiles.filter(isReadableTextFile);
+  if (!pickedFiles.length) {
+    setOpenMessage("No file selected.");
+    return;
+  }
+  if (!files.length) {
+    setOpenMessage("No readable .md / .txt file found.");
+    return;
+  }
 
   const loaded = [];
   for (const file of files) {
-    loaded.push({
-      name: file.name,
-      content: await file.text(),
-      handle: file.handle || null,
-      type: file.type || "text/plain",
-    });
+    try {
+      loaded.push({
+        name: file.name,
+        content: await readFileAsText(file),
+        handle: file.handle || null,
+        type: file.type || "text/plain",
+      });
+    } catch {
+      setOpenMessage(`Could not read ${file.name}.`);
+    }
+  }
+
+  if (!loaded.length) {
+    setOpenMessage("Files were selected, but none could be read.");
+    return;
   }
 
   state.files = loaded;
+  setOpenMessage(`Opened ${loaded.length} file${loaded.length === 1 ? "" : "s"}.`);
   selectFile(0);
 }
 
 async function openFiles() {
-  if (!window.showOpenFilePicker) {
-    fileInput.click();
-    return;
-  }
+  fileInput.value = "";
+  fileInput.click();
+}
 
-  try {
-    const handles = await window.showOpenFilePicker({
-      multiple: true,
-      types: [{
-        description: "Markdown and text files",
-        accept: {
-          "text/*": [".md", ".markdown", ".mdown", ".mkd", ".txt"],
-        },
-      }],
-      excludeAcceptAllOption: false,
-    });
+function readFileAsText(file) {
+  if (file.text) return file.text();
 
-    const loaded = [];
-    for (const handle of handles) {
-      const file = await handle.getFile();
-      if (!isReadableTextFile(file)) continue;
-      loaded.push({
-        name: file.name,
-        content: await file.text(),
-        handle,
-        type: file.type || "text/plain",
-      });
-    }
-
-    if (!loaded.length) {
-      fileInput.click();
-      return;
-    }
-
-    state.files = loaded;
-    selectFile(0);
-  } catch (error) {
-    if (error?.name !== "AbortError") {
-      fileInput.click();
-    }
-  }
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(file);
+  });
 }
 
 function downloadFile(name, content) {
