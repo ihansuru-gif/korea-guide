@@ -222,7 +222,7 @@ h1 {
 
 .segmented {
   display: inline-grid;
-  grid-template-columns: repeat(3, minmax(72px, 1fr));
+  grid-template-columns: repeat(4, minmax(62px, 1fr));
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
@@ -272,13 +272,29 @@ h1 {
   padding-bottom: 4px;
 }
 
-.file-chip {
+.file-chip-wrap {
   min-height: 36px;
   flex: 0 0 auto;
-  max-width: 220px;
-  padding: 0 12px;
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 320px;
   border: 1px solid var(--line);
   border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.file-chip-wrap.active {
+  border-color: var(--accent);
+}
+
+.file-chip {
+  min-height: 36px;
+  flex: 1 1 auto;
+  min-width: 96px;
+  max-width: 220px;
+  padding: 0 12px;
+  border: 0;
   background: var(--surface);
   color: var(--muted);
   overflow: hidden;
@@ -286,9 +302,22 @@ h1 {
   white-space: nowrap;
 }
 
-.file-chip.active {
+.file-chip-wrap.active .file-chip {
   color: var(--text);
-  border-color: var(--accent);
+}
+
+.order-button {
+  min-height: 36px;
+  padding: 0 8px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.order-button:disabled {
+  opacity: 0.35;
 }
 
 .content-area {
@@ -395,7 +424,12 @@ h1 {
 }
 
 .preview-mode .editor,
-.edit-mode .markdown-view {
+.preview-mode .all-view,
+.edit-mode .markdown-view,
+.edit-mode .all-view,
+.split-mode .all-view,
+.all-mode .editor,
+.all-mode #preview {
   display: none;
 }
 
@@ -409,6 +443,38 @@ h1 {
 
 .split-mode .markdown-view {
   border-right: 1px solid var(--line);
+}
+
+.all-mode {
+  display: block;
+}
+
+.all-view {
+  min-height: calc(100svh - 220px);
+}
+
+.all-file {
+  padding-bottom: 28px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 150px;
+}
+
+.all-file:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.all-file-title {
+  position: sticky;
+  top: calc(70px + env(safe-area-inset-top));
+  z-index: 2;
+  margin: -22px -22px 22px;
+  padding: 14px 22px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  font-size: 1.05em;
 }
 
 @media (max-width: 720px) {

@@ -10,12 +10,14 @@ const saveStatus = document.querySelector("#saveStatus");
 const fileList = document.querySelector("#fileList");
 const editor = document.querySelector("#editor");
 const preview = document.querySelector("#preview");
+const allPreview = document.querySelector("#allPreview");
 const contentArea = document.querySelector("#contentArea");
 const searchInput = document.querySelector("#searchInput");
 const fontSize = document.querySelector("#fontSize");
 const previewTab = document.querySelector("#previewTab");
 const editTab = document.querySelector("#editTab");
 const splitTab = document.querySelector("#splitTab");
+const allTab = document.querySelector("#allTab");
 
 const state = {
   files: [],
@@ -138,11 +140,26 @@ function setStatus(text) {
 
 function updatePreview() {
   preview.innerHTML = renderMarkdown(editor.value, state.search);
+  updateAllPreview();
   localStorage.setItem(draftKey, JSON.stringify({
     name: currentFile()?.name || "draft.md",
     content: editor.value,
     savedAt: new Date().toISOString(),
   }));
+}
+
+function updateAllPreview() {
+  if (!state.files.length) {
+    allPreview.innerHTML = "<p>No files opened.</p>";
+    return;
+  }
+
+  allPreview.innerHTML = state.files.map((item, index) => `
+    <section class="all-file" id="file-${index}">
+      <h1 class="all-file-title">${escapeHtml(item.name)}</h1>
+      ${renderMarkdown(item.content, state.search)}
+    </section>
+  `).join("");
 }
 
 function setMode(mode) {
@@ -152,6 +169,7 @@ function setMode(mode) {
   previewTab.classList.toggle("active", mode === "preview");
   editTab.classList.toggle("active", mode === "edit");
   splitTab.classList.toggle("active", mode === "split");
+  allTab.classList.toggle("active", mode === "all");
   if (mode !== "edit") updatePreview();
 }
 
@@ -165,13 +183,56 @@ function renderFileList() {
   fileList.hidden = state.files.length < 2;
 
   state.files.forEach((item, index) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = `file-chip-wrap${index === state.currentIndex ? " active" : ""}`;
+
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `file-chip${index === state.currentIndex ? " active" : ""}`;
+    button.className = "file-chip";
     button.textContent = item.name;
-    button.addEventListener("click", () => selectFile(index));
-    fileList.appendChild(button);
+    button.addEventListener("click", () => {
+      if (state.mode === "all") {
+        document.querySelector(`#file-${index}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        selectFile(index);
+      }
+    });
+
+    const upButton = document.createElement("button");
+    upButton.type = "button";
+    upButton.className = "order-button";
+    upButton.textContent = "Up";
+    upButton.disabled = index === 0;
+    upButton.addEventListener("click", () => moveFile(index, -1));
+
+    const downButton = document.createElement("button");
+    downButton.type = "button";
+    downButton.className = "order-button";
+    downButton.textContent = "Down";
+    downButton.disabled = index === state.files.length - 1;
+    downButton.addEventListener("click", () => moveFile(index, 1));
+
+    wrapper.append(button, upButton, downButton);
+    fileList.appendChild(wrapper);
   });
+}
+
+function moveFile(index, direction) {
+  const nextIndex = index + direction;
+  if (nextIndex < 0 || nextIndex >= state.files.length) return;
+
+  const [item] = state.files.splice(index, 1);
+  state.files.splice(nextIndex, 0, item);
+
+  if (state.currentIndex === index) {
+    state.currentIndex = nextIndex;
+  } else if (state.currentIndex === nextIndex) {
+    state.currentIndex = index;
+  }
+
+  renderFileList();
+  updateAllPreview();
+  setStatus("Order changed");
 }
 
 function selectFile(index) {
@@ -319,9 +380,10 @@ fontSize.addEventListener("input", (event) => {
   document.documentElement.style.setProperty("--font-size", `${event.target.value}px`);
 });
 
-previewTab.addEventListener("click", () => setMode("preview"));
+  previewTab.addEventListener("click", () => setMode("preview"));
 editTab.addEventListener("click", () => setMode("edit"));
 splitTab.addEventListener("click", () => setMode("split"));
+allTab.addEventListener("click", () => setMode("all"));
 
 themeToggle.addEventListener("click", () => {
   const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
