@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111111">
+  <title>MD Pocket Reader</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Markdown / TXT</p>
+        <h1>MD Pocket Reader</h1>
+      </div>
+      <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">T</button>
+    </header>
+
+    <main class="workspace">
+      <section id="emptyState" class="empty-state">
+        <div class="drop-zone" id="dropZone">
+          <input id="fileInput" class="file-input" type="file" accept=".md,.markdown,.txt,text/markdown,text/plain" multiple>
+          <label for="fileInput" class="primary-action">Open file</label>
+          <p>Read and edit .md / .txt files from your phone.</p>
+          <p class="hint">Files stay on this device.</p>
+        </div>
+      </section>
+
+      <section id="readerPanel" class="reader-panel" hidden>
+        <div class="file-strip">
+          <button id="openFileButton" class="ghost-button" type="button">Open</button>
+          <div class="file-meta">
+            <strong id="fileName">untitled.md</strong>
+            <span id="saveStatus">Ready</span>
+          </div>
+          <button id="saveButton" class="solid-button" type="button">Save</button>
+        </div>
+
+        <div class="controls">
+          <div class="segmented" role="tablist" aria-label="View mode">
+            <button id="previewTab" class="segment active" type="button">Read</button>
+            <button id="editTab" class="segment" type="button">Edit</button>
+            <button id="splitTab" class="segment" type="button">Split</button>
+          </div>
+          <label class="search-box">
+            <span>Find</span>
+            <input id="searchInput" type="search" placeholder="Search text">
+          </label>
+          <label class="size-control">
+            <span>Size</span>
+            <input id="fontSize" type="range" min="15" max="24" value="18">
+          </label>
+        </div>
+
+        <div id="fileList" class="file-list" hidden></div>
+
+        <div id="contentArea" class="content-area preview-mode">
+          <article id="preview" class="markdown-view"></article>
+          <textarea id="editor" class="editor" spellcheck="false" aria-label="Markdown editor"></textarea>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
