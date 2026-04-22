@@ -247,8 +247,12 @@ function selectFile(index) {
   showReader();
 }
 
+function isReadableTextFile(file) {
+  return /\.(md|markdown|mdown|mkd|txt)$/i.test(file.name) || file.type.startsWith("text/");
+}
+
 async function loadFiles(fileLikeList) {
-  const files = Array.from(fileLikeList).filter((file) => /\.(md|markdown|txt)$/i.test(file.name));
+  const files = Array.from(fileLikeList).filter(isReadableTextFile);
   if (!files.length) return;
 
   const loaded = [];
@@ -275,23 +279,29 @@ async function openFiles() {
     const handles = await window.showOpenFilePicker({
       multiple: true,
       types: [{
-        description: "Markdown and text",
+        description: "Markdown and text files",
         accept: {
-          "text/plain": [".md", ".markdown", ".txt"],
-          "text/markdown": [".md", ".markdown"],
+          "text/*": [".md", ".markdown", ".mdown", ".mkd", ".txt"],
         },
       }],
+      excludeAcceptAllOption: false,
     });
 
     const loaded = [];
     for (const handle of handles) {
       const file = await handle.getFile();
+      if (!isReadableTextFile(file)) continue;
       loaded.push({
         name: file.name,
         content: await file.text(),
         handle,
         type: file.type || "text/plain",
       });
+    }
+
+    if (!loaded.length) {
+      fileInput.click();
+      return;
     }
 
     state.files = loaded;
