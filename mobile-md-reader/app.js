@@ -353,6 +353,7 @@ async function loadRepoFile(index) {
       content: await fetchRepoText(item),
       handle: null,
       type: "text/markdown",
+      repoPath: `${repoLibraryBase}/${item.path}`,
     }];
     selectFile(0);
     setStatus("Loaded from repo");
@@ -370,6 +371,7 @@ async function loadAllRepoFiles() {
         content: await fetchRepoText(item),
         handle: null,
         type: "text/markdown",
+        repoPath: `${repoLibraryBase}/${item.path}`,
       });
     } catch {
       // Skip missing files so one bad entry does not block the whole shelf.
@@ -569,6 +571,28 @@ async function saveFile() {
   if (!item) return;
 
   item.content = editor.value;
+
+  if (item.repoPath) {
+    try {
+      const headers = githubHeaders();
+      const existing = await getGithubFile(item.repoPath, headers);
+      await putGithubFile(
+        item.repoPath,
+        item.content,
+        `Update reader file ${item.name}`,
+        headers,
+        existing?.sha || null,
+      );
+      state.dirty = false;
+      setStatus("Saved to repo");
+      await loadRepoLibrary();
+      return;
+    } catch (error) {
+      setStatus("Repo save failed");
+      setRepoUploadStatus(error.message);
+      return;
+    }
+  }
 
   if (item.handle?.createWritable) {
     const writable = await item.handle.createWritable();
