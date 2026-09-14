@@ -1,0 +1,70 @@
+  function renderToggleButtons(selector,items,selected,setter){
+    const root=$(selector); root.innerHTML=items.map(label=>`<button type="button" data-label="${esc(label)}" class="${selected.includes(label)?'active':''}">${label}</button>`).join('');
+    root.onclick=e=>{const btn=e.target.closest('button[data-label]'); if(!btn)return; const label=unesc(btn.dataset.label); const next=selected.includes(label)?selected.filter(x=>x!==label):[...selected,label]; setter(next); selected=next; btn.classList.toggle('active'); saveState();};
+  }
+
+  function renderFields(){
+    const root=$('#fieldGroups');
+    root.innerHTML=D.fieldGroups.map(g=>`<section class="field-group"><header><div><h3>${g.title}</h3><p>관심 있는 결과물과 작업 분야를 고릅니다.</p></div><span class="mini-kicker">최대 8개</span></header><div class="field-card-grid">${g.fields.map(f=>`<label class="field-card ${state.fields.includes(f.id)?'active':''}" data-field="${f.id}"><input type="checkbox" ${state.fields.includes(f.id)?'checked':''}><i>${state.fields.includes(f.id)?'✓':'+'}</i><b>${f.name}</b><span>${f.desc}</span></label>`).join('')}</div></section>`).join('');
+    root.onclick=e=>{const card=e.target.closest('.field-card'); if(!card)return; e.preventDefault(); const id=card.dataset.field; if(state.fields.includes(id)){state.fields=state.fields.filter(x=>x!==id);}else{if(state.fields.length>=8)return alert('활용 분야는 최대 8개까지 고를 수 있어요.'); state.fields.push(id);} saveState(); renderFields();};
+  }
+
+  function compute(){
+    const pref=Object.fromEntries(D.styles.map(s=>[s.id,0]));
+    const exp=Object.fromEntries(D.styles.map(s=>[s.id,0]));
+    // comparisons
+    D.comparisons.forEach((q,i)=>{
+      const v=state.comparisons[i]; if(v===null||v===undefined)return;
+      if(v<0) q.a.styles.forEach(id=>pref[id]+=Math.abs(v)*3.2);
+      if(v>0) q.b.styles.forEach(id=>pref[id]+=Math.abs(v)*3.2);
+      if(v===0){q.a.styles.forEach(id=>pref[id]+=1.6);q.b.styles.forEach(id=>pref[id]+=1.6);}
+    });
+    // spectrum
+    D.spectrumGroups.forEach(g=>g.items.forEach(item=>{
+      const value=Number(state.spectrum[item.id]||3);
+      Object.entries(item.weights).forEach(([id,w])=>pref[id]+=(value-1)*w*1.45);
+    }));
+    // details
+    D.detailGroups.forEach(g=>{
+      const selected=state.details[g.title]||[];
+      g.items.forEach(([label,ids])=>{if(selected.includes(label))ids.forEach(id=>pref[id]+=2.6);});
+    });
+    // experience
+    D.experienceGroups.forEach(g=>g.items.forEach(([label,ids])=>{
+      const level=Number(state.experience[label]||0); ids.forEach(id=>exp[id]+=level*3.2);
+    }));
+    // breadth/fusion
+    const selectedDetails=Object.values(state.details).flat().length;
+    const exploredGroups=Object.values(state.details).filter(a=>a.length>0).length;
+    const fieldBreadth=new Set(state.fields.map(fieldGroupOf)).size;
+    pref.fusion += exploredGroups*1.15 + Math.min(7,selectedDetails/6) + fieldBreadth*.8;
+    exp.fusion += D.experienceGroups.flatMap(g=>g.items).filter(([label])=>(state.experience[label]||0)>=2).length*.28;
+    const prefNorm=normalize(pref), expNorm=normalize(exp);
+    const ranked=D.styles.map(s=>({...s,raw:pref[s.id],score:prefNorm[s.id],experience:expNorm[s.id]})).sort((a,b)=>b.score-a.score);
+    // If many strong directions are tightly packed, move fusion upward but keep meaningful main result.
+    const close=ranked.filter(r=>r.id!=='fusion'&&r.score>=Math.max(55,ranked[0].score-12)).length;
+    if(close>=6){prefNorm.fusion=Math.max(prefNorm.fusion,78);const f=ranked.find(r=>r.id==='fusion');f.score=prefNorm.fusion;ranked.sort((a,b)=>b.score-a.score);}
+    const radar=D.radarAxes.map(a=>({
+      ...a,
+      preference:avg(a.styles.map(id=>prefNorm[id]||0)),
+      experience:avg(a.styles.map(id=>expNorm[id]||0))
+    }));
+    return {pref,exp,prefNorm,expNorm,ranked,radar};
+  }
+
+  function normalize(obj){
+    const vals=Object.values(obj); const max=Math.max(1,...vals); return Object.fromEntries(Object.entries(obj).map(([k,v])=>[k,Math.round((v/max)*100)]));
+  }
+  const avg=arr=>arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):0;
+
+  const difficultyAdvice={
+    '인체 비율':'실루엣 10개를 2분씩 그리고, 머리 수와 관절 위치만 표시한다.',
+    '얼굴 각도':'정면·반측면·측면의 기준선을 같은 얼굴에 반복한다.',
+    '손':'손바닥 덩어리와 손가락 방향을 분리해 10포즈를 짧게 그린다.',
+    '발':'신발을 신은 발부터 박스 형태로 단순화한다.',
+    '동세':'사진의 외곽 실루엣과 중심선만 30초씩 따라 그린다.',
+    '배경 원근':'박스형 실내를 1점 투시로 만들고 인물을 한 명 배치한다.',
+    '실내 구조':'방 평면을 먼저 그리고, 같은 방을 두 카메라로 옮긴다.',
+    '색 조합':'좋아하는 작품 3장의 색을 5색 팔레트로 추출한다.',
+    '광원 이해':'구 하나에 정면광·측광·역광을 각각 적용한다.',
+    '환경광':'주광, 반사광, 배경색을 세 레이어로 분리해 관찰한다.',
