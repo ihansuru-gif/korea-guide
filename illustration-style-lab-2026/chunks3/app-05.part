@@ -1,0 +1,57 @@
+      <div class="coverage-block"><h4>좋아하지만 경험이 적은 방향</h4>${highLow.length?`<ul>${highLow.map(v=>`<li>${v.name} · 선호 ${v.score} / 경험 ${v.experience}</li>`).join('')}</ul>`:'<p class="empty">선호와 경험의 간격이 큰 영역이 적다.</p>'}</div>
+      <div class="coverage-block"><h4>그려본 범위</h4><div class="tag-row">${rangeCounts.length?rangeCounts.map(v=>`<span>${v}</span>`).join(''):'<span>선택 항목이 적음</span>'}</div></div>`;
+  }
+  function renderPriorities(computed,top){
+    const items=[];
+    const gap=computed.ranked.find(s=>s.score>=60&&s.experience<45&&s.id!=='fusion');
+    if(gap)items.push({title:`${gap.name}의 경험 늘리기`,body:gap.quest});
+    state.difficulties.slice(0,2).forEach(d=>items.push({title:`${d} 보완`,body:difficultyAdvice[d]||`${d}을 작은 단위로 나누고 20~30분 안에 한 번 완성한다.`}));
+    state.learn.slice(0,2).forEach(l=>items.push({title:`${l} 배우기`,body:`${l}을 다음 한 장의 핵심 목표로 정하고 과정 파일을 남긴다.`}));
+    if(items.length<3)top.forEach(s=>items.push({title:`${s.name} 실험`,body:s.quest}));
+    $('#priorityCards').innerHTML=items.slice(0,3).map((it,i)=>`<article class="priority-card"><span class="mini-kicker">PRIORITY ${i+1}</span><h4>${it.title}</h4><p style="color:#cbd7e5;line-height:1.65;margin:0">${it.body}</p></article>`).join('');
+  }
+  function allFields(){return D.fieldGroups.flatMap(g=>g.fields.map(f=>({...f,group:g.title})));}
+  function fieldGroupOf(id){const g=D.fieldGroups.find(g=>g.fields.some(f=>f.id===id));return g?.title||'기타';}
+  function renderFieldResults(top){
+    let ids=[...state.fields];
+    if(!ids.length) ids=[...new Set(top.flatMap(s=>styleFieldDefaults[s.id]||[]))].slice(0,6);
+    const map=Object.fromEntries(allFields().map(f=>[f.id,f]));
+    $('#fieldResultCards').innerHTML=ids.slice(0,8).map(id=>{const f=map[id];if(!f)return'';return`<article class="field-result-card"><span class="mini-kicker">${f.group}</span><h4>${f.name}</h4><p>${f.desc}</p></article>`;}).join('')||'<p class="empty">선택한 활용 분야가 없다.</p>';
+  }
+  function renderReferenceReport(){
+    const r=state.reference;
+    const rows=[
+      ['좋아하는 작가·작품·X 계정',r.referenceLinks||state.profile.favoriteCreators||'아직 기록하지 않음'],
+      ['반복된 공통점',r.referenceCommon||'아직 기록하지 않음'],
+      ['내 작업과 비슷한 점',r.referenceSimilar||'아직 기록하지 않음'],
+      ['내 작업과 다른 점',r.referenceDifferent||'아직 기록하지 않음'],
+      ['이 방향을 고른 이유',r.referenceWhy||'아직 기록하지 않음'],
+      ['다음 작업에서 시험할 요소',r.referenceTry||'아직 기록하지 않음']
+    ];
+    $('#referenceReport').innerHTML=`<div class="report-box"><b>수집 현황</b><p>${r.referenceCount||0}장 · ${r.clusterCount||0}개 취향 묶음</p></div>${rows.map(([t,v])=>`<div class="report-box"><b>${t}</b><p>${escapeHtml(v)}</p></div>`).join('')}`;
+  }
+  function renderSources(){
+    $('#sourceList').innerHTML=D.sources.map(s=>`<article class="source-item"><img src="${remoteImage[s.id]||''}" alt="${s.work} 축소 이미지"><div><b>${s.work} · ${s.credit}</b><small>${s.site}</small><a href="${s.url}" target="_blank" rel="noopener">출처 열기</a></div></article>`).join('');
+  }
+
+  function resultText(){
+    const c=compute(),top=c.ranked.slice(0,3);return `${state.profile.studentId} ${state.profile.studentName}\n내가 선호하는 일러스트 스타일은?\n${top.map((s,i)=>`${i+1}. ${s.name}`).join('\n')}\n\n어려운 부분: ${state.difficulties.join(', ')||'미선택'}\n배우고 싶은 부분: ${state.learn.join(', ')||'미선택'}\n다음 실험: ${top[0].quest}`;
+  }
+  async function copyResult(){
+    try{await navigator.clipboard.writeText(resultText());alert('결과 요약을 복사했어요.');}catch(_){alert('복사 권한을 사용할 수 없어요. 인쇄 / PDF 저장을 이용해 주세요.');}
+  }
+
+  function esc(s){return encodeURIComponent(s)} function unesc(s){return decodeURIComponent(s)}
+  function escapeHtml(v){return String(v).replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));}
+
+  // initial render
+  bindProfile();bindReference();renderSpectrum();renderDetail();renderExperience();renderRanges();renderFields();renderComparison();
+
+  // main navigation
+  $('#startBtn').onclick=()=>showScreen('profileScreen');
+  $('#brandHome').onclick=e=>{e.preventDefault();showScreen('homeScreen');};
+  $('#saveBtn').onclick=()=>saveState(true);
+  $('#resetBtn').onclick=resetAll;
+  $$('.back-btn[data-back]').forEach(b=>b.onclick=()=>showScreen(b.dataset.back));
+  $('#profileNext').onclick=()=>{syncProfile();if(!state.profile.studentId||!state.profile.studentName)return alert('학번과 이름을 입력해 주세요.');saveState();state.compareIndex=state.compareIndex||0;renderComparison();showScreen('compareScreen');};
+  $('#choiceA').onclick=()=>setComparison(-2); $('#choiceB').onclick=()=>setComparison(2);
