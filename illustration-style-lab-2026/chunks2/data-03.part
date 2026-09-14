@@ -1,0 +1,33 @@
+    {axis:'채색 구조',prompt:'선과 셀식 면이 중심인 화면과 명암·재질이 중심인 화면 중 어느 쪽이 더 좋나요?',a:{source:'surviving',label:'선과 셀식 면 중심',styles:['cleanCell','lineDrawing']},b:{source:'unholy',label:'명암과 재질 중심',styles:['painterly','cinematic']}},
+    {axis:'장면의 움직임',prompt:'안정된 서사 구도와 과장된 표정·동세 중 어느 쪽이 더 재미있나요?',a:{source:'omniscient',label:'안정된 서사 구도',styles:['narrativeScene','worldBuild']},b:{source:'greatest',label:'과장된 표정과 동세',styles:['actionPerspective','lineDrawing']}},
+    {axis:'정보 밀도',prompt:'여백과 감정이 남는 화면과 색·도형이 밀집된 화면 중 어느 쪽을 더 오래 보고 싶나요?',a:{source:'unripe',label:'여백과 감정이 남는 화면',styles:['lyrical','narrativeScene']},b:{source:'mika',label:'색과 도형이 밀집된 화면',styles:['graphicPop','ornamental']}},
+    {axis:'서사와 장식',prompt:'인물 관계와 사건이 보이는 장면과 장식·소품이 풍부한 화면 중 어느 쪽이 더 끌리나요?',a:{source:'omniscient',label:'관계와 사건이 보이는 장면',styles:['narrativeScene','worldBuild']},b:{source:'roroMaid',label:'장식과 소품이 풍부한 화면',styles:['fashion','ornamental']}},
+    {axis:'광원과 대비',prompt:'낮은 대비와 은은한 빛, 강한 역광과 색광 중 어느 쪽이 더 좋나요?',a:{source:'unripe',label:'낮은 대비와 은은한 빛',styles:['lyrical','semiReal']},b:{source:'unholy',label:'강한 역광과 색광',styles:['cinematic','painterly']}},
+    {axis:'캐릭터 인상',prompt:'친근하고 단순한 캐릭터와 패션·장식이 강한 캐릭터 중 어느 쪽을 더 그리고 싶나요?',a:{source:'maru',label:'친근하고 단순한 인상',styles:['roundIP','cleanCell']},b:{source:'lack',label:'패션과 장식이 강한 인상',styles:['fashion','ornamental']}},
+    {axis:'표면과 흔적',prompt:'매끈하고 정돈된 표면과 붓결·펜선·질감이 살아 있는 표면 중 어느 쪽이 더 좋나요?',a:{source:'surviving',label:'매끈하고 정돈된 표면',styles:['cleanCell','graphicPop']},b:{source:'roroTurn',label:'붓결과 질감이 살아 있는 표면',styles:['lineDrawing','painterly']}},
+    {axis:'의상 디자인',prompt:'현실적인 일상복과 실루엣이 강한 장식 의상 중 어느 쪽에 관심이 더 큰가요?',a:{source:'unripe',label:'현실적인 일상복',styles:['semiReal','narrativeScene']},b:{source:'roroMaid',label:'실루엣이 강한 장식 의상',styles:['fashion','ornamental']}},
+    {axis:'인물과 공간',prompt:'캐릭터 자체가 화면의 중심인 구성과 배경·세계관이 함께 보이는 구성 중 어느 쪽이 더 좋나요?',a:{source:'mika',label:'캐릭터 중심 화면',styles:['fashion','graphicPop']},b:{source:'omniscient',label:'배경과 세계관이 보이는 화면',styles:['worldBuild','narrativeScene']}},
+    {axis:'현실과 변형',prompt:'사람다운 구조와 현실적인 비율, 비율이 크게 바뀐 데포르메·인외 컨셉 중 어느 쪽을 더 탐색하고 싶나요?',a:{source:'unholy',label:'사람다운 구조와 비율',styles:['semiReal','painterly']},b:{source:'maru',label:'큰 변형과 데포르메',styles:['roundIP','surreal']}}
+  ];
+
+  const spectrumGroups = [
+    {
+      title:'선과 경계',desc:'선의 존재감과 형태를 마감하는 방식을 확인한다.',
+      items:[
+        {id:'aliveLine',label:'선이 살아 있는 그림',desc:'선의 강약, 속도와 흔적이 화면의 매력이다.',weights:{lineDrawing:2,cleanCell:.7}},
+        {id:'cleanLine',label:'깨끗하고 일정한 선',desc:'윤곽과 디테일이 정돈되어 있다.',weights:{cleanCell:2,graphicPop:.6}},
+        {id:'softEdge',label:'경계가 부드러운 그림',desc:'선보다 면과 공기감으로 형태를 만든다.',weights:{lyrical:1.6,painterly:1.4}}
+      ]
+    },
+    {
+      title:'형태와 캐릭터',desc:'비율, 실루엣과 데포르메 강도를 확인한다.',
+      items:[
+        {id:'roundForm',label:'둥글고 단순한 형태',desc:'친근하고 빠르게 기억되는 실루엣이다.',weights:{roundIP:2,cleanCell:.5}},
+        {id:'faceDeform',label:'얼굴 중심 데포르메',desc:'몸은 안정적이고 얼굴에서 개성이 크게 보인다.',weights:{fashion:1.3,cleanCell:1,roundIP:.5}},
+        {id:'realBody',label:'실사에 가까운 인체',desc:'사람다운 구조와 비율을 중요하게 본다.',weights:{semiReal:2,painterly:.6}}
+      ]
+    },
+    {
+      title:'색채와 채색',desc:'색의 강도와 명암을 만드는 방식을 확인한다.',
+      items:[
+        {id:'lowSat',label:'낮은 채도·그레이시 팔레트',desc:'색을 풀어 은은하고 차분한 화면을 만든다.',weights:{lyrical:2,semiReal:.5}},
