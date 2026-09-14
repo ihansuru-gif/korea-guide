@@ -1,0 +1,51 @@
+    Object.keys(state.reference).forEach(id=>{const el=$(`#${id}`); if(el) state.reference[id]=el.value.trim?.()??el.value;});
+  }
+
+  function renderComparison(){
+    const i=state.compareIndex;
+    const q=D.comparisons[i];
+    const sa=sourceMap[q.a.source], sb=sourceMap[q.b.source];
+    $('#compareProgress').textContent=`${i+1} / ${D.comparisons.length}`;
+    $('#compareAxis').textContent=q.axis;
+    $('#comparePrompt').textContent=q.prompt;
+    $('#imageA').src=remoteImage[sa.id]; $('#imageA').alt=`${sa.work} 작품 예시`;
+    $('#imageB').src=remoteImage[sb.id]; $('#imageB').alt=`${sb.work} 작품 예시`;
+    $('#labelA').textContent=q.a.label; $('#labelB').textContent=q.b.label;
+    $('#sourceA').textContent=`${sa.work} · ${sa.credit}`;
+    $('#sourceB').textContent=`${sb.work} · ${sb.credit}`;
+    const selected=state.comparisons[i];
+    $$('#choiceScale button').forEach(b=>b.classList.toggle('active',Number(b.dataset.value)===selected));
+    $('#choiceA').classList.toggle('selected',selected<0);
+    $('#choiceB').classList.toggle('selected',selected>0);
+    $('#compareNext').textContent=i===D.comparisons.length-1?'취향 평점으로':'다음 비교';
+  }
+  function setComparison(value){state.comparisons[state.compareIndex]=Number(value);saveState();renderComparison();}
+
+  function renderSpectrum(){
+    const root=$('#spectrumGroups');
+    root.innerHTML=D.spectrumGroups.map(g=>`<section class="spectrum-group">
+      <header class="spectrum-head"><div><h3>${g.title}</h3><p>${g.desc}</p></div><span class="mini-kicker">1–5</span></header>
+      <div class="spectrum-items">${g.items.map(item=>`<div class="spectrum-item"><div><b>${item.label}</b><small>${item.desc}</small></div><div class="rating-row" data-rating="${item.id}">${[1,2,3,4,5].map(n=>`<button type="button" data-value="${n}" class="${state.spectrum[item.id]===n?'active':''}">${n}</button>`).join('')}</div></div>`).join('')}</div>
+    </section>`).join('');
+    root.onclick=e=>{const btn=e.target.closest('button[data-value]'); if(!btn)return; const id=btn.parentElement.dataset.rating; state.spectrum[id]=Number(btn.dataset.value); saveState(); [...btn.parentElement.children].forEach(b=>b.classList.toggle('active',b===btn));};
+  }
+
+  function renderDetail(){
+    const root=$('#detailGroups');
+    root.innerHTML=D.detailGroups.map(g=>`<section class="accordion-card"><header class="accordion-head"><div><h3>${g.title}</h3><p>${g.desc}</p></div><span class="mini-kicker">복수 선택</span></header><div class="accordion-body"><div class="tag-grid">${g.items.map(([label])=>`<button type="button" data-group="${esc(g.title)}" data-label="${esc(label)}" class="${(state.details[g.title]||[]).includes(label)?'active':''}">${label}</button>`).join('')}</div></div></section>`).join('');
+    root.onclick=e=>{const btn=e.target.closest('button[data-group]'); if(!btn)return; const group=unesc(btn.dataset.group), label=unesc(btn.dataset.label); const arr=state.details[group]||[]; state.details[group]=arr.includes(label)?arr.filter(x=>x!==label):[...arr,label]; btn.classList.toggle('active'); saveState();};
+  }
+
+  function renderExperience(){
+    const root=$('#experienceGroups');
+    root.innerHTML=D.experienceGroups.map(g=>`<section class="accordion-card"><header class="accordion-head"><div><h3>${g.title}</h3><p>${g.desc}</p></div><span class="mini-kicker">0–3</span></header><div class="accordion-body"><div class="experience-table">${g.items.map(([label])=>`<div class="experience-row"><strong>${label}</strong><div class="level-buttons" data-exp="${esc(label)}">${[0,1,2,3].map(n=>`<button type="button" data-level="${n}" class="${Number(state.experience[label]||0)===n?'active':''}">${n}</button>`).join('')}</div></div>`).join('')}</div></div></section>`).join('');
+    root.onclick=e=>{const btn=e.target.closest('button[data-level]'); if(!btn)return; const label=unesc(btn.parentElement.dataset.exp); state.experience[label]=Number(btn.dataset.level); [...btn.parentElement.children].forEach(b=>b.classList.toggle('active',b===btn)); saveState();};
+  }
+
+  function renderRanges(){
+    const root=$('#rangeGroups');
+    root.innerHTML=D.rangeGroups.map(g=>`<section class="accordion-card"><header class="accordion-head"><div><h3>${g.title}</h3><p>해당하는 항목을 모두 선택합니다.</p></div><span class="mini-kicker">복수 선택</span></header><div class="accordion-body"><div class="tag-grid">${g.items.map(label=>`<button type="button" data-range="${esc(g.title)}" data-label="${esc(label)}" class="${(state.ranges[g.title]||[]).includes(label)?'active':''}">${label}</button>`).join('')}</div></div></section>`).join('');
+    root.onclick=e=>{const btn=e.target.closest('button[data-range]'); if(!btn)return; const group=unesc(btn.dataset.range), label=unesc(btn.dataset.label); const arr=state.ranges[group]||[]; state.ranges[group]=arr.includes(label)?arr.filter(x=>x!==label):[...arr,label]; btn.classList.toggle('active'); saveState();};
+    renderToggleButtons('#difficultyOptions',D.difficulties,state.difficulties,(next)=>state.difficulties=next);
+    renderToggleButtons('#learnOptions',D.learnOptions,state.learn,(next)=>state.learn=next);
+  }
