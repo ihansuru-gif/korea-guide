@@ -1,0 +1,91 @@
+(() => {
+  const D = window.STYLE_LAB;
+  const $ = (s, root=document) => root.querySelector(s);
+  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+  const STORAGE_KEY = 'illustration-style-lab-2026-v4';
+  const screenIds = ['homeScreen','profileScreen','compareScreen','spectrumScreen','detailScreen','experienceScreen','rangeScreen','fieldScreen','referenceScreen','resultScreen'];
+  const styleMap = Object.fromEntries(D.styles.map(s => [s.id, s]));
+  const sourceMap = Object.fromEntries(D.sources.map(s => [s.id, s]));
+  sourceMap.lack={...sourceMap.lack,work:'PROJECT [loundraw] visual',credit:'loundraw',site:'공식 프로젝트 사이트',url:'https://pjt.loundraw.jp/'};
+  const remoteImage={
+    maru:'https://swebtoon-phinf.pstatic.net/20250205_113/1738719488670dHyQr_JPEG/5518.jpg?type=crop540_540',
+    unripe:'https://webtoon-phinf.pstatic.net/20210714_238/16262098374928mJ3X_PNG/7AfterSchoolLessonsForUnripeApples_desktop_landingpage_fg.png',
+    omniscient:'https://webtoon-phinf.pstatic.net/20230524_244/1684869016177blKwi_PNG/2OmniscientReader_landingpage_desktop_fg.png',
+    unholy:'https://webtoon-phinf.pstatic.net/20201013_275/1602541639501by2HT_PNG/003_EC9E91ED9288EC8381EC84B8_PC_ECBA90EBA6ADED84B0.png',
+    surviving:'https://webtoon-phinf.pstatic.net/20210414_207/1618358465489reibr_PNG/0SurvivingRomance_desktop_landingpage_fg.png',
+    greatest:'https://webtoon-phinf.pstatic.net/20211116_29/1637004533211yvA4R_PNG/4The%2BGreatest%2BEstate%2BDeveloper_Launch_desktop_landingpage_FG.png',
+    mika:'https://mika-exhibition.jp/image/main.jpg',
+    lack:'https://pjt.loundraw.jp/wp-content/themes/pjt-common_by_settenlab/img/index/catch_idx-intro%402x.png',
+    roroMaid:'https://roroichi.com/roroichi/wp-content/uploads/c85bb58ac8ca12c444d3db8277f8b21a.jpg',
+    roroTurn:'https://roroichi.com/roroichi/wp-content/uploads/f9399c49c9a4dd0217ac913ae3dbd2aa-1.jpg'
+  };
+  window.STYLE_IMAGE_MAP=remoteImage;
+
+  const defaultState = () => ({
+    version:4,
+    profile:{studentId:'',studentName:'',drawYears:'0',mainTool:'CLIP STUDIO PAINT',mainSubject:'캐릭터 얼굴·반신',workTime:'1~2시간',favoriteCreators:'',studentConcern:''},
+    comparisons:Array(D.comparisons.length).fill(null),
+    compareIndex:0,
+    spectrum:Object.fromEntries(D.spectrumGroups.flatMap(g=>g.items.map(i=>[i.id,3]))),
+    details:Object.fromEntries(D.detailGroups.map(g=>[g.title,[]])),
+    experience:Object.fromEntries(D.experienceGroups.flatMap(g=>g.items.map(([label])=>[label,0]))),
+    ranges:Object.fromEntries(D.rangeGroups.map(g=>[g.title,[]])),
+    difficulties:[],
+    learn:[],
+    fields:[],
+    reference:{referenceCount:'',clusterCount:'',referenceLinks:'',referenceCommon:'',referenceSimilar:'',referenceDifferent:'',referenceWhy:'',referenceTry:''}
+  });
+
+  let state = loadState();
+
+  function loadState(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultState();
+      const parsed=JSON.parse(raw);
+      const base=defaultState();
+      return {
+        ...base,...parsed,
+        profile:{...base.profile,...(parsed.profile||{})},
+        spectrum:{...base.spectrum,...(parsed.spectrum||{})},
+        details:{...base.details,...(parsed.details||{})},
+        experience:{...base.experience,...(parsed.experience||{})},
+        ranges:{...base.ranges,...(parsed.ranges||{})},
+        reference:{...base.reference,...(parsed.reference||{})},
+        comparisons:Array.isArray(parsed.comparisons)?parsed.comparisons.slice(0,D.comparisons.length).concat(Array(D.comparisons.length).fill(null)).slice(0,D.comparisons.length):base.comparisons
+      };
+    }catch(_){return defaultState();}
+  }
+  function saveState(showNotice=false){
+    syncProfile(); syncReference();
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+    if(showNotice) alert('현재 응답을 이 기기에 저장했어요.');
+  }
+  function resetAll(){
+    if(!confirm('입력한 내용을 모두 지우고 처음부터 시작할까요?')) return;
+    localStorage.removeItem(STORAGE_KEY); state=defaultState(); location.reload();
+  }
+
+  function showScreen(id){
+    $$('.screen').forEach(el=>el.classList.toggle('active',el.id===id));
+    const target=$(`#${id}`);
+    const step=Number(target?.dataset.step||0);
+    const total=9;
+    $('#progressBar').style.width=`${Math.min(100,(step/total)*100)}%`;
+    $('#progressText').textContent=step===0?'시작':step===9?'결과':`${step} / ${total-1}`;
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+
+  function bindProfile(){
+    const ids=['studentId','studentName','drawYears','mainTool','mainSubject','workTime','favoriteCreators','studentConcern'];
+    ids.forEach(id=>{const el=$(`#${id}`); if(el) el.value=state.profile[id]??'';});
+  }
+  function syncProfile(){
+    ['studentId','studentName','drawYears','mainTool','mainSubject','workTime','favoriteCreators','studentConcern'].forEach(id=>{
+      const el=$(`#${id}`); if(el) state.profile[id]=el.value.trim?.()??el.value;
+    });
+  }
+  function bindReference(){
+    Object.keys(state.reference).forEach(id=>{const el=$(`#${id}`); if(el) el.value=state.reference[id]??'';});
+  }
+  function syncReference(){
