@@ -1,0 +1,28 @@
+    {title:'구도와 카메라',desc:'시점과 화면의 중심',items:[
+      ['정면·안정 구도',['cleanCell','narrativeScene']],['중앙 대칭',['graphicPop','ornamental']],['넓은 여백',['lyrical','narrativeScene']],['대각선 구성',['actionPerspective','cinematic']],['하이앵글',['worldBuild','narrativeScene']],['로우앵글',['actionPerspective','cinematic']],['과투시',['actionPerspective']],['어안',['actionPerspective','worldBuild']],['2인 관계 장면',['narrativeScene']],['군중 장면',['worldBuild','narrativeScene']],['영화 스틸 같은 장면',['cinematic','narrativeScene']],['세로 스크롤 구성',['narrativeScene','worldBuild']]
+    ]},
+    {title:'배경·사물·디자인',desc:'인물 밖의 요소',items:[
+      ['실내 공간',['worldBuild','narrativeScene']],['도시·건축',['worldBuild']],['자연 풍경',['worldBuild','lyrical']],['날씨와 시간대',['worldBuild','cinematic']],['소품이 많은 방',['objectStory','worldBuild']],['음식과 정물',['objectStory','painterly']],['타이포그래피',['graphicPop']],['패턴 디자인',['ornamental','graphicPop']],['콜라주',['graphicPop','objectStory']],['프레임 장식',['ornamental']],['앨범 커버 구성',['graphicPop','cinematic']],['굿즈 적용 화면',['roundIP','graphicPop']]
+    ]},
+    {title:'질감과 효과',desc:'완성 단계의 표면과 연출',items:[
+      ['매끈한 디지털 표면',['cleanCell','graphicPop']],['종이 질감',['lyrical','lineDrawing']],['연필·잉크 흔적',['lineDrawing']],['수채 번짐',['lyrical','painterly']],['거친 브러시',['painterly','lineDrawing']],['노이즈·필름 그레인',['cinematic','lyrical']],['금속·유리 재질',['painterly','semiReal']],['물·연기·구름',['painterly','worldBuild']],['꽃·식물 밀도',['ornamental','worldBuild']],['발광·파티클',['cinematic','graphicPop']],['색보정 중심 마감',['cinematic','lyrical']],['사진과 그림 결합',['graphicPop','objectStory']]
+    ]}
+  ];
+
+  const experienceGroups = [
+    {title:'인물과 캐릭터',desc:'얼굴에서 캐릭터 시트까지',items:[
+      ['얼굴 각도 3개 이상',['semiReal','cleanCell']],['표정 변화 6개 이상',['narrativeScene','roundIP']],['전신 캐릭터',['fashion','semiReal']],['손과 발',['semiReal','painterly']],['동세가 큰 포즈',['actionPerspective','lineDrawing']],['2인 이상 관계 장면',['narrativeScene']],['아동·청소년·성인 연령 차이',['semiReal','narrativeScene']],['마른 체형·근육·큰 체형 변주',['semiReal','surreal']],['인외·수인 캐릭터',['surreal','roundIP']],['캐릭터 시트·턴어라운드',['fashion','cleanCell']]
+    ]},
+    {title:'배경과 공간',desc:'투시와 시간대 변주',items:[
+      ['실내 공간',['worldBuild']],['건물 외관',['worldBuild']],['도시 거리',['worldBuild','cinematic']],['자연 풍경',['worldBuild','lyrical']],['1점 투시',['worldBuild']],['2점 투시',['worldBuild']],['3점 투시·과투시',['actionPerspective','worldBuild']],['인물과 배경 결합',['narrativeScene','worldBuild']],['낮·밤 시간대 변주',['cinematic','worldBuild']],['날씨·안개·공기감',['lyrical','worldBuild']]
+    ]},
+    {title:'색채와 채색',desc:'플랫에서 렌더까지',items:[
+      ['플랫 컬러',['cleanCell','graphicPop']],['셀식 채색',['cleanCell']],['소프트 셀 채색',['cleanCell','painterly']],['렌더 채색',['painterly']],['그레이스케일 후 채색',['painterly','cinematic']],['제한 팔레트',['lyrical','graphicPop']],['보색 대비',['graphicPop','cinematic']],['역광',['cinematic']],['환경광',['lyrical','cinematic']],['네온·야간 조명',['cinematic','graphicPop']]
+    ]},
+    {title:'재질과 효과',desc:'표면과 자연 현상',items:[
+      ['피부',['semiReal','painterly']],['머리카락',['painterly','fashion']],['천과 주름',['fashion','painterly']],['금속',['painterly']],['유리',['painterly','objectStory']],['물',['painterly','worldBuild']],['식물',['worldBuild','ornamental']],['연기·구름',['worldBuild','lyrical']],['발광·입자 효과',['cinematic','graphicPop']],['텍스처 브러시',['lineDrawing','lyrical']]
+    ]},
+    {title:'디자인 결과물',desc:'일러스트의 사용 형식',items:[
+      ['타이포를 넣은 포스터',['graphicPop']],['반복 패턴',['ornamental']],['책·앨범 커버',['graphicPop','cinematic']],['굿즈 시안',['roundIP','graphicPop']],['스티커·이모티콘',['roundIP','cleanCell']],['UI·온보딩 일러스트',['graphicPop','roundIP']],['편집·기사 삽화',['objectStory','graphicPop']],['연속 일러스트 3장 이상',['narrativeScene']],['캐릭터 키비주얼',['fashion','painterly']],['짧은 모션·루프 애니메이션',['graphicPop','cinematic']]
+    ]},
+    {title:'설계와 제작관리',desc:'과정, 파일, 피드백과 마감',items:[
