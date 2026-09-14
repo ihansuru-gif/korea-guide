@@ -1,0 +1,16 @@
+  $('#choiceScale').onclick=e=>{const b=e.target.closest('button[data-value]');if(b)setComparison(Number(b.dataset.value));};
+  $('#comparePrev').onclick=()=>{if(state.compareIndex===0){showScreen('profileScreen');return;}state.compareIndex--;renderComparison();saveState();};
+  $('#compareNext').onclick=()=>{if(state.comparisons[state.compareIndex]===null)return alert('두 화면 중 더 가까운 쪽을 선택해 주세요.');if(state.compareIndex<D.comparisons.length-1){state.compareIndex++;renderComparison();saveState();}else showScreen('spectrumScreen');};
+  $('#spectrumNext').onclick=()=>{saveState();showScreen('detailScreen');};
+  $('#detailNext').onclick=()=>{saveState();showScreen('experienceScreen');};
+  $('#experienceNext').onclick=()=>{saveState();showScreen('rangeScreen');};
+  $('#rangeNext').onclick=()=>{saveState();showScreen('fieldScreen');};
+  $('#fieldNext').onclick=()=>{saveState();bindReference();showScreen('referenceScreen');};
+  $('#resultBtn').onclick=()=>{buildResult();showScreen('resultScreen');};
+  $('#printBtn').onclick=()=>window.print(); $('#copyBtn').onclick=copyResult; $('#restartBtn').onclick=resetAll;
+
+  // Keep state current while typing
+  ['studentId','studentName','drawYears','mainTool','mainSubject','workTime','favoriteCreators','studentConcern'].forEach(id=>{$(`#${id}`)?.addEventListener('change',()=>saveState());});
+  Object.keys(state.reference).forEach(id=>{$(`#${id}`)?.addEventListener('change',()=>saveState());});
+  showScreen('homeScreen');
+})();
