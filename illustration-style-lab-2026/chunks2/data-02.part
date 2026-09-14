@@ -1,0 +1,46 @@
+      summary:'사물, 소품, 음식과 작은 디테일을 통해 인물의 성격과 사건을 보여주는 방향이다. 정물과 내러티브를 함께 다루는 작업에 적합하다.',
+      tags:['소품','정물','디테일','사물 서사'],
+      quest:'한 인물을 직접 그리지 않고 소지품 7개만으로 성격과 상황을 설명한다.'
+    },
+    {
+      id:'narrativeScene', name:'서사 장면형',
+      summary:'캐릭터 한 명의 예쁜 포즈보다 인물 관계, 사건 전후, 표정 변화와 장면의 흐름을 중요하게 보는 방향이다. 웹툰 컷과 장면 일러스트에 연결된다.',
+      tags:['인물 관계','장면','감정 변화','서사'],
+      quest:'같은 대사를 긴장·코미디·서정의 세 가지 장면으로 연출한다.'
+    },
+    {
+      id:'actionPerspective', name:'과투시 액션형',
+      summary:'로우앵글, 하이앵글, 어안, 과장된 동세와 강한 실루엣을 좋아하는 방향이다. 속도와 충격을 공간 왜곡으로 전달하는 연습과 맞는다.',
+      tags:['과투시','액션','카메라','동세'],
+      quest:'한 동작을 정면·로우앵글·과투시의 세 카메라로 다시 그린다.'
+    },
+    {
+      id:'ornamental', name:'장식 패턴형',
+      summary:'반복 문양, 꽃, 레이스, 프레임과 장식 밀도가 높은 화면에 끌리는 방향이다. 화면 전체의 리듬과 장식 체계를 설계하는 데 관심이 있다.',
+      tags:['패턴','장식','프레임','반복'],
+      quest:'모티프 하나를 정해 작은 패턴·큰 패턴·테두리 프레임으로 확장한다.'
+    },
+    {
+      id:'fusion', name:'융합 탐색형',
+      summary:'하나의 스타일보다 여러 방향에 고르게 관심이 있으며, 현재는 직접 비교하고 시험하면서 조합을 찾는 단계이다. 결과를 좁히기보다 작은 실험을 반복하는 편이 효과적이다.',
+      tags:['복합 취향','실험','혼합','탐색'],
+      quest:'상위 두 방향의 요소를 각각 하나씩 골라 한 장에 결합한다.'
+    }
+  ];
+
+  const sources = [
+    {id:'maru',file:'01_maru_thumb.svg',work:'Maru is a Puppy',credit:'Mojo',site:'WEBTOON 공식 작품 페이지',url:'https://www.webtoons.com/en/comedy/maru-is-a-puppy/list?title_no=5518'},
+    {id:'unripe',file:'02_unripe_thumb.svg',work:'After School Lessons for Unripe Apples',credit:'Soonkki',site:'WEBTOON 공식 작품 페이지',url:'https://www.webtoons.com/en/drama/after-school-lessons-for-unripe-apples/list?title_no=3093'},
+    {id:'omniscient',file:'03_omniscient_thumb.svg',work:'Omniscient Reader',credit:'singNsong · UMI · Sleepy-C',site:'WEBTOON 공식 작품 페이지',url:'https://www.webtoons.com/en/action/omniscient-reader/list?title_no=2154'},
+    {id:'unholy',file:'04_unholy_thumb.svg',work:'Unholy Blood',credit:'Lina Im · Jeonghyeon Kim',site:'WEBTOON 공식 작품 페이지',url:'https://www.webtoons.com/en/supernatural/unholy-blood/list?title_no=1262'},
+    {id:'surviving',file:'05_surviving_thumb.svg',work:'Surviving Romance',credit:'Lee Yeon',site:'WEBTOON 공식 작품 페이지',url:'https://www.webtoons.com/en/horror/survive-romance/list?title_no=2607'},
+    {id:'greatest',file:'06_greatest_thumb.svg',work:'The Greatest Estate Developer',credit:'Lee Hyun Min · Kim Hyunsoo',site:'WEBTOON 공식 작품 페이지',url:'https://www.webtoons.com/en/fantasy/the-greatest-estate-developer/list?title_no=3596'},
+    {id:'mika',file:'07_mika_thumb.svg',work:'ILY GIRL exhibition visual',credit:'Mika Pikazo',site:'공식 전시 사이트',url:'https://mika-exhibition.jp/'},
+    {id:'lack',file:'08_lack_thumb.svg',work:'Character visual',credit:'lack',site:'작가 X 계정',url:'https://x.com/lalalalack'},
+    {id:'roroMaid',file:'09_roroichi_maid_thumb.svg',work:'Maid×Collection×release',credit:'ROROICHI',site:'공식 포트폴리오',url:'https://roroichi.com/'},
+    {id:'roroTurn',file:'10_roroichi_turning_thumb.svg',work:'Turning Point exhibition visual',credit:'ROROICHI',site:'공식 포트폴리오',url:'https://roroichi.com/portfolio/portfolio-916/'}
+  ];
+
+  const comparisons = [
+    {axis:'형태와 첫인상',prompt:'둥글고 단순한 형태와 정교하고 날카로운 형태 중 어느 쪽에 더 오래 눈이 머무나요?',a:{source:'maru',label:'둥글고 단순한 형태',styles:['roundIP','cleanCell']},b:{source:'unholy',label:'정교하고 날카로운 형태',styles:['semiReal','painterly']}},
+    {axis:'색채 강도',prompt:'차분하고 제한된 팔레트와 높은 채도·강한 색 대비 중 어느 쪽이 더 끌리나요?',a:{source:'unripe',label:'차분한 제한 팔레트',styles:['lyrical','narrativeScene']},b:{source:'mika',label:'높은 채도와 강한 대비',styles:['graphicPop','ornamental']}},
