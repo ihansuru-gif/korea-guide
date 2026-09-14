@@ -1,0 +1,44 @@
+        {id:'vivid',label:'다채롭고 선명한 팔레트',desc:'고채도와 강한 색 대비가 화면을 이끈다.',weights:{graphicPop:2,ornamental:.7}},
+        {id:'cellShade',label:'셀식 채색',desc:'명암 경계가 분명하고 단계가 적다.',weights:{cleanCell:2,lineDrawing:.4}},
+        {id:'renderShade',label:'게임 스타일·리얼 채색',desc:'명암과 재질이 부드럽게 이어진다.',weights:{painterly:2,semiReal:.6}}
+      ]
+    },
+    {
+      title:'빛과 질감',desc:'광원과 표면의 촉감에 대한 선호를 확인한다.',
+      items:[
+        {id:'backlight',label:'강한 명암과 역광',desc:'빛의 방향과 대비가 분명한 화면이다.',weights:{cinematic:2,actionPerspective:.5}},
+        {id:'environmentLight',label:'환경광과 공기감',desc:'주변 색과 반사광이 장면 전체에 스며든다.',weights:{lyrical:1.5,cinematic:1.2,worldBuild:.5}},
+        {id:'texture',label:'텍스처와 붓결',desc:'종이결, 펜선, 거친 브러시 흔적이 보인다.',weights:{lineDrawing:1.3,painterly:1.1,ornamental:.5}}
+      ]
+    },
+    {
+      title:'화면과 공간',desc:'구도, 카메라와 배경의 비중을 확인한다.',
+      items:[
+        {id:'background',label:'배경과 공간의 매력',desc:'장소와 원근이 인물만큼 중요하다.',weights:{worldBuild:2,narrativeScene:.7}},
+        {id:'graphic',label:'타이포·패턴·오브젝트 구성',desc:'그래픽 요소가 그림 완성도를 높인다.',weights:{graphicPop:1.7,ornamental:1.1,objectStory:.8}},
+        {id:'perspective',label:'과투시와 역동적인 카메라',desc:'공간 왜곡과 강한 시점으로 동작을 강조한다.',weights:{actionPerspective:2,worldBuild:.5}}
+      ]
+    },
+    {
+      title:'개성과 컨셉',desc:'캐릭터와 장식에서 개성을 만드는 방식을 확인한다.',
+      items:[
+        {id:'fashionDetail',label:'특이한 의상과 헤어',desc:'실루엣과 스타일링이 캐릭터의 핵심이다.',weights:{fashion:2,ornamental:.8}},
+        {id:'nonHuman',label:'인외·오브젝트 헤드',desc:'인체의 규칙을 바꾸고 사물·동물·기계를 결합한다.',weights:{surreal:2,roundIP:.4}},
+        {id:'ornament',label:'패턴과 장식 밀도',desc:'반복 문양과 프레임이 화면 리듬을 만든다.',weights:{ornamental:2,graphicPop:.7}}
+      ]
+    }
+  ];
+
+  const detailGroups = [
+    {title:'선과 마감',desc:'선의 두께와 경계 처리',items:[
+      ['얇고 섬세한 선',['lineDrawing','fashion']],['굵고 힘 있는 선',['lineDrawing','actionPerspective']],['거친 러프선',['lineDrawing']],['깨끗한 벡터형 선',['cleanCell','graphicPop']],['선이 거의 없는 면 중심 표현',['painterly','lyrical']],['속도선·효과선',['actionPerspective','narrativeScene']],['붓펜·잉크 질감',['lineDrawing','ornamental']],['윤곽 일부만 남긴 표현',['lyrical','painterly']]
+    ]},
+    {title:'색과 빛',desc:'팔레트와 광원 선택',items:[
+      ['저채도·그레이시',['lyrical','semiReal']],['파스텔',['lyrical','roundIP']],['원색 포인트',['graphicPop','cleanCell']],['네온·형광',['graphicPop','cinematic']],['제한 팔레트',['lyrical','graphicPop']],['보색 대비',['graphicPop','cinematic']],['강한 역광',['cinematic','actionPerspective']],['림라이트',['cinematic','painterly']],['환경광',['lyrical','worldBuild']],['야간 색광',['cinematic','worldBuild']],['본연의 색 중심',['semiReal','cleanCell']],['글로우·입자 효과',['cinematic','ornamental']]
+    ]},
+    {title:'캐릭터 형태',desc:'비율과 인상의 범위',items:[
+      ['어려 보이고 가는 스타일',['fashion','cleanCell']],['트렌디한 미소년·미소녀',['fashion','painterly']],['성숙한 인상',['semiReal','painterly']],['실제 사람에 가까운 비율',['semiReal']],['SD·치비 비율',['roundIP','cleanCell']],['미애니메이션식 큰 과장',['actionPerspective','surreal']],['표정 변화가 큰 캐릭터',['narrativeScene','actionPerspective']],['둥근 브랜드 캐릭터',['roundIP']],['다양한 체형',['semiReal','narrativeScene']],['노년 캐릭터',['semiReal','narrativeScene']],['수인·동물형',['surreal','roundIP']],['오브젝트 헤드',['surreal','objectStory']]
+    ]},
+    {title:'의상과 헤어',desc:'실루엣과 스타일링',items:[
+      ['현실적인 일상복',['semiReal','narrativeScene']],['스트리트 패션',['fashion','graphicPop']],['무대 의상',['fashion','ornamental']],['판타지 의상',['fashion','worldBuild']],['교복 변주',['fashion','cleanCell']],['특이한 헤어 실루엣',['fashion','surreal']],['장신구가 많은 디자인',['ornamental','fashion']],['소재 차이가 큰 의상',['painterly','fashion']],['캐릭터별 색 배분',['fashion','graphicPop']],['실루엣만 봐도 구분되는 디자인',['fashion','roundIP']]
+    ]},
