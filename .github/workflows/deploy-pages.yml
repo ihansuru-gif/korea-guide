@@ -34,3 +34,19 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify illustration style site
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://ihansuru-gif.github.io/korea-guide/illustration-style-lab-2026/"
+          for attempt in {1..12}; do
+            code="$(curl -L -sS -o /tmp/style-lab.html -w '%{http_code}' "$URL" || true)"
+            if [[ "$code" == "200" ]] && grep -q "내가 선호하는" /tmp/style-lab.html; then
+              echo "Verified: $URL"
+              exit 0
+            fi
+            echo "Waiting for Pages propagation ($attempt/12, HTTP $code)"
+            sleep 5
+          done
+          echo "Published page did not pass smoke test."
+          exit 1
