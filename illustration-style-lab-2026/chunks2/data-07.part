@@ -1,0 +1,30 @@
+      {id:'book',name:'출판·그림책',desc:'연속 이미지로 분위기와 서사를 만든다.'},
+      {id:'uiIllustration',name:'UI·제품 일러스트',desc:'서비스 화면에 맞는 명료한 이미지를 설계한다.'},
+      {id:'motion',name:'모션·움직이는 일러스트',desc:'레이어와 반복 동작을 고려해 화면을 만든다.'}
+    ]},
+    {title:'IP·개인 창작',fields:[
+      {id:'pattern',name:'서피스 패턴',desc:'반복 문양을 의류, 문구와 제품 표면에 적용한다.'},
+      {id:'goods',name:'굿즈·라이선싱',desc:'캐릭터와 그래픽을 상품 형태로 확장한다.'},
+      {id:'mascot',name:'마스코트·이모티콘',desc:'단순하고 기억되는 캐릭터를 여러 감정으로 확장한다.'},
+      {id:'fashionBeauty',name:'패션·뷰티 일러스트',desc:'의상, 헤어와 소재의 매력을 중심으로 표현한다.'},
+      {id:'personalArtist',name:'개인 작가·커미션',desc:'자신의 시각 방향을 꾸준한 작품군으로 발전시킨다.'},
+      {id:'snsSeries',name:'SNS 연작·인스타툰',desc:'짧은 분량과 반복 가능한 형식으로 시리즈를 만든다.'}
+    ]}
+  ];
+
+  const radarAxes = [
+    {id:'line',label:'선',styles:['cleanCell','lineDrawing']},
+    {id:'color',label:'색',styles:['lyrical','graphicPop','ornamental']},
+    {id:'render',label:'채색',styles:['painterly','semiReal']},
+    {id:'light',label:'빛',styles:['cinematic','lyrical']},
+    {id:'character',label:'캐릭터',styles:['fashion','roundIP','surreal']},
+    {id:'world',label:'공간',styles:['worldBuild','actionPerspective']},
+    {id:'story',label:'서사',styles:['narrativeScene','objectStory']},
+    {id:'design',label:'디자인',styles:['graphicPop','ornamental','objectStory']}
+  ];
+
+  return {
+    styles,sources,comparisons,spectrumGroups,detailGroups,experienceGroups,rangeGroups,
+    difficulties,learnOptions,fieldGroups,radarAxes
+  };
+})();
